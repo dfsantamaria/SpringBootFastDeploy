@@ -20,7 +20,7 @@ Authorization methods are available at  /spring/application/configuration/securi
 
 For customizing the provided logger, edit the file /resources/logback-spring.xml.
 
-##Presentation layer
+## Presentation layer
 
 You can find all your web pages in resources static.
 
