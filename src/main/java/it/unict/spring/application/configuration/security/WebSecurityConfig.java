@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,9 +29,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig 
 {
  @Autowired
- UserDetailsService userDetailsService;   
- @Autowired
- PasswordEncoder getPasswordEncoder;          
+ DaoAuthenticationProvider authProvider;
       
    
     @Bean
@@ -47,7 +46,7 @@ public class WebSecurityConfig
                 anyRequest().authenticated().and().httpBasic();
                         
         http.
-                formLogin().                 
+                formLogin().                
                 permitAll().
                 
                 and()
@@ -60,7 +59,8 @@ public class WebSecurityConfig
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception
     {
-        auth.userDetailsService(userDetailsService).passwordEncoder(getPasswordEncoder);
+        //auth.userDetailsService(userDetailsService).passwordEncoder(getPasswordEncoder);
+        auth.authenticationProvider(authProvider);
     }
     
       
@@ -73,4 +73,5 @@ public class WebSecurityConfig
     return roleHierarchy;
     }        
     
+        
 }
