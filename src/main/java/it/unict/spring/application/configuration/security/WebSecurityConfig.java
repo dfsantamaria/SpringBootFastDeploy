@@ -48,6 +48,7 @@ public class WebSecurityConfig
         http.
                 formLogin().                
                 permitAll().
+                successHandler(new CustomLoginSuccessHandler()).
                 
                 and()
                 .logout()
