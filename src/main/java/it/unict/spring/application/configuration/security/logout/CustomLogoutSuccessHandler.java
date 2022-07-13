@@ -19,7 +19,8 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler
 {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException
-    {       
+    {        
        response.sendRedirect(request.getContextPath() + "/public/access/signin?logout");
+       response.setStatus(HttpServletResponse.SC_OK);       
     }    
 }
