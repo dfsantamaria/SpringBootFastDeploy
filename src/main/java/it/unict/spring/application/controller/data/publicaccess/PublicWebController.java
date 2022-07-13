@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("/public")
+@RequestMapping("/public/api")
 public class PublicWebController
 {       
     @Autowired

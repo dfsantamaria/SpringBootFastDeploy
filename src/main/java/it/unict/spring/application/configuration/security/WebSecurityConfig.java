@@ -10,16 +10,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
@@ -36,8 +31,10 @@ public class WebSecurityConfig
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
     {
                     
-        http.csrf().disable().
-                authorizeHttpRequests().antMatchers( "/public/**", "/").permitAll().
+        http.csrf().disable().              
+ 
+                authorizeHttpRequests().                
+                antMatchers("/public/**", "/", "/signin*").permitAll().
                 antMatchers("/auth/superadmin/**").hasAnyRole("SUPERADMIN").
                 antMatchers("/auth/admin/**").hasAnyRole("SUPERADMIN","ADMIN").
                 antMatchers("/auth/staff/**").hasAnyRole("SUPERADMIN","ADMIN","STAFF").
@@ -46,9 +43,12 @@ public class WebSecurityConfig
                 anyRequest().authenticated().and().httpBasic();
                         
         http.
-                formLogin().                
-                permitAll().
+                formLogin().
+                loginPage("/public/auth/signin").  
+                loginProcessingUrl("/public/auth/signin").
                 successHandler(new CustomLoginSuccessHandler()).
+                failureHandler(new CustomLoginFailureHandler()).
+                permitAll().   
                 
                 and()
                 .logout()

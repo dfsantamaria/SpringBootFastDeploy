@@ -7,8 +7,6 @@ package it.unict.it.spring.application.controller.data.publicaccess;
 
 
 import it.unict.spring.application.Application;
-import org.junit.jupiter.api.Assertions;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +35,7 @@ public class PublicWebControllerTest
     @WithMockUser(username = "admin", roles = { "STAFF" })
     public void orgsAuthTest() throws Exception
     {        
-        ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/public/orgs"));
+        ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/public/api/orgs"));
         perform.andExpect(status().isOk());
         assertNotNull(perform.andReturn().getResponse().getContentAsString());
         
@@ -47,7 +45,7 @@ public class PublicWebControllerTest
     @WithAnonymousUser
     void orgsUnauthorizedTest() throws Exception 
     {
-       ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/public/orgs"));
+       ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/public/api/orgs"));
        perform.andExpect(status().isOk());
        assertNotNull(perform.andReturn().getResponse().getContentAsString());
     }
