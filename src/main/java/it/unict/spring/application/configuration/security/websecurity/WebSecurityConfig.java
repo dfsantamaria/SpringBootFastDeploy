@@ -1,10 +1,13 @@
-package it.unict.spring.application.configuration.security;
+package it.unict.spring.application.configuration.security.websecurity;
 
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
  */
 
+import it.unict.spring.application.configuration.security.logout.CustomLogoutSuccessHandler;
+import it.unict.spring.application.configuration.security.login.CustomLoginFailureHandler;
+import it.unict.spring.application.configuration.security.login.CustomLoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,6 +55,8 @@ public class WebSecurityConfig
                 
                 and()
                 .logout()
+                .logoutUrl("/public/access/signout")
+                .logoutSuccessHandler(new CustomLogoutSuccessHandler())                
                 .permitAll();       
         return http.build();     
     }

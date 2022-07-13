@@ -21,7 +21,13 @@ public class LoginController
      @RequestMapping("signin")
      public String viewlogin(HttpServletRequest request, Model model)
      {              
-        return "public/auth/signin";
-     }          
+        return "public/access/signin";
+     }  
+     
+     @RequestMapping("signout")
+     public String viewlogout(HttpServletRequest request, Model model)
+     {              
+        return "public/access/signin";
+     }  
 }
 

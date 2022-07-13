@@ -1,4 +1,4 @@
-package it.unict.spring.application.configuration.security;
+package it.unict.spring.application.configuration.security.login;
 
 import it.unict.spring.application.utility.user.CustomUserDetails;
 import java.io.IOException;

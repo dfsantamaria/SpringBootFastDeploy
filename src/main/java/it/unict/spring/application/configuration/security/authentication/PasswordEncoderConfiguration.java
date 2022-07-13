@@ -1,4 +1,4 @@
-package it.unict.spring.application.configuration.security;
+package it.unict.spring.application.configuration.security.authentication;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
