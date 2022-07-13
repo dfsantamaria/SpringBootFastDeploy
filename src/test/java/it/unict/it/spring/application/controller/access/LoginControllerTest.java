@@ -50,4 +50,13 @@ public class LoginControllerTest
              .andExpect(status().is3xxRedirection())
              .andExpect(redirectedUrl("/public/access/signin?logout"));
   }
+  
+  @Test
+  public void cannotLog() throws Exception
+  {
+    mvc.perform(formLogin("/public/access/signin").user("nonregistered").password("any"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/public/access/signin?error"));
+  }
+  
 }
