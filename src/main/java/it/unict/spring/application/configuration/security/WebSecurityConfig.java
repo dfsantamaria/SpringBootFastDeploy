@@ -34,7 +34,7 @@ public class WebSecurityConfig
         http.csrf().disable().              
  
                 authorizeHttpRequests().                
-                antMatchers("/public/**", "/", "/signin*").permitAll().
+                antMatchers("/public/**", "/").permitAll().
                 antMatchers("/auth/superadmin/**").hasAnyRole("SUPERADMIN").
                 antMatchers("/auth/admin/**").hasAnyRole("SUPERADMIN","ADMIN").
                 antMatchers("/auth/staff/**").hasAnyRole("SUPERADMIN","ADMIN","STAFF").
@@ -44,8 +44,8 @@ public class WebSecurityConfig
                         
         http.
                 formLogin().
-                loginPage("/public/auth/signin").  
-                loginProcessingUrl("/public/auth/signin").
+                loginPage("/public/access/signin").  
+                loginProcessingUrl("/public/access/signin").
                 successHandler(new CustomLoginSuccessHandler()).
                 failureHandler(new CustomLoginFailureHandler()).
                 permitAll().   

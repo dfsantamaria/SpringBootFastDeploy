@@ -20,6 +20,6 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
             throws IOException, ServletException
     {        
-        getRedirectStrategy().sendRedirect(request, response, "/public/auth/signin?error");
+        getRedirectStrategy().sendRedirect(request, response, "/public/access/signin?error");
     }
 }

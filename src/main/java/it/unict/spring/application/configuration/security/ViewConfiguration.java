@@ -18,10 +18,8 @@ public class ViewConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry)
-    {
-        
-          registry.addViewController("/signin").setViewName("redirect:/public/auth/signin");
-          registry.addViewController("/signin").setViewName("forward:/public/auth/signin");
-     
+    {        
+    //  registry.addViewController("/signin").setViewName("redirect:/public/access/signin");
+    //  registry.addViewController("/signin").setViewName("forward:/public/access/signin");     
     }
 }
