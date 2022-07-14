@@ -20,7 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "organization", catalog = "users")
+@Table(name = "organization", catalog = "useraccount")
 public class Organization implements Serializable
 {
 
@@ -32,7 +32,7 @@ public class Organization implements Serializable
     private String name;
 
     @ManyToMany(mappedBy= "organizations")    
-    private Set<Users> users = new HashSet<>();
+    private Set<UserAccount> users = new HashSet<>();
 
     public Organization() {
         super();
@@ -44,22 +44,22 @@ public class Organization implements Serializable
     }
 
     
-    public void addUser(Users user)
+    public void addUser(UserAccount user)
     {
       this.users.add(user);
     }
     
-    public void deleteUser(Users user)
+    public void deleteUser(UserAccount user)
     {
       this.users.remove(user);
     }
 
-    public Set<Users> getUsers()
+    public Set<UserAccount> getUsers()
     {
         return users;
     }
 
-    public void setUsers(final Set<Users> users)
+    public void setUsers(final Set<UserAccount> users)
     {
         this.users = users;
     }

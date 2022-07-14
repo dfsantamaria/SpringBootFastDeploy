@@ -1,7 +1,7 @@
 package it.unict.spring.application.utility.user;
 
 import it.unict.spring.application.persistence.model.user.Privilege;
-import it.unict.spring.application.persistence.model.user.Users;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -12,8 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class  CustomUserDetails implements UserDetails 
 {
-    private final Users user;
-    public CustomUserDetails(Users user)
+    private final UserAccount user;
+    public CustomUserDetails(UserAccount user)
     {
         this.user = user;
     }

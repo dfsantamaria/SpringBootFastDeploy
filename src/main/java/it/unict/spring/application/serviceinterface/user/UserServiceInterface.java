@@ -7,23 +7,23 @@ package it.unict.spring.application.serviceinterface.user;
 
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
 import it.unict.spring.application.exception.user.UserNotFoundException;
-import it.unict.spring.application.persistence.model.user.Users;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import java.util.List;
 
 
 public interface UserServiceInterface
 {
-    List<Users> findAll();
-    List<Users> findByUsername(String username);
-    List<Users> findByMail(String email);
-    Users save (Users g);  
-    void delete(Users user);
-    void setEnabled(Users user, boolean enabled);
+    List<UserAccount> findAll();
+    List<UserAccount> findByUsername(String username);
+    List<UserAccount> findByMail(String email);
+    UserAccount save (UserAccount g);  
+    void delete(UserAccount user);
+    void setEnabled(UserAccount user, boolean enabled);
     boolean hasUserPrivilege(String privilege);
     String getUserByEmail(String mail) throws UserNotFoundException;
-    Users getOrSetAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
-    Users getOrSetStaffUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
-    Users getOrSetStandardUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
-    Users getOrSetSuperAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
+    UserAccount getOrSetAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
+    UserAccount getOrSetStaffUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
+    UserAccount getOrSetStandardUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
+    UserAccount getOrSetSuperAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
     
 }

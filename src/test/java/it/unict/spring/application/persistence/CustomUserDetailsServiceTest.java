@@ -5,7 +5,7 @@
 package it.unict.spring.application.persistence;
 
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
-import it.unict.spring.application.persistence.model.user.Users;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.service.security.CustomUserDetailsService;
 import it.unict.spring.application.service.user.UserService;
 import it.unict.spring.application.utility.user.CustomUserDetails;
@@ -45,10 +45,10 @@ public class CustomUserDetailsServiceTest
    @Transactional
    public void loadUserByUsername() throws MultipleUsersFoundException 
    {
-       List<Users> users = userServ.findByUsername(username);
+       List<UserAccount> users = userServ.findByUsername(username);
        if(users.isEmpty())
        {
-           Users user=userServ.getOrSetSuperAdminUser(username, "lll@@", mail, "Univeristy of Catania");
+           UserAccount user=userServ.getOrSetSuperAdminUser(username, "lll@@", mail, "Univeristy of Catania");
            userServ.setEnabled(user, true);
        }
        CustomUserDetails details = (CustomUserDetails) detailService.loadUserByUsername(username);

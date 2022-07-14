@@ -27,8 +27,8 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "users", catalog = "users")
-public class Users implements Serializable
+@Table(name = "useraccount", catalog = "useraccount")
+public class UserAccount implements Serializable
 {
 
     @Id
@@ -68,7 +68,7 @@ public class Users implements Serializable
 
     //
 
-    public Users() {
+    public UserAccount() {
          super();
          this.isEnabled=false;
          this.isCredentialsNonExpired=true;
@@ -77,7 +77,7 @@ public class Users implements Serializable
          
     }
     
-    public Users(String username, String password, String mail) {
+    public UserAccount(String username, String password, String mail) {
         super();
         this.username=username;
         this.password=password;         
@@ -188,7 +188,7 @@ public class Users implements Serializable
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Users other = (Users) obj;
+        final UserAccount other = (UserAccount) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;

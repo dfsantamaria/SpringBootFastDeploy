@@ -38,7 +38,7 @@ public class ApplicationTest
   void contextLoads(ApplicationContext context) throws SQLException
   {
     assertNotNull(context); //check context ok
-    assertEquals(((DataSource) context.getBean("userSource")).getConnection().getCatalog(), "users");
+    assertEquals(((DataSource) context.getBean("userSource")).getConnection().getCatalog(), "useraccount");
     assertEquals(((DataSource) context.getBean("dataSource")).getConnection().getCatalog(), "data"); 
   }    
 }

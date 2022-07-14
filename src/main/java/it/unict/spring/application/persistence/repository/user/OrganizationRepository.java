@@ -6,7 +6,7 @@ package it.unict.spring.application.persistence.repository.user;
  */
 
 import it.unict.spring.application.persistence.model.user.Organization;
-import it.unict.spring.application.persistence.model.user.Users;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

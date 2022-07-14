@@ -7,7 +7,7 @@ package it.unict.spring.application.service.user;
 
 import it.unict.spring.application.serviceinterface.user.OrganizationServiceInterface;
 import it.unict.spring.application.persistence.model.user.Organization;
-import it.unict.spring.application.persistence.model.user.Users;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.persistence.repository.user.OrganizationRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;

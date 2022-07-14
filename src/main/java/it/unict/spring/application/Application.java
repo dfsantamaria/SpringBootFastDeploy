@@ -6,7 +6,7 @@ package it.unict.spring.application;
  */
 
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
-import it.unict.spring.application.persistence.model.user.Users;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.service.user.UserService;
 import java.sql.SQLException;
 import javax.annotation.PostConstruct;
@@ -98,7 +98,7 @@ public class Application extends SpringBootServletInitializer
         {
            if(userService.findByMail("daniele.santamaria@unict.it").isEmpty())
            {
-              Users user = userService.getOrSetSuperAdminUser("dfsantamaria", "lll@@", "daniele.santamaria@unict.it", "Univeristy of Catania");
+              UserAccount user = userService.getOrSetSuperAdminUser("dfsantamaria", "lll@@", "daniele.santamaria@unict.it", "Univeristy of Catania");
               userService.setEnabled(user, true); //enable user              
            }
             

@@ -37,7 +37,7 @@ public class WebSecurityConfig
         http.csrf().disable().              
  
                 authorizeHttpRequests().                
-                antMatchers("/public/**", "/").permitAll().
+                antMatchers("/public/**", "/").permitAll().                
                 antMatchers("/auth/superadmin/**").hasAnyRole("SUPERADMIN").
                 antMatchers("/auth/admin/**").hasAnyRole("SUPERADMIN","ADMIN").
                 antMatchers("/auth/staff/**").hasAnyRole("SUPERADMIN","ADMIN","STAFF").
@@ -47,15 +47,15 @@ public class WebSecurityConfig
                         
         http.
                 formLogin().
-                loginPage("/public/access/signin").  
-                loginProcessingUrl("/public/access/signin").
+                loginPage("/public/api/access/signin").  
+                loginProcessingUrl("/public/api/access/signin").
                 successHandler(new CustomLoginSuccessHandler()).
                 failureHandler(new CustomLoginFailureHandler()).
                 permitAll().   
                 
                 and()
                 .logout()
-                .logoutUrl("/public/access/signout")
+                .logoutUrl("/public/api/access/signout")
                 .logoutSuccessHandler(new CustomLogoutSuccessHandler())                
                 .permitAll();       
         return http.build();     

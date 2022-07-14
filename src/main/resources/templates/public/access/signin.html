@@ -4,7 +4,7 @@
   </head>
   <body>
     <div tiles:fragment="content">
-        <form name="f" th:action="@{/public/access/signin}" method="post">               
+        <form name="f" th:action="@{/public/api/access/signin}" method="post">               
             <fieldset>
                 <legend>Please Login</legend>
                 <div th:if="${param.error}" class="alert alert-error">    

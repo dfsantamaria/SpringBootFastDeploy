@@ -10,7 +10,7 @@ import it.unict.spring.application.exception.user.UserNotFoundException;
 import it.unict.spring.application.persistence.model.user.Organization;
 import it.unict.spring.application.persistence.model.user.Privilege;
 import it.unict.spring.application.serviceinterface.user.UserServiceInterface;
-import it.unict.spring.application.persistence.model.user.Users;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.persistence.repository.user.UserRepository;
 import java.util.Collection;
 import java.util.List;
@@ -35,19 +35,19 @@ public class UserService implements UserServiceInterface
     PasswordEncoder getPasswordEncoder;
            
     @Override
-    public List<Users> findAll()
+    public List<UserAccount> findAll()
     {
-        return (List<Users>) repository.findAll();
+        return (List<UserAccount>) repository.findAll();
     }
     
     @Override
-    public List<Users> findByUsername(String name)
+    public List<UserAccount> findByUsername(String name)
     {
       return repository.findByUsername(name);
     }
     
     @Override
-    public void setEnabled(Users user, boolean enabled)
+    public void setEnabled(UserAccount user, boolean enabled)
     {      
       user.setEnabled(enabled);
       repository.save(user);
@@ -55,20 +55,20 @@ public class UserService implements UserServiceInterface
             
     @Override   
     @Transactional
-    public Users save (Users g)
+    public UserAccount save (UserAccount g)
     {
       return repository.save(g);
     }
             
     @Override
     @Transactional
-    public void delete(Users user)
+    public void delete(UserAccount user)
     {
       repository.delete(user);
     }
     
     @Override
-    public List<Users> findByMail(String email)
+    public List<UserAccount> findByMail(String email)
     {
       return repository.findByMail(email);
     }
@@ -92,7 +92,7 @@ public class UserService implements UserServiceInterface
     @Override
     public String getUserByEmail(String mail) throws UserNotFoundException
     {
-        List<Users> users = repository.findByMail(mail);
+        List<UserAccount> users = repository.findByMail(mail);
         if(users.isEmpty())        
               throw new UserNotFoundException("user not found using email "+ mail); 
         else
@@ -101,7 +101,7 @@ public class UserService implements UserServiceInterface
 
     @Override 
     @Transactional
-    public Users getOrSetAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
+    public UserAccount getOrSetAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
     {
       Privilege priv= privilegeService.getOrSetAdminPrivilege(); 
       return this.getOrSetUser(username, password, mail, organization, priv);
@@ -109,11 +109,11 @@ public class UserService implements UserServiceInterface
     
     
     @Transactional
-    private Users getOrSetUser(String username, String password, String mail, String organization, Privilege priv) throws MultipleUsersFoundException
+    private UserAccount getOrSetUser(String username, String password, String mail, String organization, Privilege priv) throws MultipleUsersFoundException
     {         
-        List<Users> users = repository.findByMail(mail);    
+        List<UserAccount> users = repository.findByMail(mail);    
         users.addAll(repository.findByUsername(username));
-        Users user=new Users();
+        UserAccount user=new UserAccount();
         if(users.size()>1)
             throw new MultipleUsersFoundException("Combination of username and password gets multiple users: "+ username + ", "+mail);
         else if(users.size()==1)
@@ -135,7 +135,7 @@ public class UserService implements UserServiceInterface
 
     @Override
     @Transactional
-    public Users getOrSetStaffUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
+    public UserAccount getOrSetStaffUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
     {
       Privilege priv= privilegeService.getOrSetStaffPrivilege(); 
       return this.getOrSetUser(username, password, mail, organization, priv);    
@@ -143,7 +143,7 @@ public class UserService implements UserServiceInterface
 
     @Override
     @Transactional
-    public Users getOrSetStandardUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
+    public UserAccount getOrSetStandardUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
     {
       Privilege priv= privilegeService.getOrSetStandardUserPrivilege(); 
       return this.getOrSetUser(username, password, mail, organization, priv);       
@@ -151,7 +151,7 @@ public class UserService implements UserServiceInterface
 
     @Override
     @Transactional
-    public Users getOrSetSuperAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
+    public UserAccount getOrSetSuperAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
     {
       Privilege priv= privilegeService.getOrSetSuperAdminPrivilege(); 
       return this.getOrSetUser(username, password, mail, organization, priv);       

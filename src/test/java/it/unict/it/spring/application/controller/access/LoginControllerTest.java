@@ -28,32 +28,32 @@ public class LoginControllerTest
     @Test
     public void isLoginPubliclyAvailable() throws Exception 
     {
-      mvc.perform(MockMvcRequestBuilders.get(("/public/access/signin"))).andExpect(status().isOk());
-      mvc.perform(MockMvcRequestBuilders.get(("/public/access/signout"))). 
+      mvc.perform(MockMvcRequestBuilders.get(("/public/api/access/signin"))).andExpect(status().isOk());
+      mvc.perform(MockMvcRequestBuilders.get(("/public/api/access/signout"))). 
               andExpect(status().is3xxRedirection()).      
-              andExpect(redirectedUrl("/public/access/signin?logout"));
+              andExpect(redirectedUrl("/public/api/access/signin?logout"));
     }
     
   @Test
   public void canLog() throws Exception
   {
-    mvc.perform(formLogin("/public/access/signin").user("dfsantamaria").password("lll@@"))
+    mvc.perform(formLogin("/public/api/access/signin").user("dfsantamaria").password("lll@@"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
     
             
     mvc
-             .perform(logout("/public/access/signout"))
+             .perform(logout("/public/api/access/signout"))
              .andExpect(status().is3xxRedirection())
-             .andExpect(redirectedUrl("/public/access/signin?logout"));
+             .andExpect(redirectedUrl("/public/api/access/signin?logout"));
   }
   
   @Test
   public void cannotLog() throws Exception
   {
-    mvc.perform(formLogin("/public/access/signin").user("nonregistered").password("any"))
+    mvc.perform(formLogin("/public/api/access/signin").user("nonregistered").password("any"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/public/access/signin?error"));
+                .andExpect(redirectedUrl("/public/api/access/signin?error"));
   }
   
 }

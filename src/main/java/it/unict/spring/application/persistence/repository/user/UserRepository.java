@@ -5,23 +5,23 @@ package it.unict.spring.application.persistence.repository.user;
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
  */
 
-import it.unict.spring.application.persistence.model.user.Users;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface UserRepository extends JpaRepository<Users, Long> 
+public interface UserRepository extends JpaRepository<UserAccount, Long> 
 {
-    List<Users> findByUsername(String username);
-    List<Users> findByMail(String email);
-    List<Users> findByVerificationCode(String verificationcode);
+    List<UserAccount> findByUsername(String username);
+    List<UserAccount> findByMail(String email);
+    List<UserAccount> findByVerificationCode(String verificationcode);
     @Override
-    List<Users> findAll();
+    List<UserAccount> findAll();
     @Override 
-    Users save(Users user);   
+    UserAccount save(UserAccount user);   
     @Override
-    void delete(Users user);    
+    void delete(UserAccount user);    
     
 }

@@ -17,7 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "privilege", catalog = "users")
+@Table(name = "privilege", catalog = "useraccount")
 public class Privilege implements Serializable
 {
 
@@ -29,7 +29,7 @@ public class Privilege implements Serializable
     private String name;
 
     @ManyToMany(mappedBy= "privileges")    
-    private Set<Users> users = new HashSet<>();
+    private Set<UserAccount> users = new HashSet<>();
     
 
     public Privilege() {
@@ -41,12 +41,12 @@ public class Privilege implements Serializable
         this.name = name;
     }
 
-    public void addUser(Users user)
+    public void addUser(UserAccount user)
     {
       this.users.add(user);
     }
     
-    public void deleteUser(Users user)
+    public void deleteUser(UserAccount user)
     {
       this.users.remove(user);
     }
@@ -66,11 +66,11 @@ public class Privilege implements Serializable
         this.name = name;
     }
 
-    public Set <Users> getUsers() {
+    public Set <UserAccount> getUsers() {
         return users;
     }
 
-    public void getUsers(final Set<Users> users) {
+    public void getUsers(final Set<UserAccount> users) {
         this.users = users;
     }
     //

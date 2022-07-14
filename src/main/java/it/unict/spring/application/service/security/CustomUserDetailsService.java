@@ -8,7 +8,7 @@ import it.unict.spring.application.exception.user.UserAccountExpiredException;
 import it.unict.spring.application.exception.user.UserAccountLockedException;
 import it.unict.spring.application.exception.user.UserCredentialsExpiredException;
 import it.unict.spring.application.exception.user.UserNotEnabledException;
-import it.unict.spring.application.persistence.model.user.Users;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.persistence.repository.user.UserRepository;
 import it.unict.spring.application.utility.user.CustomUserDetails;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String username)
     {
-        List<Users> users = new ArrayList<>();
+        List<UserAccount> users = new ArrayList<>();
         users.addAll(userRepository.findByUsername(username));
         users.addAll(userRepository.findByMail(username));        
         if (users.isEmpty())       

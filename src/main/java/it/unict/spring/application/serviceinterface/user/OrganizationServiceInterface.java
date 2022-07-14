@@ -6,7 +6,7 @@ package it.unict.spring.application.serviceinterface.user;
  */
 
 import it.unict.spring.application.persistence.model.user.Organization;
-import it.unict.spring.application.persistence.model.user.Users;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import java.util.List;
 
 

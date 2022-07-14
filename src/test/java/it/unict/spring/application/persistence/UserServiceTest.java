@@ -8,7 +8,7 @@ package it.unict.spring.application.persistence;
 //remember to modify the file schema.sql if the name of "data" schema changes
 
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
-import it.unict.spring.application.persistence.model.user.Users;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.service.user.UserService;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -49,10 +49,10 @@ public class UserServiceTest
     @BeforeEach    
     public void createUser() throws MultipleUsersFoundException
     {
-       List<Users> users = userServ.findByUsername(username);
+       List<UserAccount> users = userServ.findByUsername(username);
        if(users.isEmpty())
        {
-          Users user = userServ.getOrSetSuperAdminUser(username, "lll@@", mail, "Univeristy of Catania");
+          UserAccount user = userServ.getOrSetSuperAdminUser(username, "lll@@", mail, "Univeristy of Catania");
           userServ.setEnabled(user, true);          
        }
        users = userServ.findByUsername(username);
@@ -64,7 +64,7 @@ public class UserServiceTest
     public void testFindByName()
     {
         
-        List<Users> users = userServ.findByUsername(username);
+        List<UserAccount> users = userServ.findByUsername(username);
         assertEquals(1, users.size());
         assertEquals(users.get(0).getUsername(), username); 
         

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 
 @Controller
-@RequestMapping("/public/access")
+@RequestMapping("/public/api/access")
 public class LoginController
 { 
      @RequestMapping("signin")
