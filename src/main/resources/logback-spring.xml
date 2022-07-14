@@ -10,7 +10,7 @@
     
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily and when the file reaches 15 MegaBytes -->
-            <fileNamePattern>${catalina_home}/${LOG_PATH}/general-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${catalina.base}/${LOG_PATH}/general-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- ${catalina.base} -->
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>15MB</maxFileSize>
