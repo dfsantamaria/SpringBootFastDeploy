@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+  <head>
+    <title tiles:fragment="title">Messages : Create</title>
+  </head>
+  <body>
+    <div tiles:fragment="content">
+        <form name="f" th:action="@{/public/api/access/registerUser}" method="post" th:object="${user}">               
+           
+        <div class="form-group">
+    		<label for="exampleInputEmail1">Email</label>
+   			 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" th:field="*{mail}">
+ 		</div>
+  
+         <div class="form-group">
+          <label for="exampleInputEmail1">Username</label>
+          <input type="text" class="form-control" id="exampleUsername1" aria-describedby="emailHelp" th:field="*{username}">
+         </div>
+
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" th:field="*{password}">
+        </div>   
+    </div>
+  
+   <div class="form-group">
+          
+            </div>
+        </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>    
+    </div>
+  </body>
+</html>
