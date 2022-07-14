@@ -8,29 +8,22 @@ package it.unict.spring.application.persistence;
 //remember to modify the file schema.sql if the name of "data" schema changes
 
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
-import it.unict.spring.application.persistence.model.data.Data;
 import it.unict.spring.application.persistence.model.user.Users;
-import it.unict.spring.application.service.data.DataService;
-import it.unict.spring.application.service.user.OrganizationService;
 import it.unict.spring.application.service.user.UserService;
 import java.util.List;
 import javax.transaction.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 @ActiveProfiles("test")
 @DataJpaTest
@@ -58,8 +51,12 @@ public class UserServiceTest
     {
        List<Users> users = userServ.findByUsername(username);
        if(users.isEmpty())
-         userServ.getOrSetSuperAdminUser(username, "lll@@", mail, "Univeristy of Catania");
+       {
+          Users user = userServ.getOrSetSuperAdminUser(username, "lll@@", mail, "Univeristy of Catania");
+          userServ.setEnabled(user, true);          
+       }
        users = userServ.findByUsername(username);
+       assertTrue(users.get(0).isEnabled());
        assertEquals(users.get(0).getMail(), mail);
     }
     

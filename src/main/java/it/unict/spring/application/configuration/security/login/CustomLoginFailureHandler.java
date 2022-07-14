@@ -4,6 +4,7 @@
  */
 package it.unict.spring.application.configuration.security.login;
 
+import it.unict.spring.application.exception.user.UserNotEnabledException;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,15 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
             throws IOException, ServletException
     {        
-        getRedirectStrategy().sendRedirect(request, response, "/public/access/signin?error");
+        if(exception.getMessage().startsWith("User is not enabled"))
+           getRedirectStrategy().sendRedirect(request, response, "/public/access/signin?errorEnabled"); 
+        else if(exception.getMessage().startsWith("User account is expired"))
+           getRedirectStrategy().sendRedirect(request, response, "/public/access/signin?errorExpired"); 
+        else if(exception.getMessage().startsWith("User account is locked"))
+           getRedirectStrategy().sendRedirect(request, response, "/public/access/signin?errorLocked"); 
+        else if(exception.getMessage().startsWith("User credentials are expired"))
+           getRedirectStrategy().sendRedirect(request, response, "/public/access/signin?errorCredentials"); 
+        else
+           getRedirectStrategy().sendRedirect(request, response, "/public/access/signin?error");
     }
 }

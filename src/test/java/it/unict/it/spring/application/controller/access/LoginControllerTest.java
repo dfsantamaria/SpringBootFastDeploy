@@ -6,17 +6,14 @@ package it.unict.it.spring.application.controller.access;
  */
 
 import it.unict.spring.application.Application;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import static org.springframework.security.authorization.AuthenticatedAuthorizationManager.authenticated;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.logout;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;

@@ -47,7 +47,10 @@ public class CustomUserDetailsServiceTest
    {
        List<Users> users = userServ.findByUsername(username);
        if(users.isEmpty())
-         userServ.getOrSetSuperAdminUser(username, "lll@@", mail, "Univeristy of Catania");
+       {
+           Users user=userServ.getOrSetSuperAdminUser(username, "lll@@", mail, "Univeristy of Catania");
+           userServ.setEnabled(user, true);
+       }
        CustomUserDetails details = (CustomUserDetails) detailService.loadUserByUsername(username);
        assertEquals(details.getUsername(), username);
        for(GrantedAuthority gr : details.getAuthorities())

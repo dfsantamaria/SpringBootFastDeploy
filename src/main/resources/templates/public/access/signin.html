@@ -10,6 +10,19 @@
                 <div th:if="${param.error}" class="alert alert-error">    
                     Invalid username and password.
                 </div>
+                 <div th:if="${param.errorEnabled}" class="alert alert-error">    
+                    User not enabled.
+                </div>
+                 <div th:if="${param.errorExpired}" class="alert alert-error">    
+                    User account is expired.
+                </div>
+                 <div th:if="${param.errorLocked}" class="alert alert-error">    
+                    User account is locked.
+                </div>
+                <div th:if="${param.errorCredentials}" class="alert alert-error">    
+                    User credentials are expired.
+                </div>
+
                 <div th:if="${param.logout}" class="alert alert-success"> 
                     You have been logged out.
                 </div>

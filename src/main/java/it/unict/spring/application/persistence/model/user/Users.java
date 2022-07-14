@@ -50,6 +50,9 @@ public class Users implements Serializable
     private boolean isAccountNonLocked;
     
     private boolean isAccountNonExpired;
+    
+    @Column(name = "veri_code", length = 64)    
+    private String verificationCode;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
     @JoinTable(name = "user_to_privileges",
@@ -67,7 +70,7 @@ public class Users implements Serializable
 
     public Users() {
          super();
-         this.isEnabled=true;
+         this.isEnabled=false;
          this.isCredentialsNonExpired=true;
          this.isAccountNonLocked=true;
          this.isAccountNonExpired=true;
@@ -79,7 +82,7 @@ public class Users implements Serializable
         this.username=username;
         this.password=password;         
         this.mail=mail;     
-        this.isEnabled = true;
+        this.isEnabled = false;
         this.isCredentialsNonExpired=true;
         this.isAccountNonLocked=true;
         this.isAccountNonExpired=true;
@@ -239,5 +242,15 @@ public class Users implements Serializable
     public void setIsAccountNonExpired(boolean val)
     {
       this.isAccountNonExpired=val;
+    }
+    
+    public String getVerificationCode()
+    {
+      return this.verificationCode;
+    }
+    
+    public void setVerificationCode(String val)
+    {
+      this.verificationCode = val;
     }
 }

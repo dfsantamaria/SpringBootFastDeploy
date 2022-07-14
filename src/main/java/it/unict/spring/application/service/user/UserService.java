@@ -46,13 +46,20 @@ public class UserService implements UserServiceInterface
       return repository.findByUsername(name);
     }
     
+    @Override
+    public void setEnabled(Users user, boolean enabled)
+    {      
+      user.setEnabled(enabled);
+      repository.save(user);
+    }
+            
     @Override   
     @Transactional
     public Users save (Users g)
     {
       return repository.save(g);
     }
-    
+            
     @Override
     @Transactional
     public void delete(Users user)

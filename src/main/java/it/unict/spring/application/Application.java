@@ -6,6 +6,7 @@ package it.unict.spring.application;
  */
 
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
+import it.unict.spring.application.persistence.model.user.Users;
 import it.unict.spring.application.service.user.UserService;
 import java.sql.SQLException;
 import javax.annotation.PostConstruct;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -97,7 +97,10 @@ public class Application extends SpringBootServletInitializer
         try
         {
            if(userService.findByMail("daniele.santamaria@unict.it").isEmpty())
-              userService.getOrSetSuperAdminUser("dfsantamaria", "lll@@", "daniele.santamaria@unict.it", "Univeristy of Catania");
+           {
+              Users user = userService.getOrSetSuperAdminUser("dfsantamaria", "lll@@", "daniele.santamaria@unict.it", "Univeristy of Catania");
+              userService.setEnabled(user, true); //enable user              
+           }
             
         } 
         catch (MultipleUsersFoundException ex) 

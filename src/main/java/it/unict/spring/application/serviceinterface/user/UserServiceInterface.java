@@ -17,12 +17,13 @@ public interface UserServiceInterface
     List<Users> findByUsername(String username);
     List<Users> findByMail(String email);
     Users save (Users g);  
-    void delete(Users User);
+    void delete(Users user);
+    void setEnabled(Users user, boolean enabled);
     boolean hasUserPrivilege(String privilege);
     String getUserByEmail(String mail) throws UserNotFoundException;
     Users getOrSetAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
     Users getOrSetStaffUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
     Users getOrSetStandardUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
     Users getOrSetSuperAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
-
+    
 }

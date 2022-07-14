@@ -4,6 +4,10 @@
  */
 package it.unict.spring.application.service.security;
 
+import it.unict.spring.application.exception.user.UserAccountExpiredException;
+import it.unict.spring.application.exception.user.UserAccountLockedException;
+import it.unict.spring.application.exception.user.UserCredentialsExpiredException;
+import it.unict.spring.application.exception.user.UserNotEnabledException;
 import it.unict.spring.application.persistence.model.user.Users;
 import it.unict.spring.application.persistence.repository.user.UserRepository;
 import it.unict.spring.application.utility.user.CustomUserDetails;
@@ -26,15 +30,21 @@ public class CustomUserDetailsService implements UserDetailsService
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) 
+    public UserDetails loadUserByUsername(String username)
     {
         List<Users> users = new ArrayList<>();
         users.addAll(userRepository.findByUsername(username));
         users.addAll(userRepository.findByMail(username));        
-        if (users.isEmpty())
-        {
-            throw new UsernameNotFoundException(username);
-        }
+        if (users.isEmpty())       
+           throw new UsernameNotFoundException(username);                
+        if (!users.get(0).isEnabled())
+           throw new UserNotEnabledException(username);
+        if(!users.get(0).isAccountNonExpired())
+            throw new UserAccountExpiredException(username);
+        if(!users.get(0).isAccountNonLocked())
+            throw new UserAccountLockedException(username);
+        if(!users.get(0).isCredentialsNonExpired())
+            throw new UserCredentialsExpiredException(username);       
         return new CustomUserDetails(users.get(0));
     }
 }

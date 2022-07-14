@@ -21,5 +21,6 @@ public interface UserRepository extends JpaRepository<Users, Long>
     @Override 
     Users save(Users user);   
     @Override
-    void delete(Users todo);
+    void delete(Users user);    
+    
 }
