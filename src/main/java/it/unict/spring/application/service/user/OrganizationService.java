@@ -5,9 +5,9 @@ package it.unict.spring.application.service.user;
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
  */
 
+import it.unict.spring.application.dto.user.OrganizationDTO;
 import it.unict.spring.application.serviceinterface.user.OrganizationServiceInterface;
 import it.unict.spring.application.persistence.model.user.Organization;
-import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.persistence.repository.user.OrganizationRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -61,5 +61,28 @@ public class OrganizationService implements OrganizationServiceInterface
        }
        else org=orgs.get(0);
        return org;
+    }
+    
+    @Override
+    @Transactional
+    public Organization getOrSetOrganization(Organization organization)
+    {
+       List<Organization> orgs = repository.findByName(organization.getName());
+       Organization org;
+       if (orgs.isEmpty())
+       {    
+          org=organization; 
+          repository.save(org);
+          
+       }
+       else org=orgs.get(0);
+       return org;
+    }
+    
+    @Override
+    @Transactional
+    public Organization mapFromOrganization(OrganizationDTO orgdto)
+    {      
+       return this.getOrSetOrganization(orgdto.getName());
     }
 }

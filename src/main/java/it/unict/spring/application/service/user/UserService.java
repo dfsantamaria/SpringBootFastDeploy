@@ -5,6 +5,8 @@ package it.unict.spring.application.service.user;
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
  */
 
+import it.unict.spring.application.dto.user.OrganizationDTO;
+import it.unict.spring.application.dto.user.UserAccountDTO;
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
 import it.unict.spring.application.exception.user.UserNotFoundException;
 import it.unict.spring.application.persistence.model.user.Organization;
@@ -14,6 +16,8 @@ import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.persistence.repository.user.UserRepository;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -148,6 +152,19 @@ public class UserService implements UserServiceInterface
       Privilege priv= privilegeService.getOrSetStandardUserPrivilege(); 
       return this.getOrSetUser(username, password, mail, organization, priv);       
     }
+    
+    @Override
+    @Transactional
+    public UserAccount getOrSetStandardUser(UserAccount user)
+    {
+      Privilege priv= privilegeService.getOrSetStandardUserPrivilege();
+      user.getOrganization().stream().forEach(org-> 
+                                                   organizationService.getOrSetOrganization(org)                                                   
+                                            );
+      user.addPrivileges(priv);
+      repository.save(user);
+      return user;
+    }
 
     @Override
     @Transactional
@@ -156,7 +173,18 @@ public class UserService implements UserServiceInterface
       Privilege priv= privilegeService.getOrSetSuperAdminPrivilege(); 
       return this.getOrSetUser(username, password, mail, organization, priv);       
     }
-  
+
+    @Override
+    @Transactional
+    public UserAccount mapFromUserDTO(UserAccountDTO userdto, Organization organization) throws MultipleUsersFoundException
+    {        
+      return this.getOrSetStandardUser(userdto.getUsername(),
+                    userdto.getPassword(),
+                    userdto.getMail(),
+                    organization.getName());
+       
+    }
+ 
   
   
 }
