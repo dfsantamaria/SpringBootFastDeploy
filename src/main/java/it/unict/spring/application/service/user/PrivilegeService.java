@@ -100,6 +100,14 @@ public class PrivilegeService implements PrivilegeServiceInterface
     repository.save(priv);
   }
 
+   @Override
+   @Transactional
+    public void removeUserFromPrivilege(UserAccount user, Privilege priv)
+    {
+      priv.deleteUser(user);
+      this.save(priv);
+    }
+
    
   
 }

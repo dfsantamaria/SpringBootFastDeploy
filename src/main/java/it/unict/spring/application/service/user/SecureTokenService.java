@@ -28,12 +28,18 @@ public class SecureTokenService implements SecureTokenServiceInterface
     @Autowired
     SecureTokenRepository repository;
     
-    @Override
-    @Transactional
+    @Override    
     public List<SecureToken> findAll()
     {
       return repository.findAll();
     }
+    
+    @Override   
+    public List<SecureToken> findByUser(UserAccount user)
+    {
+      return repository.findByUser(user);
+    }
+
 
     @Override
     @Transactional

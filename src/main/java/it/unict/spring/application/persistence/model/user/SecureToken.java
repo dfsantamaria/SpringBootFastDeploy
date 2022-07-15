@@ -7,6 +7,7 @@ package it.unict.spring.application.persistence.model.user;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,6 +45,11 @@ public class SecureToken
     @Transient
     private boolean isExpired;
   
+    public SecureToken()
+    {
+      super();
+    }
+    
     public SecureToken(String token, Timestamp timestamp, LocalDateTime expire)
     {
        super();

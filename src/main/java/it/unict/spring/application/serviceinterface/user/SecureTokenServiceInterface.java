@@ -20,5 +20,6 @@ public interface SecureTokenServiceInterface
     SecureToken save (SecureToken token);  
     void delete(SecureToken token);  
     void addUserToToken(UserAccount user, SecureToken token);
+    List<SecureToken> findByUser(UserAccount user);
     
 }

@@ -23,6 +23,6 @@ public interface OrganizationServiceInterface
     Organization getOrSetOrganization(Organization organization);
     Organization mapFromOrganization(OrganizationDTO orgdto);
     void addUserToOrganization(UserAccount user, Organization org);
-    
+    void removeUserFromOrganization(UserAccount user, Organization org);
     void delete(Organization organization);
 }

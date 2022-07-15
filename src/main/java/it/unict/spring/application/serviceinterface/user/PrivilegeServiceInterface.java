@@ -21,5 +21,7 @@ public interface PrivilegeServiceInterface
     Privilege getOrSetStaffPrivilege();
     Privilege getOrSetStandardUserPrivilege();
     void addUserToPrivilege(UserAccount user, Privilege priv);
+    void removeUserFromPrivilege(UserAccount user, Privilege priv);
+    
     void delete(Privilege privilege);
 }

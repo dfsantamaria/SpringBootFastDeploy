@@ -94,4 +94,13 @@ public class OrganizationService implements OrganizationServiceInterface
        org.addUser(user);
        repository.save(org);
     }
+
+    @Override
+    @Transactional
+    public void removeUserFromOrganization(UserAccount user, Organization org)
+    {
+         org.deleteUser(user);
+         this.save(org);
+      
+    }
 }

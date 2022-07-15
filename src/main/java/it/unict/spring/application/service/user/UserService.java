@@ -69,6 +69,15 @@ public class UserService implements UserServiceInterface
     @Transactional
     public void delete(UserAccount user)
     {
+      for(Organization org : user.getOrganization())      
+          organizationService.removeUserFromOrganization(user, org);      
+      
+      for(Privilege priv: user.getPrivileges())       
+        privilegeService.removeUserFromPrivilege(user,priv);
+       
+      for(SecureToken token: secureTokenService.findByUser(user))
+         secureTokenService.delete(token);
+      
       repository.delete(user);
     }
     
@@ -118,23 +127,20 @@ public class UserService implements UserServiceInterface
     {         
         List<UserAccount> users = repository.findByMail(mail);    
         users.addAll(repository.findByUsername(username));
-        UserAccount user=new UserAccount();
+        UserAccount user=null;
         if(users.size()>1)
             throw new MultipleUsersFoundException("Combination of username and password gets multiple users: "+ username + ", "+mail);
         else if(users.size()==1)
              user=users.get(0);
         else if(users.isEmpty())        
-           {
+           {              
             Organization org = organizationService.getOrSetOrganization(organization); 
-            user.setUsername(username);
-            user.setPassword(getPasswordEncoder.encode(password));
-            user.setMail(mail);                    
-            user.addOrganization(org);
-           // org.addUser(user);
+            user=new UserAccount(username,getPasswordEncoder.encode(password), mail);                            
+            this.addOrganizationToUser(org,user); //user.addOrganization(org);           
             organizationService.addUserToOrganization(user, org);
-            user.addPrivileges(priv);  
+            this.addPrivilegeToUser(priv, user); //user.addPrivileges(priv);  
             privilegeService.addUserToPrivilege(user, priv);
-            repository.save(user);                    
+            this.save(user);                    
            } 
         return user;       
     }
@@ -163,8 +169,8 @@ public class UserService implements UserServiceInterface
       user.getOrganization().stream().forEach(org-> 
                                                    organizationService.getOrSetOrganization(org)                                                   
                                             );
-      user.addPrivileges(priv);
-      repository.save(user);
+      this.addPrivilegeToUser(priv, user);
+      this.save(user);
       return user;
     }
 
@@ -193,7 +199,21 @@ public class UserService implements UserServiceInterface
     {
       SecureToken token = secureTokenService.generateToken();
       secureTokenService.addUserToToken(user, token);     
-      repository.save(user);
+      this.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void addOrganizationToUser(Organization org, UserAccount user)
+    {
+        user.addOrganization(org);       
+    }
+    
+    @Override
+    @Transactional
+    public void addPrivilegeToUser(Privilege priv, UserAccount user)
+    {
+       user.addPrivileges(priv);       
     }
  
   

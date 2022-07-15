@@ -9,6 +9,7 @@ import it.unict.spring.application.dto.user.UserAccountDTO;
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
 import it.unict.spring.application.exception.user.UserNotFoundException;
 import it.unict.spring.application.persistence.model.user.Organization;
+import it.unict.spring.application.persistence.model.user.Privilege;
 import it.unict.spring.application.persistence.model.user.UserAccount;
 import java.util.List;
 
@@ -24,6 +25,9 @@ public interface UserServiceInterface
     boolean hasUserPrivilege(String privilege);
     String getUserByEmail(String mail) throws UserNotFoundException;
    
+    void addOrganizationToUser(Organization org, UserAccount user);
+    void addPrivilegeToUser(Privilege privilege, UserAccount user);
+    
     UserAccount getOrSetAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
     
     UserAccount getOrSetStaffUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
@@ -34,6 +38,8 @@ public interface UserServiceInterface
     UserAccount getOrSetSuperAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
     
     UserAccount mapFromUserDTO(UserAccountDTO userdto, Organization organization) throws MultipleUsersFoundException;
+    
+    
     
     void sendRegistrationMail(UserAccount user);
 }
