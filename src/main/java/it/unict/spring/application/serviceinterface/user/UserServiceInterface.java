@@ -5,7 +5,6 @@ package it.unict.spring.application.serviceinterface.user;
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
  */
 
-import it.unict.spring.application.dto.user.OrganizationDTO;
 import it.unict.spring.application.dto.user.UserAccountDTO;
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
 import it.unict.spring.application.exception.user.UserNotFoundException;
@@ -36,4 +35,5 @@ public interface UserServiceInterface
     
     UserAccount mapFromUserDTO(UserAccountDTO userdto, Organization organization) throws MultipleUsersFoundException;
     
+    void sendRegistrationMail(UserAccount user);
 }

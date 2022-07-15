@@ -8,6 +8,7 @@ package it.unict.spring.application.service.user;
 import it.unict.spring.application.dto.user.OrganizationDTO;
 import it.unict.spring.application.serviceinterface.user.OrganizationServiceInterface;
 import it.unict.spring.application.persistence.model.user.Organization;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.persistence.repository.user.OrganizationRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -84,5 +85,13 @@ public class OrganizationService implements OrganizationServiceInterface
     public Organization mapFromOrganization(OrganizationDTO orgdto)
     {      
        return this.getOrSetOrganization(orgdto.getName());
+    }
+
+    @Override
+    @Transactional
+    public void addUserToOrganization(UserAccount user, Organization org)
+    {
+       org.addUser(user);
+       repository.save(org);
     }
 }

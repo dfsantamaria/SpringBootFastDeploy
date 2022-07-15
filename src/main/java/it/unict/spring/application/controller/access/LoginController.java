@@ -8,6 +8,7 @@ import it.unict.spring.application.dto.user.OrganizationDTO;
 import it.unict.spring.application.dto.user.UserAccountDTO;
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
 import it.unict.spring.application.persistence.model.user.Organization;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.service.user.OrganizationService;
 import it.unict.spring.application.service.user.UserService;
 import javax.servlet.http.HttpServletRequest;
@@ -75,7 +76,8 @@ public class LoginController
          Organization organization = orgService.mapFromOrganization(orgdto);
          try 
           {
-            userService.mapFromUserDTO(userdto, organization);
+            UserAccount user=userService.mapFromUserDTO(userdto, organization);
+            userService.sendRegistrationMail(user);
           } 
           catch (MultipleUsersFoundException ex)
            {

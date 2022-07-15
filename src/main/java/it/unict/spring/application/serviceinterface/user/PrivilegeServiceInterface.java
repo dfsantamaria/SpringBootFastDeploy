@@ -6,6 +6,7 @@ package it.unict.spring.application.serviceinterface.user;
  */
 
 import it.unict.spring.application.persistence.model.user.Privilege;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import java.util.List;
 
 
@@ -19,5 +20,6 @@ public interface PrivilegeServiceInterface
     Privilege getOrSetSuperAdminPrivilege();
     Privilege getOrSetStaffPrivilege();
     Privilege getOrSetStandardUserPrivilege();
+    void addUserToPrivilege(UserAccount user, Privilege priv);
     void delete(Privilege privilege);
 }

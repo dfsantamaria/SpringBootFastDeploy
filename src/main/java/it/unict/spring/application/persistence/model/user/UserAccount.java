@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -50,22 +51,23 @@ public class UserAccount implements Serializable
     private boolean isAccountNonLocked;
     
     private boolean isAccountNonExpired;
-    
-    @Column(name = "veri_code", length = 64)    
-    private String verificationCode;
-
+        
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
     @JoinTable(name = "user_to_privileges",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "privilege_id",  referencedColumnName = "id", nullable = false)})
     private Set<Privilege> privileges= new HashSet<>();
 
+    
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
     @JoinTable(name = "user_to_organizations",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "organization_id",  referencedColumnName = "id", nullable = false)})
     private Set<Organization> organizations= new HashSet<>();
 
+    @OneToMany(mappedBy ="user")
+    private Set<SecureToken> tokens = new HashSet<>();
+    
     //
 
     public UserAccount() {
@@ -163,7 +165,7 @@ public class UserAccount implements Serializable
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append("User [id=").append(id).append(", username=").append(username).append(", password=").append(password).append(", privileges=").append("]");
+        builder.append("User [id=").append(id).append(", username=").append(username).append(", privileges=").append("]");
         return builder.toString();
     }
 
@@ -242,15 +244,5 @@ public class UserAccount implements Serializable
     public void setIsAccountNonExpired(boolean val)
     {
       this.isAccountNonExpired=val;
-    }
-    
-    public String getVerificationCode()
-    {
-      return this.verificationCode;
-    }
-    
-    public void setVerificationCode(String val)
-    {
-      this.verificationCode = val;
-    }
+    }    
 }

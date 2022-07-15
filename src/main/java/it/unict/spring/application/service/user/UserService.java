@@ -5,19 +5,17 @@ package it.unict.spring.application.service.user;
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
  */
 
-import it.unict.spring.application.dto.user.OrganizationDTO;
 import it.unict.spring.application.dto.user.UserAccountDTO;
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
 import it.unict.spring.application.exception.user.UserNotFoundException;
 import it.unict.spring.application.persistence.model.user.Organization;
 import it.unict.spring.application.persistence.model.user.Privilege;
+import it.unict.spring.application.persistence.model.user.SecureToken;
 import it.unict.spring.application.serviceinterface.user.UserServiceInterface;
 import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.persistence.repository.user.UserRepository;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,6 +33,9 @@ public class UserService implements UserServiceInterface
     OrganizationService organizationService;
     @Autowired
     PrivilegeService privilegeService;
+    @Autowired
+    SecureTokenService secureTokenService;
+    
     @Autowired
     PasswordEncoder getPasswordEncoder;
            
@@ -129,9 +130,10 @@ public class UserService implements UserServiceInterface
             user.setPassword(getPasswordEncoder.encode(password));
             user.setMail(mail);                    
             user.addOrganization(org);
-            org.addUser(user);
+           // org.addUser(user);
+            organizationService.addUserToOrganization(user, org);
             user.addPrivileges(priv);  
-            priv.addUser(user);
+            privilegeService.addUserToPrivilege(user, priv);
             repository.save(user);                    
            } 
         return user;       
@@ -183,6 +185,15 @@ public class UserService implements UserServiceInterface
                     userdto.getMail(),
                     organization.getName());
        
+    }
+
+    @Override
+    @Transactional
+    public void sendRegistrationMail(UserAccount user)
+    {
+      SecureToken token = secureTokenService.generateToken();
+      secureTokenService.addUserToToken(user, token);     
+      repository.save(user);
     }
  
   

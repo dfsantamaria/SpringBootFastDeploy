@@ -7,6 +7,7 @@ package it.unict.spring.application.service.user;
 
 import it.unict.spring.application.serviceinterface.user.PrivilegeServiceInterface;
 import it.unict.spring.application.persistence.model.user.Privilege;
+import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.persistence.repository.user.PrivilegeRepository;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -90,5 +91,15 @@ public class PrivilegeService implements PrivilegeServiceInterface
   {
     return getOrSetPrivilege("ROLE_STANDARDUSER");
   }
+
+  @Override
+  @Transactional
+  public void addUserToPrivilege(UserAccount user, Privilege priv)
+  {
+    priv.addUser(user);
+    repository.save(priv);
+  }
+
+   
   
 }
