@@ -8,29 +8,29 @@
 
         <div th:object="${userdto}">   
         <div class="form-group">
-    		<label for="exampleInputEmail1">Email</label>
-   			 <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" th:field="*{mail}">
+    		<label>Email</label>
+   			 <input type="email" class="form-control" id="inputMail" aria-describedby="emailHelp" th:field="*{mail}">
  		</div>
   
          <div class="form-group">
-          <label for="exampleInputEmail1">Username</label>
-          <input type="text" class="form-control" id="exampleUsername1" aria-describedby="emailHelp" th:field="*{username}">
+          <label>Username</label>
+          <input type="text" class="form-control" id="inputUsername" aria-describedby="emailHelp" th:field="*{username}">
          </div>
 
         <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" th:field="*{password}">
+            <label>Password</label>
+            <input type="password" class="form-control" id="inputPassword" th:field="*{password}">
         </div>   
 
         <div class="form-group">
-            <label for="exampleInputPassword1">Confirm Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" th:field="*{confirmPassword}">
+            <label> Confirm Password</label>
+            <input type="password" class="form-control" id="inputConfirmPassword" th:field="*{confirmPassword}">
         </div> 
         </div>
 
          <div th:object="${orgdto}"> 
           <div class="form-group">
-            <label for="examplenName1">Organization Name</label>
+            <label>Organization Name</label>
             <input type="text" class="form-control" id="orgName" aria-describedby="orgnameHelp" th:field="*{name}">
             </div>	
          </div>  
