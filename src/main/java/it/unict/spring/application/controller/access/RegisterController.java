@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,28 +26,16 @@ import org.springframework.web.servlet.ModelAndView;
  *
  * @author danie
  */
-
 @Controller
-@RequestMapping("/public/api/access")
-public class LoginController
-{ 
-    @Autowired
+@RequestMapping("/public/api/access/register")
+public class RegisterController
+{
+   @Autowired
     UserService userService;
     @Autowired
     OrganizationService orgService;
     
-     @RequestMapping("signin")
-     public ModelAndView viewlogin(HttpServletRequest request, Model model)
-     {              
-        return new ModelAndView("public/access/signin");
-     }  
-     
-     @RequestMapping("signout")
-     public  ModelAndView viewlogout(HttpServletRequest request, Model model)
-     {              
-        return new ModelAndView("public/access/signin");
-     }  
-     
+    
      @RequestMapping("register")
      public ModelAndView viewRegister(HttpServletRequest request, 
                                 @ModelAttribute("userdto") UserAccountDTO userdto, 
@@ -57,7 +44,7 @@ public class LoginController
      {         
          model.addAttribute("userdto", userdto);  
          model.addAttribute("orgdto", orgdto);
-         return new ModelAndView("public/access/register");
+         return new ModelAndView("public/access/register/register");
      }
      
      @RequestMapping(value="registerUser", method = RequestMethod.POST)
@@ -71,7 +58,7 @@ public class LoginController
          if(userBindResult.hasErrors() || orgBindResult.hasErrors())
          {  
           model.addAttribute("errorMessage","Errors occured, check your fields");
-          return new ModelAndView("public/access/register");   
+          return new ModelAndView("public/access/register/register");   
          }
          Organization organization = orgService.mapFromOrganization(orgdto);
          try 
@@ -82,9 +69,9 @@ public class LoginController
           catch (MultipleUsersFoundException ex)
            {
             model.addAttribute("errorMessage","Account already exists");
-            return new ModelAndView("public/access/register");
+            return new ModelAndView("public/access/register/register");
            }
          return  new ModelAndView("redirect:/");
      }
+    
 }
-

@@ -38,24 +38,24 @@ public class WebSecurityConfig
  
                 authorizeHttpRequests().                
                 antMatchers("/public/**", "/").permitAll().                
-                antMatchers("/auth/superadmin/**").hasAnyRole("SUPERADMIN").
-                antMatchers("/auth/admin/**").hasAnyRole("SUPERADMIN","ADMIN").
-                antMatchers("/auth/staff/**").hasAnyRole("SUPERADMIN","ADMIN","STAFF").
-                antMatchers("/auth/standarduser/**").hasAnyRole("SUPERADMIN","ADMIN","STAFF","STANDARDUSER").
+                antMatchers("/auth/api/superadmin/**").hasAnyRole("SUPERADMIN").
+                antMatchers("/auth/api/admin/**").hasAnyRole("SUPERADMIN","ADMIN").
+                antMatchers("/auth/api/staff/**").hasAnyRole("SUPERADMIN","ADMIN","STAFF").
+                antMatchers("/auth/api/standarduser/**").hasAnyRole("SUPERADMIN","ADMIN","STAFF","STANDARDUSER").
                 
                 anyRequest().authenticated().and().httpBasic();
                         
         http.
                 formLogin().
-                loginPage("/public/api/access/signin").  
-                loginProcessingUrl("/public/api/access/signin").
+                loginPage("/public/api/access/login/signin").  
+                loginProcessingUrl("/public/api/access/login/signin").
                 successHandler(new CustomLoginSuccessHandler()).
                 failureHandler(new CustomLoginFailureHandler()).
                 permitAll().   
                 
                 and()
                 .logout()
-                .logoutUrl("/public/api/access/signout")
+                .logoutUrl("/auth/api/access/login/signout")
                 .logoutSuccessHandler(new CustomLogoutSuccessHandler())                
                 .permitAll();       
         return http.build();     

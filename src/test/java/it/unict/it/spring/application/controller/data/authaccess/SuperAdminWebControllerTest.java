@@ -34,7 +34,7 @@ public class SuperAdminWebControllerTest
     @WithMockUser(username = "admin", roles = { "SUPERADMIN" })
     public void sayHelloAuthTest() throws Exception
     {        
-        ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/auth/superadmin/hello").param("myName", name));
+        ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/auth/api/superadmin/hello").param("myName", name));
         perform.andExpect(status().isOk());
         assertEquals(perform.andReturn().getResponse().getContentAsString(),"Hello "+name+"!");
     }
@@ -43,7 +43,7 @@ public class SuperAdminWebControllerTest
     @WithMockUser(username = "admin", roles = { "STAFF" })
     public void sayHelloNonAuthTest() throws Exception
     {        
-        ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/auth/superadmin/hello").param("myName", name));
+        ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/auth/api/superadmin/hello").param("myName", name));
         perform.andExpect(status().isForbidden());
         
     }
@@ -52,7 +52,7 @@ public class SuperAdminWebControllerTest
     @WithAnonymousUser
     void sayHelloUnauthorizedTest() throws Exception 
     {
-       ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/auth/superadmin/hello").param("myName", name));
+       ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/auth/api/superadmin/hello").param("myName", name));
        perform.andExpect(status().isUnauthorized());
     }
 }

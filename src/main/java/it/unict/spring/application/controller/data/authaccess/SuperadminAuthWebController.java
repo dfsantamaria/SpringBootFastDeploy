@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("/auth/superadmin")
+@RequestMapping("/auth/api/superadmin")
 public class SuperadminAuthWebController
 {
         

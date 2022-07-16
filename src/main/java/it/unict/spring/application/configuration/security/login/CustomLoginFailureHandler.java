@@ -21,14 +21,14 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
             throws IOException, ServletException
     {        
         if(exception.getMessage().startsWith("User is not enabled"))
-           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/signin?errorEnabled"); 
+           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorEnabled"); 
         else if(exception.getMessage().startsWith("User account is expired"))
-           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/signin?errorExpired"); 
+           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorExpired"); 
         else if(exception.getMessage().startsWith("User account is locked"))
-           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/signin?errorLocked"); 
+           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorLocked"); 
         else if(exception.getMessage().startsWith("User credentials are expired"))
-           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/signin?errorCredentials"); 
+           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorCredentials"); 
         else
-           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/signin?error");
+           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?error");
     }
 }

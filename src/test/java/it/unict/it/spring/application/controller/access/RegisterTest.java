@@ -36,7 +36,7 @@ public class RegisterTest
     @Test
     public void isRegisterPubliclyAvailable() throws Exception 
     {
-      mvc.perform(MockMvcRequestBuilders.get(("/public/api/access/register"))).andExpect(status().isOk());
+      mvc.perform(MockMvcRequestBuilders.get(("/public/api/access/register/register"))).andExpect(status().isOk());
     }
     
     @Test
@@ -48,7 +48,7 @@ public class RegisterTest
       if(!list.isEmpty())
           service.delete(list.get(0));   
       
-      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registerUser"))
+      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/register/registerUser"))
                                                .param("username", user.getUsername())
                                                .param("password", user.getPassword())
                                                .param("confirmPassword", user.getPassword())

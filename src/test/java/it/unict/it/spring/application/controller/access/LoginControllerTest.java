@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.logout;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,32 +29,34 @@ public class LoginControllerTest
     @Test
     public void isLoginPubliclyAvailable() throws Exception 
     {
-      mvc.perform(MockMvcRequestBuilders.get(("/public/api/access/signin"))).andExpect(status().isOk());
-      mvc.perform(MockMvcRequestBuilders.get(("/public/api/access/signout"))). 
-              andExpect(status().is3xxRedirection()).      
-              andExpect(redirectedUrl("/public/api/access/signin?logout"));
+      mvc.perform(MockMvcRequestBuilders.get(("/public/api/access/login/signin"))).andExpect(status().isOk());      
     }
+    
+    @Test
+    @WithMockUser(username = "admin", roles = { "STAFF" })
+    public void isLogoutForLoggedUser() throws Exception
+    {
+     mvc.perform(MockMvcRequestBuilders.get(("/auth/api/access/login/signout"))). 
+              andExpect(status().is3xxRedirection())
+             .andExpect(redirectedUrl("/public/api/access/login/signin?logout"));
+              //.andExpect(redirectedUrl("/public/api/access/login/signin?logout"));
+    }
+    
     
   @Test
   public void canLog() throws Exception
   {
-    mvc.perform(formLogin("/public/api/access/signin").user("dfsantamaria").password("lll@@"))
+    mvc.perform(formLogin("/public/api/access/login/signin").user("dfsantamaria").password("lll@@"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
-    
-            
-    mvc
-             .perform(logout("/public/api/access/signout"))
-             .andExpect(status().is3xxRedirection())
-             .andExpect(redirectedUrl("/public/api/access/signin?logout"));
+                .andExpect(redirectedUrl("/"));    
   }
   
   @Test
   public void cannotLog() throws Exception
   {
-    mvc.perform(formLogin("/public/api/access/signin").user("nonregistered").password("any"))
+    mvc.perform(formLogin("/public/api/access/login/signin").user("nonregistered").password("any"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/public/api/access/signin?error"));
+                .andExpect(redirectedUrl("/public/api/access/login/signin?error"));
   }
   
 }
