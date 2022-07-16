@@ -12,6 +12,7 @@ import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.service.user.OrganizationService;
 import it.unict.spring.application.service.user.UserService;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,8 @@ public class RegisterController
     
     
      @RequestMapping("register")
-     public ModelAndView viewRegister(HttpServletRequest request, 
+     public ModelAndView viewRegister(HttpServletRequest request,
+                                      HttpServletResponse response,
                                 @ModelAttribute("userdto") UserAccountDTO userdto, 
                                 @ModelAttribute("orgdto") OrganizationDTO orgdto, 
                                 BindingResult bindingResult, Model model)
@@ -47,8 +49,11 @@ public class RegisterController
          return new ModelAndView("public/access/register/register");
      }
      
+     
+     
      @RequestMapping(value="registerUser", method = RequestMethod.POST)
-     public ModelAndView registerUser(HttpServletRequest request, 
+     public ModelAndView registerUser(HttpServletRequest request,
+                                      HttpServletResponse response,
                                 @ModelAttribute("userdto") @Valid UserAccountDTO userdto,
                                 BindingResult userBindResult,
                                 @ModelAttribute("orgdto") @Valid OrganizationDTO orgdto,
@@ -58,6 +63,7 @@ public class RegisterController
          if(userBindResult.hasErrors() || orgBindResult.hasErrors())
          {  
           model.addAttribute("errorMessage","Errors occured, check your fields");
+          response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
           return new ModelAndView("public/access/register/register");   
          }
          Organization organization = orgService.mapFromOrganization(orgdto);
@@ -69,9 +75,10 @@ public class RegisterController
           catch (MultipleUsersFoundException ex)
            {
             model.addAttribute("errorMessage","Account already exists");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return new ModelAndView("public/access/register/register");
            }
-         return  new ModelAndView("redirect:/");
+         return  new ModelAndView("public/home");
      }
     
 }

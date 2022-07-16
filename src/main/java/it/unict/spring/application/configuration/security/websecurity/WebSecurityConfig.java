@@ -27,8 +27,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig 
 {
  @Autowired
- DaoAuthenticationProvider authProvider;
-      
+ DaoAuthenticationProvider authProvider;      
    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception

@@ -29,7 +29,8 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes={CustomUserDetailsService.class})
 @EntityScan(basePackages =  {"it.unict.spring.application.persistence.model"})
 //@EnableJpaRepositories(basePackages = {"it.unict.spring.application.persistence.repository.*"})
-@ComponentScan(basePackages = {"it.unict.spring.application.service.*", "it.unict.spring.application.configuration.*"})
+@ComponentScan(basePackages = {"it.unict.spring.application.service.*", 
+                               "it.unict.spring.application.configuration.*"})
 @Transactional
 public class CustomUserDetailsServiceTest
 {

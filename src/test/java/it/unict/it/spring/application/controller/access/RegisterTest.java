@@ -14,15 +14,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.logout;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
 @AutoConfigureMockMvc
@@ -44,10 +41,7 @@ public class RegisterTest
     public void isRegisterSavingData() throws Exception
     {
       UserAccount user= new UserAccount("testName", "PlainPassword", "test@mail.com");
-      List<UserAccount> list = service.findByMail(user.getMail());
-      if(!list.isEmpty())
-          service.delete(list.get(0));   
-      
+      this.clearUser(user);       
       mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/register/registerUser"))
                                                .param("username", user.getUsername())
                                                .param("password", user.getPassword())
@@ -55,10 +49,33 @@ public class RegisterTest
                                                .param("mail", user.getMail())
                                                .param("name", "test organization").with(csrf())
                 )
-           .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
-     list = service.findByMail(user.getMail());
-     if(!list.isEmpty())
+           .andExpect(status().isOk());                
+    this.clearUser(user); 
+    }
+    
+    @Test
+    @Transactional
+    public void isRegisterFailingPasswordMismatch() throws Exception
+    {
+      UserAccount user= new UserAccount("testName", "PlainPassword", "test@mail.com");
+      this.clearUser(user);      
+      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/register/registerUser"))
+                                               .param("username", user.getUsername())
+                                               .param("password", user.getPassword())
+                                               .param("confirmPassword", "mismatchPassword")
+                                               .param("mail", user.getMail())
+                                               .param("name", "test organization").with(csrf())
+                )
+           .andExpect(status().isBadRequest());
+         //  .andExpect(model().attribute("errorMessage", "Errors occured, check your fields"));
+      
+      this.clearUser(user);   
+    }
+    
+    private void clearUser(UserAccount user)
+    {
+      List<UserAccount> list = service.findByMail(user.getMail());
+      if(!list.isEmpty())
           service.delete(list.get(0));   
     }
 }

@@ -18,7 +18,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
             Authentication authentication) throws IOException, ServletException 
     {
  
-        CustomUserDetails customerDetails = (CustomUserDetails) authentication.getPrincipal();
+       // CustomUserDetails customerDetails = (CustomUserDetails) authentication.getPrincipal();
         //logic here         
         super.onAuthenticationSuccess(request, response, authentication);
     } 

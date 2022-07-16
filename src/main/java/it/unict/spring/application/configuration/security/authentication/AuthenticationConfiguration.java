@@ -7,16 +7,16 @@ package it.unict.spring.application.configuration.security.authentication;
 import it.unict.spring.application.service.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author danie
  */
-@Controller
-public class AuthenticationController
+@Configuration
+public class AuthenticationConfiguration
 {
     @Autowired
     CustomUserDetailsService userDetailsService;

@@ -17,7 +17,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ActiveProfiles;
@@ -40,7 +39,7 @@ public class OrganizationServiceTest
     
     @SpyBean
     private  OrganizationService orgServ;    
-    private String organization="Univerity of Catania";
+    private final String organization="Univerity of Catania";
         
     
     @BeforeEach    
