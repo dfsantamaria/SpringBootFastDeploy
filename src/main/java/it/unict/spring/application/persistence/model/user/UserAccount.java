@@ -53,14 +53,14 @@ public class UserAccount implements Serializable
     
     private boolean isAccountNonExpired;
         
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
     @JoinTable(name = "user_to_privileges",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "privilege_id",  referencedColumnName = "id", nullable = false)})
     private Set<Privilege> privileges= new HashSet<>();
 
     
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
     @JoinTable(name = "user_to_organizations",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "organization_id",  referencedColumnName = "id", nullable = false)})
@@ -70,7 +70,7 @@ public class UserAccount implements Serializable
     @OneToOne(mappedBy ="user")
     private UserRegister register;   
     
-    @OneToMany(mappedBy ="user")
+    @OneToMany(mappedBy ="user", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
     private Set<SecureToken> tokens = new HashSet<>();
     
       

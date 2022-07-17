@@ -6,6 +6,7 @@ package it.unict.it.spring.application.controller.access;
  */
 
 import it.unict.spring.application.Application;
+import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -43,6 +44,7 @@ public class LoginControllerTest
     
     
   @Test
+  @Transactional
   public void canLog() throws Exception
   {
     mvc.perform(formLogin("/public/api/access/login/signin").user("dfsantamaria").password("lll@@"))
