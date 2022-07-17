@@ -28,7 +28,7 @@ public class UserRegister implements Serializable
     private String lastname;
     
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName ="id")
+    @JoinColumn(name = "user_id")
     private UserAccount user;
     
     public UserRegister()
