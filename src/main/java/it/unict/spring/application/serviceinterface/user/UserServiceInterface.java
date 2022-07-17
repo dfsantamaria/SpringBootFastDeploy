@@ -10,6 +10,7 @@ import it.unict.spring.application.exception.user.MultipleUsersFoundException;
 import it.unict.spring.application.exception.user.UserNotFoundException;
 import it.unict.spring.application.persistence.model.user.Organization;
 import it.unict.spring.application.persistence.model.user.Privilege;
+import it.unict.spring.application.persistence.model.user.SecureToken;
 import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.persistence.model.user.UserRegister;
 import java.util.List;
@@ -26,6 +27,7 @@ public interface UserServiceInterface
     boolean hasUserPrivilege(String privilege);
     String getUserByEmail(String mail) throws UserNotFoundException;
    
+    void addTokenToUser(SecureToken token, UserAccount user);
     void addOrganizationToUser(Organization org, UserAccount user);
     void addPrivilegeToUser(Privilege privilege, UserAccount user);
     

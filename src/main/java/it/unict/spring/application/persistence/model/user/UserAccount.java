@@ -111,7 +111,7 @@ public class UserAccount implements Serializable
 
     public void addPrivileges(Privilege priv)
     {
-      priv.addUser(this);
+     // priv.addUser(this);
       this.privileges.add(priv);
      }
     
@@ -120,6 +120,26 @@ public class UserAccount implements Serializable
       this.organizations.add(org);
     }
     
+    public void addSecureToken(SecureToken token)
+    {
+      this.tokens.add(token);
+    }
+    
+     public void removePrivileges(Privilege priv)
+    {
+     // priv.addUser(this);
+      this.privileges.remove(priv);
+     }
+    
+    public void removeOrganization(Organization org)
+    {      
+      this.organizations.remove(org);
+    }
+    
+    public void removeSecureToken(SecureToken token)
+    {
+      this.tokens.remove(token);
+    }    
         
     public void setUsername(String username) {
         this.username = username;

@@ -206,7 +206,8 @@ public class UserService implements UserServiceInterface
     public void sendRegistrationMail(UserAccount user)
     {
       SecureToken token = secureTokenService.generateToken();
-      secureTokenService.addUserToToken(user, token);     
+      secureTokenService.addUserToToken(user, token);
+      this.addTokenToUser(token, user);
       this.save(user);
     }
 
@@ -237,11 +238,14 @@ public class UserService implements UserServiceInterface
     { 
       registerService.addUserToRegister(user, register);         
       this.addRegisterToUser(register, user);
-      this.save(user); 
-      
-      
-        
+      this.save(user);    
            
+    }
+
+    @Override
+    public void addTokenToUser(SecureToken token, UserAccount user)
+    {
+       user.addSecureToken(token);
     }
   
   
