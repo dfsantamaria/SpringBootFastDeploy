@@ -56,6 +56,7 @@ public class UserService implements UserServiceInterface
     }
     
     @Override
+    @Transactional
     public void setEnabled(UserAccount user, boolean enabled)
     {      
       user.setEnabled(enabled);
@@ -223,12 +224,14 @@ public class UserService implements UserServiceInterface
        user.addPrivileges(priv);       
     }
  
+    @Override
     @Transactional
     public void addRegisterToUser(UserRegister register, UserAccount user)
     {
       user.setRegister(register);      
     }
     
+    @Override
     @Transactional
     public void setUserRegister(UserRegister register, UserAccount user)
     { 

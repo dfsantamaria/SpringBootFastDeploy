@@ -11,6 +11,7 @@ import it.unict.spring.application.exception.user.UserNotFoundException;
 import it.unict.spring.application.persistence.model.user.Organization;
 import it.unict.spring.application.persistence.model.user.Privilege;
 import it.unict.spring.application.persistence.model.user.UserAccount;
+import it.unict.spring.application.persistence.model.user.UserRegister;
 import java.util.List;
 
 
@@ -39,7 +40,8 @@ public interface UserServiceInterface
     
     UserAccount mapFromUserDTO(UserAccountDTO userdto, Organization organization) throws MultipleUsersFoundException;
     
-    
+    void setUserRegister(UserRegister register, UserAccount user);
+    void addRegisterToUser(UserRegister register, UserAccount user);
     
     void sendRegistrationMail(UserAccount user);
 }
