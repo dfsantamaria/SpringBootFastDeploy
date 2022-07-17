@@ -61,7 +61,7 @@ public class SecureTokenService implements SecureTokenServiceInterface
     public void addUserToToken(UserAccount user, SecureToken token)
     {
       token.addUser(user);
-      repository.save(token);
+      this.save(token);
     }
     
     @Override

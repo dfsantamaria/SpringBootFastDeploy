@@ -13,6 +13,7 @@ import it.unict.spring.application.persistence.model.user.Privilege;
 import it.unict.spring.application.persistence.model.user.SecureToken;
 import it.unict.spring.application.serviceinterface.user.UserServiceInterface;
 import it.unict.spring.application.persistence.model.user.UserAccount;
+import it.unict.spring.application.persistence.model.user.UserRegister;
 import it.unict.spring.application.persistence.repository.user.UserRepository;
 import java.util.Collection;
 import java.util.List;
@@ -35,6 +36,9 @@ public class UserService implements UserServiceInterface
     PrivilegeService privilegeService;
     @Autowired
     SecureTokenService secureTokenService;
+    @Autowired
+    UserRegisterService registerService;
+    
     
     @Autowired
     PasswordEncoder getPasswordEncoder;
@@ -77,6 +81,9 @@ public class UserService implements UserServiceInterface
        
       for(SecureToken token: secureTokenService.findByUser(user))
          secureTokenService.delete(token);
+      
+      if(user.getRegister()!=null)
+         registerService.delete(user.getRegister());
       
       repository.delete(user);
     }
@@ -216,6 +223,23 @@ public class UserService implements UserServiceInterface
        user.addPrivileges(priv);       
     }
  
+    @Transactional
+    public void addRegisterToUser(UserRegister register, UserAccount user)
+    {
+      user.setRegister(register);      
+    }
+    
+    @Transactional
+    public void setUserRegister(UserRegister register, UserAccount user)
+    { 
+      registerService.addUserToRegister(user, register);         
+      this.addRegisterToUser(register, user);
+      this.save(user); 
+      
+      
+        
+           
+    }
   
   
 }

@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -65,8 +66,14 @@ public class UserAccount implements Serializable
             inverseJoinColumns = {@JoinColumn(name = "organization_id",  referencedColumnName = "id", nullable = false)})
     private Set<Organization> organizations= new HashSet<>();
 
+    
+    @OneToOne(mappedBy ="user")
+    private UserRegister register;   
+    
     @OneToMany(mappedBy ="user")
     private Set<SecureToken> tokens = new HashSet<>();
+    
+      
     
     //
 
@@ -113,6 +120,7 @@ public class UserAccount implements Serializable
       this.organizations.add(org);
     }
     
+        
     public void setUsername(String username) {
         this.username = username;
     }
@@ -168,54 +176,7 @@ public class UserAccount implements Serializable
         builder.append("User [id=").append(id).append(", username=").append(username).append(", privileges=").append("]");
         return builder.toString();
     }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = (prime * result) + ((id == null) ? 0 : id.hashCode());        
-        result = (prime * result) + ((password == null) ? 0 : password.hashCode());        
-        result = (prime * result) + ((username == null) ? 0 : username.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final UserAccount other = (UserAccount) obj;
-        if (id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!id.equals(other.id)) {
-            return false;
-        }        
-        if (password == null) {
-            if (other.password != null) {
-                return false;
-            }
-        } else if (!password.equals(other.password)) {
-            return false;
-        }
-        
-        if (username == null) {
-            if (other.username != null) {
-                return false;
-            }
-        } else if (!username.equals(other.username)) {
-            return false;
-        }
-        return true;
-    }
-
+    
     public boolean isCredentialsNonExpired()
     {
          return this.isCredentialsNonExpired;
@@ -245,4 +206,14 @@ public class UserAccount implements Serializable
     {
       this.isAccountNonExpired=val;
     }    
+    
+    public UserRegister getRegister()
+    {
+      return this.register;
+    }
+    
+    public void setRegister(UserRegister register)
+    {
+      this.register=register;
+    }
 }

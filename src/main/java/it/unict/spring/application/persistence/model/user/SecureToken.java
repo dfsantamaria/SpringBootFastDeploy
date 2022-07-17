@@ -4,10 +4,10 @@
  */
 package it.unict.spring.application.persistence.model.user;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +21,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "secureToken", catalog = "useraccount")
-public class SecureToken
+public class SecureToken implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +49,8 @@ public class SecureToken
     {
       super();
     }
+    
+      
     
     public SecureToken(String token, Timestamp timestamp, LocalDateTime expire)
     {
