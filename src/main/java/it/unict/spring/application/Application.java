@@ -6,8 +6,10 @@ package it.unict.spring.application;
  */
 
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
+import it.unict.spring.application.persistence.model.user.SecureToken;
 import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.persistence.model.user.UserRegister;
+import it.unict.spring.application.service.user.SecureTokenService;
 import it.unict.spring.application.service.user.UserRegisterService;
 import it.unict.spring.application.service.user.UserService;
 import java.sql.SQLException;
@@ -52,6 +54,9 @@ public class Application extends SpringBootServletInitializer
   @Autowired
   public UserRegisterService registerService;
     
+  @Autowired
+  public SecureTokenService tokenService;
+  
   @Override
   public SpringApplicationBuilder configure(SpringApplicationBuilder application)
         {
@@ -105,7 +110,7 @@ public class Application extends SpringBootServletInitializer
               UserAccount user = userService.getOrSetSuperAdminUser("dfsantamaria", "lll@@", "daniele.santamaria@unict.it", "Univeristy of Catania");
               userService.setEnabled(user, true); //enable user              
               UserRegister register=new UserRegister("Daniele", "Francesco", "Santamaria");
-              userService.setRegister(register, user);                
+              userService.setRegister(register, user);        
            }
            
         } 

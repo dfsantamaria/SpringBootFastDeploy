@@ -72,7 +72,7 @@ public class UserAccount implements Serializable
     @PrimaryKeyJoinColumn
     private UserRegister register;   
     
-    @OneToMany(mappedBy ="user", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+    @OneToMany(mappedBy ="user", cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch=FetchType.LAZY)
     private Set<SecureToken> tokens = new HashSet<>();
     
       
