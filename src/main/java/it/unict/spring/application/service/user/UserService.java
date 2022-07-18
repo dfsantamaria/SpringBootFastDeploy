@@ -36,9 +36,7 @@ public class UserService implements UserServiceInterface
     PrivilegeService privilegeService;
     @Autowired
     SecureTokenService secureTokenService;
-    @Autowired
-    UserRegisterService registerService;
-    
+        
     
     @Autowired
     PasswordEncoder getPasswordEncoder;
@@ -74,18 +72,6 @@ public class UserService implements UserServiceInterface
     @Transactional
     public void delete(UserAccount user)
     {
-      for(Organization org : user.getOrganization())      
-          organizationService.removeUserFromOrganization(user, org);      
-      
-      for(Privilege priv: user.getPrivileges())       
-        privilegeService.removeUserFromPrivilege(user,priv);
-       
-      for(SecureToken token: secureTokenService.findByUser(user))
-         secureTokenService.delete(token);
-      
-      if(user.getRegister()!=null)
-         registerService.delete(user.getRegister());
-      
       repository.delete(user);
     }
     
@@ -205,7 +191,7 @@ public class UserService implements UserServiceInterface
     @Transactional
     public void sendRegistrationMail(UserAccount user)
     {
-      SecureToken token = secureTokenService.generateToken();
+      SecureToken token = secureTokenService.generateToken("FReg");
       secureTokenService.addUserToToken(user, token);
       this.addTokenToUser(token, user);
       this.save(user);
@@ -232,16 +218,7 @@ public class UserService implements UserServiceInterface
       user.setRegister(register);      
     }
     
-    @Override
-    @Transactional
-    public void setUserRegister(UserRegister register, UserAccount user)
-    { 
-      registerService.addUserToRegister(user, register);         
-      this.addRegisterToUser(register, user);
-      this.save(user);    
-           
-    }
-
+  
     @Override
     public void addTokenToUser(SecureToken token, UserAccount user)
     {

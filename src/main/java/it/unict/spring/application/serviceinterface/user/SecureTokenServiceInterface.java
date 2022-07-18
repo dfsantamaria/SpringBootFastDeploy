@@ -16,7 +16,7 @@ import java.util.List;
 public interface SecureTokenServiceInterface
 {
     List<SecureToken> findAll();
-    SecureToken generateToken ();
+    SecureToken generateToken (String tokenType);
     SecureToken save (SecureToken token);  
     void delete(SecureToken token);  
     void addUserToToken(UserAccount user, SecureToken token);

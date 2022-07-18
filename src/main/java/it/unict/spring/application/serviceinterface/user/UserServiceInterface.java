@@ -42,7 +42,7 @@ public interface UserServiceInterface
     
     UserAccount mapFromUserDTO(UserAccountDTO userdto, Organization organization) throws MultipleUsersFoundException;
     
-    void setUserRegister(UserRegister register, UserAccount user);
+    //void setUserRegister(UserRegister register, UserAccount user);
     void addRegisterToUser(UserRegister register, UserAccount user);
     
     void sendRegistrationMail(UserAccount user);

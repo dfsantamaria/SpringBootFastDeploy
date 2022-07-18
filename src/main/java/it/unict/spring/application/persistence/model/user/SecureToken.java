@@ -4,6 +4,11 @@
  */
 package it.unict.spring.application.persistence.model.user;
 
+/**
+ *
+ * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ */
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -30,6 +35,9 @@ public class SecureToken implements Serializable
     @Column(unique = true)
     private String token;
 
+    @Column(updatable = false)
+    private String tokenType;
+    
     @CreationTimestamp
     @Column(updatable = false)
     private Timestamp timestamp;
@@ -52,10 +60,11 @@ public class SecureToken implements Serializable
     
       
     
-    public SecureToken(String token, Timestamp timestamp, LocalDateTime expire)
+    public SecureToken(String token, String tokenType, Timestamp timestamp, LocalDateTime expire)
     {
        super();
        this.token=token;
+       this.tokenType=tokenType;
        this.timestamp=timestamp;
        this.expireAt=expire;      
        this.isExpired=false;       
@@ -76,6 +85,11 @@ public class SecureToken implements Serializable
      return this.timestamp;
     }
     
+    public String getTokenType()
+    {
+        return this.tokenType;
+    }
+            
     public LocalDateTime getExpireAt()
     {
       return this.expireAt;

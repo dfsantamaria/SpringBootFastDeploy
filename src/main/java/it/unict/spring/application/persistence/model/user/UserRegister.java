@@ -7,10 +7,10 @@ package it.unict.spring.application.persistence.model.user;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,15 +20,16 @@ public class UserRegister implements Serializable
 {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     private String firstname;
     private String middlename;
     private String lastname;
     
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserAccount user;
     
     public UserRegister()
@@ -52,16 +53,14 @@ public class UserRegister implements Serializable
     public void setUser(UserAccount user)
     {
       this.user = user;
+      this.id =user.getId();              
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
+        
     public String getFirstName()
     {
       return this.firstname;
