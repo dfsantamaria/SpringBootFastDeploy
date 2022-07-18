@@ -22,8 +22,8 @@ public class UserRegisterService implements UserRegisterServiceInterface
 {
     @Autowired
     UserRegisterRepository repository;
-    @Autowired
-    UserService userService; 
+   // @Autowired
+    //UserService userService; 
     
     @Override
     public List<UserRegister> findAll()
@@ -68,9 +68,6 @@ public class UserRegisterService implements UserRegisterServiceInterface
     public void setUser(UserRegister register, UserAccount user)
     {
          register.setUser(user);           
-         this.save(register);
-       
-         userService.addRegisterToUser(register, user);
-         userService.save(user);
+         //this.save(register);       
     }
 }

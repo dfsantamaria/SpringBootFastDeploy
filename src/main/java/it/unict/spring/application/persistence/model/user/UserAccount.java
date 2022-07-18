@@ -54,21 +54,21 @@ public class UserAccount implements Serializable
     
     private boolean isAccountNonExpired;
         
-    @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
     @JoinTable(name = "user_to_privileges",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "privilege_id",  referencedColumnName = "id", nullable = false)})
     private Set<Privilege> privileges= new HashSet<>();
 
     
-    @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
     @JoinTable(name = "user_to_organizations",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "organization_id",  referencedColumnName = "id", nullable = false)})
     private Set<Organization> organizations= new HashSet<>();
 
     
-    @OneToOne(mappedBy ="user", cascade = {CascadeType.ALL}, fetch=FetchType.LAZY)
+    @OneToOne(mappedBy ="user", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
     @PrimaryKeyJoinColumn
     private UserRegister register;   
     

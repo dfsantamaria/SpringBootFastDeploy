@@ -36,7 +36,8 @@ public class UserService implements UserServiceInterface
     PrivilegeService privilegeService;
     @Autowired
     SecureTokenService secureTokenService;
-        
+    @Autowired
+    UserRegisterService registryService;
     
     @Autowired
     PasswordEncoder getPasswordEncoder;
@@ -211,12 +212,8 @@ public class UserService implements UserServiceInterface
        user.addPrivileges(priv);       
     }
  
-    @Override
-    @Transactional
-    public void addRegisterToUser(UserRegister register, UserAccount user)
-    {
-      user.setRegister(register);      
-    }
+    
+    
     
   
     @Override
@@ -224,6 +221,23 @@ public class UserService implements UserServiceInterface
     {
        user.addSecureToken(token);
     }
-  
+    
+    
+    @Transactional
+    @Override
+    public void addRegisterToUser(UserRegister register, UserAccount user)
+    {
+      user.setRegister(register);      
+    }
+    
+    
+    @Transactional
+    public void setRegister(UserRegister register, UserAccount user)            
+    {        
+      registryService.setUser(register, user);
+      registryService.save(register);
+      this.addRegisterToUser(register, user);
+      this.save(user);
+    }
   
 }
