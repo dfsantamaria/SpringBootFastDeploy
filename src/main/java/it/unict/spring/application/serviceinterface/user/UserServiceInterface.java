@@ -31,6 +31,9 @@ public interface UserServiceInterface
     void addOrganizationToUser(Organization org, UserAccount user);
     void addPrivilegeToUser(Privilege privilege, UserAccount user);
     
+    UserAccount getOrSetUser(String username, String password, String mail, String organization, Privilege priv) throws MultipleUsersFoundException;
+
+    
     UserAccount getOrSetAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
     
     UserAccount getOrSetStaffUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;

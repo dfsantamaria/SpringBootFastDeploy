@@ -57,7 +57,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
        if (privileges.isEmpty())
        {
             priv = new Privilege(privName);
-            repository.save(priv);            
+            this.save(priv);            
         }
        else 
            priv=privileges.get(0);

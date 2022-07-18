@@ -116,9 +116,9 @@ public class UserService implements UserServiceInterface
       return this.getOrSetUser(username, password, mail, organization, priv);
     }
     
-    
+    @Override
     @Transactional
-    private UserAccount getOrSetUser(String username, String password, String mail, String organization, Privilege priv) throws MultipleUsersFoundException
+    public UserAccount getOrSetUser(String username, String password, String mail, String organization, Privilege priv) throws MultipleUsersFoundException
     {         
         List<UserAccount> users = repository.findByMail(mail);    
         users.addAll(repository.findByUsername(username));
