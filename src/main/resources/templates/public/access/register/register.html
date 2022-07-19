@@ -1,36 +1,41 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
   <head>
-    <title tiles:fragment="title">Messages : Create</title>
+      <meta charset="utf-8">
+      <title>Log in with your account</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+      <link th:href="@{/public/css/main.css}" rel="stylesheet">
   </head>
   <body>
-    <div tiles:fragment="content">
-        <form name="f" th:action="@{/public/api/access/register/registerUser}" method="post">
+    <div class="container">
+        <h2 class="form-heading">Register your account</h2> 
+        <div class="form-group">  
+        <form name="form-register" th:action="@{/public/api/access/register/registerUser}" method="post">
 
         <div th:object="${userdto}">   
         <div class="form-group">
-    		<label>Email</label>
+    		<span>Email</span>
    			 <input type="email" class="form-control" id="inputMail" aria-describedby="emailHelp" th:field="*{mail}">
- 		</div>
+ 	     	</div>
   
          <div class="form-group">
-          <label>Username</label>
+          <span>Username</span>
           <input type="text" class="form-control" id="inputUsername" aria-describedby="emailHelp" th:field="*{username}">
          </div>
 
         <div class="form-group">
-            <label>Password</label>
+            <span>Password</span>
             <input type="password" class="form-control" id="inputPassword" th:field="*{password}">
         </div>   
 
         <div class="form-group">
-            <label> Confirm Password</label>
+            <span> Confirm Password</span>
             <input type="password" class="form-control" id="inputConfirmPassword" th:field="*{confirmPassword}">
         </div> 
         </div>
 
          <div th:object="${orgdto}"> 
           <div class="form-group">
-            <label>Organization Name</label>
+            <span>Organization Name</span>
             <input type="text" class="form-control" id="orgName" aria-describedby="orgnameHelp" th:field="*{name}">
             </div>	
          </div>  
@@ -39,8 +44,8 @@
        
           <div class="alert alert-error" th:if="${errorMessage}"  th:text="${errorMessage}">Error</div>
        
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>    
+  <button type="submit" class="btn btn-lg btn-primary btn-block">Submit</button>
+</div>    
     </div>
   </body>
 </html>
