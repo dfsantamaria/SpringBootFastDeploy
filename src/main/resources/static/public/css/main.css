@@ -26,6 +26,11 @@ body {
     font-weight: normal;
 }
 
+.over-label
+{
+  margin-top: 5px;   
+}
+
  .form-control
  {   
     -webkit-box-sizing: border-box;
@@ -38,14 +43,14 @@ body {
     z-index: 2;
 }
 
-input {    
-    margin-top: 10px;    
+input{   
+       
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
 
 button {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .has-error {
