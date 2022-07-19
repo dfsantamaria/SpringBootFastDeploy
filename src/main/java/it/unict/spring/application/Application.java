@@ -110,7 +110,7 @@ public class Application extends SpringBootServletInitializer
               UserAccount user = userService.getOrSetSuperAdminUser("dfsantamaria", "lll@@", "daniele.santamaria@unict.it", "Univeristy of Catania");
               userService.setEnabled(user, true); //enable user              
               UserRegister register=new UserRegister("Daniele", "Francesco", "Santamaria");
-              userService.setRegister(register, user);        
+              userService.setRegister(register, user);         
            }
            
         } 

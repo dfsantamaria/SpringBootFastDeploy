@@ -15,4 +15,5 @@ public interface UserRegisterServiceInterface
     void addUserToRegister(UserAccount user, UserRegister register);
     void delete(UserRegister register);
     UserRegister addUserToRegister(UserAccount user, String firstname, String middlename, String lastname);
+    void setUser(UserRegister register, UserAccount user);
 }

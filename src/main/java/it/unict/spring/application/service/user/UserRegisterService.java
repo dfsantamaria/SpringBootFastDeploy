@@ -63,7 +63,7 @@ public class UserRegisterService implements UserRegisterServiceInterface
        return reg;
     }
 
-    
+    @Override
     @Transactional
     public void setUser(UserRegister register, UserAccount user)
     {

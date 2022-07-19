@@ -14,12 +14,11 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,15 +27,11 @@ import org.hibernate.annotations.CreationTimestamp;
 @Table(name = "secureToken", catalog = "useraccount")
 public class SecureToken implements Serializable
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    public SecureTokenId tokenId= new SecureTokenId();
 
     @Column(unique = true)
     private String token;
-
-    @Column(updatable = false)
-    private String tokenType;
     
     @CreationTimestamp
     @Column(updatable = false)
@@ -46,8 +41,9 @@ public class SecureToken implements Serializable
     @Basic(optional = false)
     private LocalDateTime expireAt;
 
-    @ManyToOne
+    @MapsId("user_id")
     @JoinColumn(name = "user_id", referencedColumnName ="id")
+    @ManyToOne    
     private UserAccount user;
 
     @Transient
@@ -57,14 +53,13 @@ public class SecureToken implements Serializable
     {
       super();
     }
-    
-      
+          
     
     public SecureToken(String token, String tokenType, Timestamp timestamp, LocalDateTime expire)
     {
        super();
-       this.token=token;
-       this.tokenType=tokenType;
+       this.token=token;       
+       this.tokenId.setTokenType(tokenType);
        this.timestamp=timestamp;
        this.expireAt=expire;      
        this.isExpired=false;       
@@ -75,9 +70,9 @@ public class SecureToken implements Serializable
         return getExpireAt().isBefore(LocalDateTime.now()); // this is generic implementation, you can always make it timezone specific
     }
    
-    public Long getId()
+    public SecureTokenId getId()
     {
-      return this.id;
+      return this.tokenId;
     }
     
     public Timestamp getTimestamp()
@@ -87,7 +82,7 @@ public class SecureToken implements Serializable
     
     public String getTokenType()
     {
-        return this.tokenType;
+        return this.tokenId.getTokenType();
     }
             
     public LocalDateTime getExpireAt()
@@ -103,6 +98,8 @@ public class SecureToken implements Serializable
     public void addUser(UserAccount user)
     {
       this.user=user;
-    }
+      this.tokenId.setTokenId(user.getId());
+    }   
+   
     
 }
