@@ -19,6 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
@@ -49,7 +50,7 @@ public class RegisterTest
                                                .param("mail", user.getMail())
                                                .param("name", "test organization").with(csrf())
                 )
-           .andExpect(status().isOk());                
+           .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/"));                
     this.clearUser(user); 
     }
     

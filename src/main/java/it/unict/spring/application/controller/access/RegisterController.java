@@ -78,7 +78,7 @@ public class RegisterController
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return new ModelAndView("public/access/register/register");
            }
-         return  new ModelAndView("public/home");
+         return  new ModelAndView("redirect:/");
      }
     
 }
