@@ -15,13 +15,13 @@ public interface PrivilegeServiceInterface
     List<Privilege> findAll();
     List<Privilege> findByName(String name);
     Privilege save(Privilege privilege);
-    Privilege getOrSetPrivilege(String privName);
-    Privilege getOrSetAdminPrivilege(); 
-    Privilege getOrSetSuperAdminPrivilege();
-    Privilege getOrSetStaffPrivilege();
-    Privilege getOrSetStandardUserPrivilege();
+    Privilege getPrivilege(String privName);
+    Privilege getAdminPrivilege(); 
+    Privilege getSuperAdminPrivilege();
+    Privilege getStaffPrivilege();
+    Privilege getStandardUserPrivilege();
     void addUserToPrivilege(UserAccount user, Privilege priv);
     void removeUserFromPrivilege(UserAccount user, Privilege priv);
-    
+    void startUpPrivileges();
     void delete(Privilege privilege);
 }

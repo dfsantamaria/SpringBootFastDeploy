@@ -110,15 +110,15 @@ public class UserService implements UserServiceInterface
 
     @Override 
     @Transactional
-    public UserAccount getOrSetAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
+    public UserAccount getAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
     {
-      Privilege priv= privilegeService.getOrSetAdminPrivilege(); 
-      return this.getOrSetUser(username, password, mail, organization, priv);
+      Privilege priv= privilegeService.getAdminPrivilege(); 
+      return this.getUser(username, password, mail, organization, priv);
     }
     
     @Override
     @Transactional
-    public UserAccount getOrSetUser(String username, String password, String mail, String organization, Privilege priv) throws MultipleUsersFoundException
+    public UserAccount getUser(String username, String password, String mail, String organization, Privilege priv) throws MultipleUsersFoundException
     {         
         List<UserAccount> users = repository.findByMail(mail);    
         users.addAll(repository.findByUsername(username));
@@ -142,25 +142,25 @@ public class UserService implements UserServiceInterface
 
     @Override
     @Transactional
-    public UserAccount getOrSetStaffUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
+    public UserAccount getStaffUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
     {
-      Privilege priv= privilegeService.getOrSetStaffPrivilege(); 
-      return this.getOrSetUser(username, password, mail, organization, priv);    
+      Privilege priv= privilegeService.getStaffPrivilege(); 
+      return this.getUser(username, password, mail, organization, priv);    
     }
 
     @Override
     @Transactional
-    public UserAccount getOrSetStandardUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
+    public UserAccount getStandardUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
     {
-      Privilege priv= privilegeService.getOrSetStandardUserPrivilege(); 
-      return this.getOrSetUser(username, password, mail, organization, priv);       
+      Privilege priv= privilegeService.getStandardUserPrivilege(); 
+      return this.getUser(username, password, mail, organization, priv);       
     }
     
     @Override
     @Transactional
-    public UserAccount getOrSetStandardUser(UserAccount user)
+    public UserAccount getStandardUser(UserAccount user)
     {
-      Privilege priv= privilegeService.getOrSetStandardUserPrivilege();
+      Privilege priv= privilegeService.getStandardUserPrivilege();
       user.getOrganization().stream().forEach(org-> 
                                                    organizationService.getOrSetOrganization(org)                                                   
                                             );
@@ -171,21 +171,22 @@ public class UserService implements UserServiceInterface
 
     @Override
     @Transactional
-    public UserAccount getOrSetSuperAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
+    public UserAccount getSuperAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
     {
-      Privilege priv= privilegeService.getOrSetSuperAdminPrivilege(); 
-      return this.getOrSetUser(username, password, mail, organization, priv);       
+      Privilege priv= privilegeService.getSuperAdminPrivilege(); 
+      return this.getUser(username, password, mail, organization, priv);       
     }
 
     @Override
     @Transactional
-    public UserAccount mapFromUserDTO(UserAccountDTO userdto, Organization organization) throws MultipleUsersFoundException
-    {        
-      return this.getOrSetStandardUser(userdto.getUsername(),
-                    userdto.getPassword(),
-                    userdto.getMail(),
-                    organization.getName());
-       
+    public UserAccount mapFromUserDTO(UserAccountDTO userdto, UserRegister register, Organization organization) throws MultipleUsersFoundException
+    {               
+      UserAccount user= this.getStandardUser(userdto.getUsername(),
+                        userdto.getPassword(),
+                        userdto.getMail(),
+                        organization.getName());
+      this.setRegister(register, user);
+      return user;
     }
 
     @Override
@@ -211,11 +212,7 @@ public class UserService implements UserServiceInterface
     {
        user.addPrivileges(priv);       
     }
- 
-    
-    
-    
-  
+   
     @Override
     public void addTokenToUser(SecureToken token, UserAccount user)
     {

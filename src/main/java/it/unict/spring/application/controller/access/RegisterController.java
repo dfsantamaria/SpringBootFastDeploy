@@ -6,10 +6,13 @@ package it.unict.spring.application.controller.access;
 
 import it.unict.spring.application.dto.user.OrganizationDTO;
 import it.unict.spring.application.dto.user.UserAccountDTO;
+import it.unict.spring.application.dto.user.UserRegisterDTO;
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
 import it.unict.spring.application.persistence.model.user.Organization;
 import it.unict.spring.application.persistence.model.user.UserAccount;
+import it.unict.spring.application.persistence.model.user.UserRegister;
 import it.unict.spring.application.service.user.OrganizationService;
+import it.unict.spring.application.service.user.UserRegisterService;
 import it.unict.spring.application.service.user.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,19 +34,26 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/public/api/access/register")
 public class RegisterController
 {
-   @Autowired
+    @Autowired
     UserService userService;
     @Autowired
     OrganizationService orgService;
+    @Autowired
+    UserRegisterService regService;
     
     
      @RequestMapping("register")
      public ModelAndView viewRegister(HttpServletRequest request,
                                       HttpServletResponse response,
+                                @ModelAttribute("userregdto") UserRegisterDTO userregdto,
+                                BindingResult userRegBindResult,
                                 @ModelAttribute("userdto") UserAccountDTO userdto, 
+                                BindingResult userBindResult,
                                 @ModelAttribute("orgdto") OrganizationDTO orgdto, 
-                                BindingResult bindingResult, Model model)
-     {         
+                                BindingResult orgBindResult,
+                                Model model)
+     {    
+         model.addAttribute("userregdto", userregdto);
          model.addAttribute("userdto", userdto);  
          model.addAttribute("orgdto", orgdto);
          return new ModelAndView("public/access/register/register");
@@ -54,22 +64,25 @@ public class RegisterController
      @RequestMapping(value="registerUser", method = RequestMethod.POST)
      public ModelAndView registerUser(HttpServletRequest request,
                                       HttpServletResponse response,
-                                @ModelAttribute("userdto") @Valid UserAccountDTO userdto,
-                                BindingResult userBindResult,
-                                @ModelAttribute("orgdto") @Valid OrganizationDTO orgdto,
-                                BindingResult orgBindResult,                                 
-                                Model model)
+                                  @ModelAttribute("userregdto") UserRegisterDTO userregdto,
+                                  BindingResult userRegBindResult,
+                                  @ModelAttribute("userdto") @Valid UserAccountDTO userdto,
+                                  BindingResult userBindResult,
+                                  @ModelAttribute("orgdto") @Valid OrganizationDTO orgdto,
+                                  BindingResult orgBindResult,                                 
+                                  Model model)
      {        
-         if(userBindResult.hasErrors() || orgBindResult.hasErrors())
+         if(userBindResult.hasErrors() || orgBindResult.hasErrors() || userRegBindResult.hasErrors())
          {  
           model.addAttribute("errorMessage","Errors occured, check your fields");
           response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
           return new ModelAndView("public/access/register/register");   
          }
          Organization organization = orgService.mapFromOrganization(orgdto);
+         UserRegister userreg=regService.mapFromUserRegister(userregdto);
          try 
           {
-            UserAccount user=userService.mapFromUserDTO(userdto, organization);
+            UserAccount user=userService.mapFromUserDTO(userdto, userreg, organization);           
             userService.sendRegistrationMail(user);
           } 
           catch (MultipleUsersFoundException ex)
@@ -78,6 +91,7 @@ public class RegisterController
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return new ModelAndView("public/access/register/register");
            }
+         
          return  new ModelAndView("redirect:/");
      }
     

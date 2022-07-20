@@ -4,6 +4,7 @@
  */
 package it.unict.spring.application.service.user;
 
+import it.unict.spring.application.dto.user.UserRegisterDTO;
 import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.persistence.model.user.UserRegister;
 import it.unict.spring.application.persistence.repository.user.UserRegisterRepository;
@@ -69,5 +70,11 @@ public class UserRegisterService implements UserRegisterServiceInterface
     {
          register.setUser(user);           
          //this.save(register);       
+    }
+    
+    @Override
+    public UserRegister mapFromUserRegister(UserRegisterDTO dto)
+    {
+      return new UserRegister(dto.getFirstName(), dto.getMiddleName(), dto.getLastName());
     }
 }

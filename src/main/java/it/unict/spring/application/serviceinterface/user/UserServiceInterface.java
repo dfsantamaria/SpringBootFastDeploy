@@ -31,19 +31,20 @@ public interface UserServiceInterface
     void addOrganizationToUser(Organization org, UserAccount user);
     void addPrivilegeToUser(Privilege privilege, UserAccount user);
     
-    UserAccount getOrSetUser(String username, String password, String mail, String organization, Privilege priv) throws MultipleUsersFoundException;
+    UserAccount getUser(String username, String password, String mail, String organization, Privilege priv) throws MultipleUsersFoundException;
 
     
-    UserAccount getOrSetAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
+    UserAccount getAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
     
-    UserAccount getOrSetStaffUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
+    UserAccount getStaffUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
    
-    UserAccount getOrSetStandardUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
-    UserAccount getOrSetStandardUser(UserAccount user);
+    UserAccount getStandardUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
+    UserAccount getStandardUser(UserAccount user);
    
-    UserAccount getOrSetSuperAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
+    UserAccount getSuperAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
     
-    UserAccount mapFromUserDTO(UserAccountDTO userdto, Organization organization) throws MultipleUsersFoundException;
+    UserAccount mapFromUserDTO(UserAccountDTO userdto, UserRegister register, Organization organization) throws MultipleUsersFoundException;
+    
     
     //void setUserRegister(UserRegister register, UserAccount user);
     void addRegisterToUser(UserRegister register, UserAccount user);

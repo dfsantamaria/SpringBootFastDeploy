@@ -9,6 +9,7 @@ import it.unict.spring.application.exception.user.MultipleUsersFoundException;
 import it.unict.spring.application.persistence.model.user.SecureToken;
 import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.persistence.model.user.UserRegister;
+import it.unict.spring.application.service.user.PrivilegeService;
 import it.unict.spring.application.service.user.SecureTokenService;
 import it.unict.spring.application.service.user.UserRegisterService;
 import it.unict.spring.application.service.user.UserService;
@@ -52,10 +53,11 @@ public class Application extends SpringBootServletInitializer
   @Autowired
   public UserService userService;
   @Autowired
-  public UserRegisterService registerService;
-    
+  public UserRegisterService registerService;    
   @Autowired
   public SecureTokenService tokenService;
+  @Autowired
+  public PrivilegeService privService;
   
   @Override
   public SpringApplicationBuilder configure(SpringApplicationBuilder application)
@@ -105,9 +107,10 @@ public class Application extends SpringBootServletInitializer
        {
         try
         {
+           privService.startUpPrivileges();            
            if(userService.findByMail("daniele.santamaria@unict.it").isEmpty())
            {
-              UserAccount user = userService.getOrSetSuperAdminUser("dfsantamaria", "lll@@", "daniele.santamaria@unict.it", "Univeristy of Catania");
+              UserAccount user = userService.getSuperAdminUser("dfsantamaria", "lll@@", "daniele.santamaria@unict.it", "Univeristy of Catania");
               userService.setEnabled(user, true); //enable user              
               UserRegister register=new UserRegister("Daniele", "Francesco", "Santamaria");
               userService.setRegister(register, user);         

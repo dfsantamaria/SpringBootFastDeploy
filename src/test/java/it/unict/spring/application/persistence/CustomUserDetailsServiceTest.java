@@ -49,7 +49,7 @@ public class CustomUserDetailsServiceTest
        List<UserAccount> users = userServ.findByUsername(username);
        if(users.isEmpty())
        {
-           UserAccount user=userServ.getOrSetSuperAdminUser(username, "lll@@", mail, "Univeristy of Catania");
+           UserAccount user=userServ.getSuperAdminUser(username, "lll@@", mail, "Univeristy of Catania");
            userServ.setEnabled(user, true);
        }
        CustomUserDetails details = (CustomUserDetails) detailService.loadUserByUsername(username);

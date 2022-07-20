@@ -1,5 +1,6 @@
 package it.unict.spring.application.serviceinterface.user;
 
+import it.unict.spring.application.dto.user.UserRegisterDTO;
 import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.persistence.model.user.UserRegister;
 import java.util.List;
@@ -16,4 +17,5 @@ public interface UserRegisterServiceInterface
     void delete(UserRegister register);
     UserRegister addUserToRegister(UserAccount user, String firstname, String middlename, String lastname);
     void setUser(UserRegister register, UserAccount user);
+    UserRegister mapFromUserRegister(UserRegisterDTO dto);
 }

@@ -48,9 +48,23 @@ public class PrivilegeService implements PrivilegeServiceInterface
       repository.delete(privilege);
     }
     
-    @Override
-    @Transactional
-    public Privilege getOrSetPrivilege(String privName)
+   
+  @Override
+  public Privilege getPrivilege(String privName)
+  {
+       List<Privilege> privileges = repository.findByName(privName);
+       Privilege priv;
+       if (privileges.isEmpty())
+       {
+            return null;        
+        }
+       else 
+           priv=privileges.get(0);
+       return priv;
+  }  
+    
+  @Transactional
+  private Privilege getOrSetPrivilege(String privName)
   {
        List<Privilege> privileges = repository.findByName(privName);
        Privilege priv;
@@ -64,30 +78,30 @@ public class PrivilegeService implements PrivilegeServiceInterface
        return priv;
   }
     
-  @Override  
+    
   @Transactional
-  public  Privilege getOrSetAdminPrivilege()
+  private  Privilege getOrSetAdminPrivilege()
   {
     return getOrSetPrivilege("ROLE_ADMIN");
   }
   
-  @Override  
+  
   @Transactional
-  public  Privilege getOrSetSuperAdminPrivilege()
+  private  Privilege getOrSetSuperAdminPrivilege()
   {
     return getOrSetPrivilege("ROLE_SUPERADMIN");
   }
   
-  @Override  
+   
   @Transactional
-  public  Privilege getOrSetStaffPrivilege()
+  private  Privilege getOrSetStaffPrivilege()
   {
     return getOrSetPrivilege("ROLE_STAFF");
   }
   
-  @Override  
+   
   @Transactional
-  public  Privilege getOrSetStandardUserPrivilege()
+  private Privilege getOrSetStandardUserPrivilege()
   {
     return getOrSetPrivilege("ROLE_STANDARDUSER");
   }
@@ -108,6 +122,44 @@ public class PrivilegeService implements PrivilegeServiceInterface
       this.save(priv);
     }
 
+   @Override
+   @Transactional
+   public void startUpPrivileges()
+   {
+      this.getOrSetSuperAdminPrivilege();
+      this.getOrSetAdminPrivilege();
+      this.getOrSetStaffPrivilege();
+      this.getOrSetStandardUserPrivilege();     
+   }
+  
+  @Override 
+  @Transactional
+  public  Privilege getAdminPrivilege()
+  {
+    return getPrivilege("ROLE_ADMIN");
+  }
+  
+  
+  @Override
+  @Transactional
+  public  Privilege getSuperAdminPrivilege()
+  {
+    return getPrivilege("ROLE_SUPERADMIN");
+  }
+  
    
+  @Override
+  @Transactional
+  public  Privilege getStaffPrivilege()
+  {
+    return getPrivilege("ROLE_STAFF");
+  }
+  
+  @Override 
+  @Transactional
+  public Privilege getStandardUserPrivilege()
+  {
+    return getPrivilege("ROLE_STANDARDUSER");
+  }
   
 }
