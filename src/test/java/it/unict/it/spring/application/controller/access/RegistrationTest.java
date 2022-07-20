@@ -18,13 +18,12 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
 @AutoConfigureMockMvc
-public class RegisterTest
+public class RegistrationTest
 {       
     @Autowired
     private MockMvc mvc;
@@ -32,18 +31,18 @@ public class RegisterTest
     private UserService service;
     
     @Test
-    public void isRegisterPubliclyAvailable() throws Exception 
+    public void isRegistrationPubliclyAvailable() throws Exception 
     {
-      mvc.perform(MockMvcRequestBuilders.get(("/public/api/access/register/register"))).andExpect(status().isOk());
+      mvc.perform(MockMvcRequestBuilders.get(("/public/api/access/registration/register"))).andExpect(status().isOk());
     }
     
     @Test
     @Transactional
-    public void isRegisterSavingData() throws Exception
+    public void isRegistrationSavingData() throws Exception
     {
       UserAccount user= new UserAccount("testName", "PlainPassword", "test@mail.com");
       this.clearUser(user);       
-      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/register/registerUser"))
+      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/registerUser"))
                                                .param("username", user.getUsername())
                                                .param("password", user.getPassword())
                                                .param("confirmPassword", user.getPassword())
@@ -56,11 +55,11 @@ public class RegisterTest
     
     @Test
     @Transactional
-    public void isRegisterFailingPasswordMismatch() throws Exception
+    public void isRegistrationFailingPasswordMismatch() throws Exception
     {
       UserAccount user= new UserAccount("testName", "PlainPassword", "test@mail.com");
       this.clearUser(user);      
-      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/register/registerUser"))
+      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/registerUser"))
                                                .param("username", user.getUsername())
                                                .param("password", user.getPassword())
                                                .param("confirmPassword", "mismatchPassword")

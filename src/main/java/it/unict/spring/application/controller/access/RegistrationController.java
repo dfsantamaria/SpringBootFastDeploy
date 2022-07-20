@@ -31,8 +31,8 @@ import org.springframework.web.servlet.ModelAndView;
  * @author danie
  */
 @Controller
-@RequestMapping("/public/api/access/register")
-public class RegisterController
+@RequestMapping("/public/api/access/registration")
+public class RegistrationController
 {
     @Autowired
     UserService userService;
@@ -56,7 +56,7 @@ public class RegisterController
          model.addAttribute("userregdto", userregdto);
          model.addAttribute("userdto", userdto);  
          model.addAttribute("orgdto", orgdto);
-         return new ModelAndView("public/access/register/register");
+         return new ModelAndView("public/access/registration/register");
      }
      
      
@@ -76,7 +76,7 @@ public class RegisterController
          {  
           model.addAttribute("errorMessage","Errors occured, check your fields");
           response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-          return new ModelAndView("public/access/register/register");   
+          return new ModelAndView("public/access/registration/register");   
          }
          Organization organization = orgService.mapFromOrganization(orgdto);
          UserRegister userreg=regService.mapFromUserRegister(userregdto);
@@ -89,7 +89,7 @@ public class RegisterController
            {
             model.addAttribute("errorMessage","Account already exists");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new ModelAndView("public/access/register/register");
+            return new ModelAndView("public/access/registration/register");
            }
          
          return  new ModelAndView("redirect:/");
