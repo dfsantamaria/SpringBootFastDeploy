@@ -10,11 +10,11 @@
 	</parent>
         
 	<groupId>it.unict.spring</groupId>
-	<artifactId>SpringApplication</artifactId>
+	<artifactId>SpringPlatform</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>SpringApplication</name>        
-	<description>Demo project for Spring Boot</description>
+	<name>SpringPlatform</name>        
+	<description>Thanks to Springboot Fast Deploy</description>
 	<properties>
 		<java.version>11</java.version>
                 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
