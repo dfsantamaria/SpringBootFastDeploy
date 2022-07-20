@@ -1,5 +1,5 @@
 <configuration scan="true">
-  <property name="LOG_PATH" value="/logs/application/"/>   
+  <property name="LOG_PATH" value="/logs/platform/"/>   
   <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/> 
   <appender name="ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <append>true</append>     
