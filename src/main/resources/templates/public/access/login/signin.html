@@ -24,7 +24,8 @@
                 <div th:if="${param.logout}" class="alert-success">     You have been logged out.  </div>
 
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
-                 
+                <div class="left-align"><td><a th:href="@{/public/api/access/registration/register}"> Register a new account</a></td></div>
+                <div class="right-align"><td ><a th:href="@{/public/api/access/registration/register}"> Recover password</a></td> </div>
             </div>
         </form>
     </div>

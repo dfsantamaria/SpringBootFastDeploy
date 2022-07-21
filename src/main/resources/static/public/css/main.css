@@ -43,6 +43,16 @@ body {
     z-index: 2;
 }
 
+.left-align
+{
+  float: left;
+}
+
+.right-align
+{
+  float: right;  
+}
+
 input{   
        
     border-bottom-right-radius: 0;
@@ -54,9 +64,15 @@ button {
 }
 
 .has-error {
-    color: red
+    color: white;
+    background-color: red;
+    text-align: center;
+    font-weight: bold;
 }
 
 .alert-success {
-    color: green
+    color: white;
+    background-color: green;
+    text-align: center;
+    font-weight: bold;
 }
