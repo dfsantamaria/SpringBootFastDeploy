@@ -54,7 +54,7 @@ public class UserAccount implements Serializable
     
     private boolean isAccountNonExpired;
         
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
     @JoinTable(name = "user_to_privileges",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "privilege_id",  referencedColumnName = "id", nullable = false)})
