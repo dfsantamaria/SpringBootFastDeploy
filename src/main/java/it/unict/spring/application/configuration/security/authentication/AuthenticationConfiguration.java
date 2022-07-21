@@ -1,8 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package it.unict.spring.application.configuration.security.authentication;
+
+/**
+ *
+ * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ */
 
 import it.unict.spring.application.service.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-/**
- *
- * @author danie
- */
+
 @Configuration
 public class AuthenticationConfiguration
 {

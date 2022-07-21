@@ -1,14 +1,15 @@
 package it.unict.spring.application.controller.data.authaccess;
 
+/**
+ *
+ * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ */
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- *
- * @author danie
- */
 
 @RestController
 @RequestMapping("/auth/api/superadmin")

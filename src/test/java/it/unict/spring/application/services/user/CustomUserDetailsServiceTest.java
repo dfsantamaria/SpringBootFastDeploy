@@ -1,8 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+package it.unict.spring.application.services.user;
+
+/**
+ *
+ * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
  */
-package it.unict.spring.application.persistence;
 
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
 import it.unict.spring.application.persistence.model.user.UserAccount;

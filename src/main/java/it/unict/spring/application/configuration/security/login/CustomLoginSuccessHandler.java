@@ -1,6 +1,10 @@
 package it.unict.spring.application.configuration.security.login;
 
-import it.unict.spring.application.utility.user.CustomUserDetails;
+/**
+ *
+ * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ */
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

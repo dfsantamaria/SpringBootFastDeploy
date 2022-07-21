@@ -6,7 +6,6 @@ package it.unict.spring.application;
  */
 
 import it.unict.spring.application.exception.user.MultipleUsersFoundException;
-import it.unict.spring.application.persistence.model.user.SecureToken;
 import it.unict.spring.application.persistence.model.user.UserAccount;
 import it.unict.spring.application.persistence.model.user.UserRegister;
 import it.unict.spring.application.service.user.PrivilegeService;

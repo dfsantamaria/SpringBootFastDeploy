@@ -1,8 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package it.unict.spring.application.configuration.security.logout;
+
+/**
+ *
+ * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ */
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -11,10 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
-/**
- *
- * @author danie
- */
+
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler
 {
     @Override

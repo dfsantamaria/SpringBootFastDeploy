@@ -1,14 +1,11 @@
-package it.unict.spring.application.persistence;
+package it.unict.spring.application.services.user;
 
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
  */
 
-//remember to modify the file schema.sql if the name of "data" schema changes
-
-import it.unict.spring.application.persistence.model.data.Data;
-import it.unict.spring.application.service.data.DataService;
+import it.unict.spring.application.persistence.model.user.Organization;
 import it.unict.spring.application.service.user.OrganizationService;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -26,28 +23,29 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+
+//remember to modify the file schema.sql if the name of "user" schema changes
+
 @ActiveProfiles("test")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.ANY, connection=EmbeddedDatabaseConnection.H2)
-//@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(classes={OrganizationService.class}, loader = AnnotationConfigContextLoader.class)
 @EntityScan(basePackages =  {"it.unict.spring.application.persistence.model"})
 @EnableJpaRepositories(basePackages = {"it.unict.spring.application.persistence.repository"})
 @Transactional
-public class DataServiceTest
+public class OrganizationServiceTest
 {
 
-    //@Autowired
-   // private TestEntityManager entityManager;
+    
     @SpyBean
-    private  DataService dataServ;    
-    private String todo="something";
+    private  OrganizationService orgServ;    
+    private final String organization="Univerity of Catania";
         
     
     @BeforeEach    
     public void createOrganization()
     {
-        assertNotNull(dataServ.save(new Data(todo)));
+        assertNotNull(orgServ.save(new Organization(organization)));
        // Organization persist = entityManager.persist(new Organization(organization));
        // assertNotNull(persist);
     }
@@ -56,9 +54,9 @@ public class DataServiceTest
     public void testFindByName()
     {
         
-        List<Data> orgs = dataServ.findByName(todo);
+        List<Organization> orgs = orgServ.findByName(organization);
         assertEquals(1, orgs.size());
-        assertEquals(orgs.get(0).getName(),todo); 
+        assertEquals(orgs.get(0).getName(),organization); 
         
     }
 }

@@ -1,4 +1,4 @@
-package it.unict.spring.application.persistence;
+package it.unict.spring.application.services.user;
 
 /**
  *

@@ -1,11 +1,14 @@
-package it.unict.spring.application.persistence;
+package it.unict.spring.application.services.data;
 
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
  */
 
-import it.unict.spring.application.persistence.model.user.Organization;
+//remember to modify the file schema.sql if the name of "data" schema changes
+
+import it.unict.spring.application.persistence.model.data.Data;
+import it.unict.spring.application.service.data.DataService;
 import it.unict.spring.application.service.user.OrganizationService;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -23,9 +26,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-
-//remember to modify the file schema.sql if the name of "user" schema changes
-
 @ActiveProfiles("test")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.ANY, connection=EmbeddedDatabaseConnection.H2)
@@ -33,30 +33,27 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 @EntityScan(basePackages =  {"it.unict.spring.application.persistence.model"})
 @EnableJpaRepositories(basePackages = {"it.unict.spring.application.persistence.repository"})
 @Transactional
-public class OrganizationServiceTest
+public class DataServiceTest
 {
 
-    
     @SpyBean
-    private  OrganizationService orgServ;    
-    private final String organization="Univerity of Catania";
+    private  DataService dataServ;    
+    private String todo="something";
         
     
     @BeforeEach    
     public void createOrganization()
     {
-        assertNotNull(orgServ.save(new Organization(organization)));
+        assertNotNull(dataServ.save(new Data(todo)));
        // Organization persist = entityManager.persist(new Organization(organization));
        // assertNotNull(persist);
     }
     
     @Test
     public void testFindByName()
-    {
-        
-        List<Organization> orgs = orgServ.findByName(organization);
+    {        
+        List<Data> orgs = dataServ.findByName(todo);
         assertEquals(1, orgs.size());
-        assertEquals(orgs.get(0).getName(),organization); 
-        
+        assertEquals(orgs.get(0).getName(),todo);         
     }
 }

@@ -11,8 +11,6 @@ import it.unict.spring.application.persistence.model.user.UserAccount;
 import java.util.List;
 
 
-
-
 public interface OrganizationServiceInterface
 {
     List<Organization> findAll();

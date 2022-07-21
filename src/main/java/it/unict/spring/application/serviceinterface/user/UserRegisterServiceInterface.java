@@ -9,6 +9,7 @@ import java.util.List;
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
  */
+
 public interface UserRegisterServiceInterface
 {
     List<UserRegister> findAll();

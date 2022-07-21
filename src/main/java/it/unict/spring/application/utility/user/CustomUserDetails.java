@@ -1,5 +1,10 @@
 package it.unict.spring.application.utility.user;
 
+/**
+ *
+ * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ */
+
 import it.unict.spring.application.persistence.model.user.Privilege;
 import it.unict.spring.application.persistence.model.user.UserAccount;
 import java.util.ArrayList;

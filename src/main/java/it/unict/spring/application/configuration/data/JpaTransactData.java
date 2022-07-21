@@ -1,5 +1,10 @@
 package it.unict.spring.application.configuration.data;
 
+/**
+ *
+ * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ */
+
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.EntityManagerFactory;

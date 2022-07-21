@@ -1,8 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package it.unict.spring.application.service.user;
+
+/**
+ *
+ * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ */
 
 import it.unict.spring.application.dto.user.UserRegisterDTO;
 import it.unict.spring.application.persistence.model.user.UserAccount;
@@ -14,18 +15,13 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author danie
- */
+
 @Service
 public class UserRegisterService implements UserRegisterServiceInterface
 {
     @Autowired
     UserRegisterRepository repository;
-   // @Autowired
-    //UserService userService; 
-    
+      
     @Override
     public List<UserRegister> findAll()
     {
