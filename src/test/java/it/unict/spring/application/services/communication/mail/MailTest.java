@@ -22,15 +22,14 @@ import org.springframework.test.context.ActiveProfiles;
 public class MailTest 
 {  
     @SpyBean
-    private CustomMailService mailService;
-    private String to="youremail";
+    private CustomMailService mailService;    
 
     @Disabled
     @Test
     public void emailTest() throws MessagingException
     {
         String recipient = "example@example.com";      
-        mailService.sendSimpleEmail(to, "test subject", recipient );        
+        mailService.sendSimpleEmail(mailService.getSenderMail(), "test subject", recipient );        
     }
     
     
