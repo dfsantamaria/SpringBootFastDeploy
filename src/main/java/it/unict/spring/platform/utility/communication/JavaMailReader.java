@@ -26,7 +26,7 @@ public class JavaMailReader
 
     public void connect() throws MessagingException
     {
-       store.connect(host, username, password);
+       store.connect(host, username, password);       
     }
 
     public Store getStore()
