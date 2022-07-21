@@ -5,6 +5,7 @@ package it.unict.spring.platform.configuration.communication;
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
  */
 
+import it.unict.spring.platform.utility.communication.JavaMailReader;
 import java.util.Properties;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
@@ -19,10 +20,10 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 public class MailConfiguration
 {
     @Bean
-    public JavaMailSenderImpl emailSender(@Value("${spring.mail.host}") String emailHost,
-                                          @Value("${spring.mail.port}") Integer emailPort,
-                                          @Value("${spring.mail.username}") String username,
-                                          @Value("${spring.mail.password}") String password)
+    public JavaMailSenderImpl emailSender(@Value("${mailsender.mail.host}") String emailHost,
+                                          @Value("${mailsender.mail.port}") Integer emailPort,
+                                          @Value("${mailsender.mail.username}") String username,
+                                          @Value("${mailsender.mail.password}") String password)
                                           
     {
         JavaMailSenderImpl emailSender = new JavaMailSenderImpl();
@@ -41,7 +42,10 @@ public class MailConfiguration
     
     
     @Bean
-    public Store emailReader(@Value("imaps") String protocol) throws NoSuchProviderException, MessagingException
+    public JavaMailReader emailReader(@Value("imaps") String protocol,
+                                            @Value("${mailreceiver.mail.host}")  String host,
+                                            @Value("${mailreceiver.mail.password}")  String password,
+                                            @Value("${mailreceiver.mail.username}") String username) throws NoSuchProviderException, MessagingException
     {
       Properties mailProps = new Properties();
       mailProps.setProperty("mail.transport.protocol","smtp");
@@ -50,7 +54,7 @@ public class MailConfiguration
       mailProps.setProperty("mail.debug","false");
       Session session = Session.getDefaultInstance(mailProps);   
       Store store = session.getStore(protocol);      
-      return store;
+      return new JavaMailReader (store, host, username, password);
     }
     
 }

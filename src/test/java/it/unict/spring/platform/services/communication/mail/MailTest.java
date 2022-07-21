@@ -31,11 +31,11 @@ public class MailTest
     @SpyBean
     private CustomMailService mailService;        
     
-    private final String subject=MailTest.class+Timestamp.valueOf(LocalDateTime.now()).toString();
+    private final String subject=MailTest.class+"-"+Timestamp.valueOf(LocalDateTime.now()).toString();
         
     
     @BeforeEach
-    //Send an email containing a timestamp, we then check the inbox for such email
+    //Send myself an email  containing a timestamp, we then check the inbox for such email
     public void emailTest() throws MessagingException
     {
         String recipient = "example@example.com";      
