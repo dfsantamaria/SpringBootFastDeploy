@@ -17,10 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 
 @Service
-@PropertySource(value = "classpath:application.properties")
 public class CustomMailService implements MailServiceInterface
 {
 
