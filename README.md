@@ -2,6 +2,10 @@
 
 This repository allows for a fast and secure deployment of a pre-packaged Springboot 2.7.1 application that is also high customizable. You can start you own Springboot appication in a moment with minimum effort. The project is organized as follows.
 
+## Licensing information
+Copyright (C) 2022.  Daniele Francesco Santamaria. This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
+
+
 ## Database Layer
 
 A double-sourced Database is provided: one called "userSource" for users and login and one for data entries, called "dataSource". The configuration files are  available at /application/configuration/user/JpaTransactUser.java and /application/configuration/data/JpaTransactData.java, respectively. Edit the application.properties file in /resources for to configure your database credentials. In the folder /application/persistence/model, you can find the @Entity classes: the folder /user is dedicated to the user account data, while the data entries model are available in the subfolder /data. If you change the name of the catalogs, remember also to update the file /test/resources/schema.sql used for the JUnit module and the content of the test file ApplicationTest.java in the /context subfolder.
