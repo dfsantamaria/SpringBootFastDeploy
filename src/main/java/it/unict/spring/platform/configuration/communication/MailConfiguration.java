@@ -6,6 +6,10 @@ package it.unict.spring.platform.configuration.communication;
  */
 
 import java.util.Properties;
+import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
+import javax.mail.Session;
+import javax.mail.Store;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,4 +38,19 @@ public class MailConfiguration
         emailSender.setJavaMailProperties(mailProps);
         return emailSender;
     }
+    
+    
+    @Bean
+    public Store emailReader(@Value("imaps") String protocol) throws NoSuchProviderException, MessagingException
+    {
+      Properties mailProps = new Properties();
+      mailProps.setProperty("mail.transport.protocol","smtp");
+      mailProps.setProperty("mail.smtp.auth","true");
+      mailProps.setProperty("mail.smtp.starttls.enable","true");
+      mailProps.setProperty("mail.debug","false");
+      Session session = Session.getDefaultInstance(mailProps);   
+      Store store = session.getStore(protocol);      
+      return store;
+    }
+    
 }

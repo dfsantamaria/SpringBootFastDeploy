@@ -7,6 +7,8 @@ package it.unict.spring.platform.service.communication;
 
 import it.unict.spring.platform.serviceinterface.communication.MailServiceInterface;
 import java.io.FileNotFoundException;
+import javax.mail.Folder;
+import javax.mail.Message;
 import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -16,6 +18,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import javax.mail.MessagingException;
+import javax.mail.Store;
 import org.springframework.beans.factory.annotation.Value;
 
 @Service
@@ -24,9 +27,29 @@ public class CustomMailService implements MailServiceInterface
 
  @Autowired
  public JavaMailSender emailSender;
+ @Autowired
+ public Store emailReader;
 
  @Value("${spring.mail.username}")
- String senderMail="";
+ String senderMail=""; 
+ @Value("${spring.mail.host}") String host;
+ @Value("${spring.mail.password}") String password;
+ 
+
+  public void closeReader() throws MessagingException
+  {
+    emailReader.close();
+  }
+ 
+  public Message[] getInbox() throws MessagingException
+    {        
+      emailReader.connect(host, senderMail, password);
+      Folder emailFolder = emailReader.getFolder("INBOX");
+      emailFolder.open(Folder.READ_ONLY);
+      // retrieve the messages from the folder in an array and print it
+      Message[] messages=emailFolder.getMessages().clone();       
+      return messages;
+    }
  
  @Override
  public void sendSimpleEmail(String toAddress, String subject, String message) {
