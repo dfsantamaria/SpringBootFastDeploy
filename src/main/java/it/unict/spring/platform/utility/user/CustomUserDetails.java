@@ -10,6 +10,8 @@ import it.unict.spring.platform.persistence.model.user.UserAccount;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +29,9 @@ public class  CustomUserDetails implements UserDetails
     public Collection<? extends GrantedAuthority> getAuthorities()
     {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for ( Privilege privilege : user.getPrivileges()) {
+        Set<Privilege> privileges = user.getPrivileges();
+        Hibernate.initialize(privileges);
+        for (Privilege privilege : privileges) {
             authorities.add(new SimpleGrantedAuthority(privilege.getName()));
         }
         return authorities;
