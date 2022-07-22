@@ -6,6 +6,8 @@ package it.unict.spring.platform.persistence.model.user;
  */
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -48,11 +50,11 @@ public class UserAccount implements Serializable
     
     private boolean isEnabled;
     
-    private boolean isCredentialsNonExpired;
+    private Timestamp credentialExpire;
     
     private boolean isAccountNonLocked;
     
-    private boolean isAccountNonExpired;
+    private Timestamp accountExpire;
         
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
     @JoinTable(name = "user_to_privileges",
@@ -81,22 +83,19 @@ public class UserAccount implements Serializable
 
     public UserAccount() {
          super();
-         this.isEnabled=false;
-         this.isCredentialsNonExpired=true;
-         this.isAccountNonLocked=true;
-         this.isAccountNonExpired=true;
-         
+         this.isEnabled=false;        
+         this.isAccountNonLocked=true;        
     }
     
-    public UserAccount(String username, String password, String mail) {
+    public UserAccount(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire) {
         super();
         this.username=username;
         this.password=password;         
         this.mail=mail;     
         this.isEnabled = false;
-        this.isCredentialsNonExpired=true;
+        this.credentialExpire=credentialExpire;
         this.isAccountNonLocked=true;
-        this.isAccountNonExpired=true;
+        this.accountExpire = accountExpire;
     }
     //
     public Long getId() {
@@ -112,8 +111,7 @@ public class UserAccount implements Serializable
     }
 
     public void addPrivileges(Privilege priv)
-    {
-     // priv.addUser(this);
+    {     
       this.privileges.add(priv);
      }
     
@@ -128,8 +126,7 @@ public class UserAccount implements Serializable
     }
     
      public void removePrivileges(Privilege priv)
-    {
-     // priv.addUser(this);
+    {     
       this.privileges.remove(priv);
      }
     
@@ -201,9 +198,18 @@ public class UserAccount implements Serializable
     
     public boolean isCredentialsNonExpired()
     {
-         return this.isCredentialsNonExpired;
+         return this.credentialExpire.after(Timestamp.valueOf(LocalDateTime.now()));
     }
-
+    
+    public Timestamp getCredentialsExpire()
+    {
+         return this.credentialExpire;
+    }
+    
+    public Timestamp getUserAccountExpire()
+    {
+         return this.accountExpire;
+    }
     public boolean isAccountNonLocked()
     {
        return this.isAccountNonLocked;    
@@ -211,22 +217,22 @@ public class UserAccount implements Serializable
 
     public boolean isAccountNonExpired()
     {
-      return this.isAccountNonExpired;
+      return this.accountExpire.after(Timestamp.valueOf(LocalDateTime.now()));
     }
     
-    public void setIsCredentialsNonExpired(boolean val)
+    public void setCredentialsExpire(Timestamp val)
     {
-      this.isCredentialsNonExpired=val;
+      this.credentialExpire=val;
     }
 
-    public void setIsAccountNonLocked(boolean val)
+    public void setAccountNonLocked(boolean val)
     {
        this.isAccountNonLocked=val;    
     }
 
-    public void setIsAccountNonExpired(boolean val)
+    public void setAccountExpire(Timestamp val)
     {
-      this.isAccountNonExpired=val;
+      this.accountExpire=val;
     }    
     
     public UserRegister getRegister()

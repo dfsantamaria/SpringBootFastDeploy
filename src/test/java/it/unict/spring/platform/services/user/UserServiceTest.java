@@ -10,6 +10,8 @@ package it.unict.spring.platform.services.user;
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.UserService;
+import it.unict.spring.platform.utility.user.UserExpirationInformation;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.transaction.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,7 +54,10 @@ public class UserServiceTest
        List<UserAccount> users = userServ.findByUsername(username);
        if(users.isEmpty())
        {
-          UserAccount user = userServ.getSuperAdminUser(username, "lll@@", mail, "Univeristy of Catania");
+          UserAccount user = userServ.getSuperAdminUser(username, "lll@@", mail,
+                                                         UserExpirationInformation.getAccountExpirationDate(),
+                                                                 UserExpirationInformation.getCredentialExpirationDate(),
+                                                         "Univeristy of Catania");
           userServ.setEnabled(user, true);          
        }
        users = userServ.findByUsername(username);

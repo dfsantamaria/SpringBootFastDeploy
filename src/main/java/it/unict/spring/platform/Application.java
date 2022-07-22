@@ -12,6 +12,7 @@ import it.unict.spring.platform.service.user.PrivilegeService;
 import it.unict.spring.platform.service.user.SecureTokenService;
 import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
+import it.unict.spring.platform.utility.user.UserExpirationInformation;
 import java.sql.SQLException;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -109,7 +110,10 @@ public class Application extends SpringBootServletInitializer
            privService.startUpPrivileges();            
            if(userService.findByMail("daniele.santamaria@unict.it").isEmpty())
            {
-              UserAccount user = userService.getSuperAdminUser("dfsantamaria", "lll@@", "daniele.santamaria@unict.it", "Univeristy of Catania");
+              UserAccount user = userService.getSuperAdminUser("dfsantamaria", "lll@@", "daniele.santamaria@unict.it",
+                                                                 UserExpirationInformation.getAccountExpirationDate(),
+                                                                 UserExpirationInformation.getCredentialExpirationDate(),
+                                                                 "Univeristy of Catania");
               userService.setEnabled(user, true); //enable user              
               UserRegister register=new UserRegister("Daniele", "Francesco", "Santamaria");
               userService.setRegister(register, user);         

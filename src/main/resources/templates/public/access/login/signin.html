@@ -21,7 +21,11 @@
                  <div th:if="${param.errorExpired}" class="has-error">   User account is expired.   </div>
                  <div th:if="${param.errorLocked}" class="has-error">     User account is locked.  </div>
                 <div th:if="${param.errorCredentials}" class="has-error"> User credentials are expired.  </div>
+                <div th:if="${param.tokenFailed}" class="has-error"> You registration is expired.  </div>
+                      
                 <div th:if="${param.logout}" class="alert-success">     You have been logged out.  </div>
+
+                <div th:if="${param.tokenSuccess}" class="alert-success">     You registration have been verified.  </div>
 
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
                 <div class="left-align"><td><a th:href="@{/public/api/access/registration/register}"> Register a new account</a></td></div>

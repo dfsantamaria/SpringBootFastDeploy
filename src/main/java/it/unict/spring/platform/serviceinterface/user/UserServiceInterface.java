@@ -13,6 +13,8 @@ import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.persistence.model.user.SecureToken;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -31,19 +33,19 @@ public interface UserServiceInterface
     void addOrganizationToUser(Organization org, UserAccount user);
     void addPrivilegeToUser(Privilege privilege, UserAccount user);
     
-    UserAccount getUser(String username, String password, String mail, String organization, Privilege priv) throws MultipleUsersFoundException;
+    UserAccount getUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization, Privilege priv) throws MultipleUsersFoundException;
 
     
-    UserAccount getAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
+    UserAccount getAdminUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException;
     
-    UserAccount getStaffUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
+    UserAccount getStaffUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException;
    
-    UserAccount getStandardUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
+    UserAccount getStandardUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException;
     UserAccount getStandardUser(UserAccount user);
    
-    UserAccount getSuperAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException;
+    UserAccount getSuperAdminUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire ,String organization) throws MultipleUsersFoundException;
     
-    UserAccount mapFromUserDTO(UserAccountDTO userdto, UserRegister register, Organization organization) throws MultipleUsersFoundException;
+    UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException;
     
     
     //void setUserRegister(UserRegister register, UserAccount user);

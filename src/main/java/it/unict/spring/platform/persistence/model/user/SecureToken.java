@@ -39,7 +39,7 @@ public class SecureToken implements Serializable
 
     @Column(updatable = false)
     @Basic(optional = false)
-    private LocalDateTime expireAt;
+    private Timestamp expireAt;
 
     @MapsId("user_id")
     @JoinColumn(name = "user_id", referencedColumnName ="id")
@@ -55,7 +55,7 @@ public class SecureToken implements Serializable
     }
           
     
-    public SecureToken(String token, String tokenType, Timestamp timestamp, LocalDateTime expire)
+    public SecureToken(String token, String tokenType, Timestamp timestamp, Timestamp expire)
     {
        super();
        this.token=token;       
@@ -67,7 +67,7 @@ public class SecureToken implements Serializable
     
     public boolean isExpired()
     {
-        return getExpireAt().isBefore(LocalDateTime.now()); // this is generic implementation, you can always make it timezone specific
+        return getExpireAt().before(Timestamp.valueOf(LocalDateTime.now())); // this is generic implementation, you can always make it timezone specific
     }
    
     public SecureTokenId getId()
@@ -85,7 +85,7 @@ public class SecureToken implements Serializable
         return this.tokenId.getTokenType();
     }
             
-    public LocalDateTime getExpireAt()
+    public Timestamp getExpireAt()
     {
       return this.expireAt;
     }

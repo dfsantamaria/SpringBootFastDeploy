@@ -74,7 +74,7 @@ public class SecureTokenService implements SecureTokenServiceInterface
       LocalDateTime expire= LocalDateTime.now().plusHours(12);
       SecureToken token = new SecureToken(Base64.encodeBase64URLSafeString(random),
                                           tokenType,
-                                          timestamp, expire);                                             
+                                          timestamp, Timestamp.valueOf(expire));                                             
       
       return token;
     }

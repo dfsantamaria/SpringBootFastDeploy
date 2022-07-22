@@ -15,6 +15,8 @@ import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.service.user.OrganizationService;
 import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
+import it.unict.spring.platform.utility.user.UserExpirationInformation;
+import java.time.LocalDateTime;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -81,7 +83,9 @@ public class RegistrationController
          UserRegister userreg=regService.mapFromUserRegister(userregdto);
          try 
           {
-            UserAccount user=userService.mapFromUserDTO(userdto, userreg, organization);           
+            UserAccount user=userService.mapFromUserDTO(userdto, UserExpirationInformation.getAccountExpirationDate(),
+                                                                 UserExpirationInformation.getCredentialExpirationDate(),
+                                                                 userreg, organization);           
             userService.sendRegistrationMail(user);
           } 
           catch (MultipleUsersFoundException ex)

@@ -37,8 +37,8 @@ public class CustomUserDetailsService implements UserDetailsService
            throw new UsernameNotFoundException(username);                
         if (!users.get(0).isEnabled())
            throw new UserNotEnabledException(username);
-        if(!users.get(0).isAccountNonExpired())
-            throw new UserAccountExpiredException(username);
+        if(!users.get(0).isAccountNonExpired())        
+            throw new UserAccountExpiredException(username);        
         if(!users.get(0).isAccountNonLocked())
             throw new UserAccountLockedException(username);
         if(!users.get(0).isCredentialsNonExpired())

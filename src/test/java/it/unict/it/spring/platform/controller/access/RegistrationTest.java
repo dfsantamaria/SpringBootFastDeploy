@@ -8,6 +8,8 @@ package it.unict.it.spring.platform.controller.access;
 import it.unict.spring.platform.Application;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.UserService;
+import it.unict.spring.platform.utility.user.UserExpirationInformation;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -40,7 +42,8 @@ public class RegistrationTest
     @Transactional
     public void isRegistrationSavingData() throws Exception
     {
-      UserAccount user= new UserAccount("testName", "PlainPassword", "test@mail.com");
+      UserAccount user= new UserAccount("testName", "PlainPassword", "test@mail.com", UserExpirationInformation.getAccountExpirationDate(),
+                                                                 UserExpirationInformation.getCredentialExpirationDate());
       this.clearUser(user);       
       mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/registerUser"))
                                                .param("username", user.getUsername())
@@ -57,7 +60,8 @@ public class RegistrationTest
     @Transactional
     public void isRegistrationFailingPasswordMismatch() throws Exception
     {
-      UserAccount user= new UserAccount("testName", "PlainPassword", "test@mail.com");
+      UserAccount user= new UserAccount("testName", "PlainPassword", "test@mail.com", UserExpirationInformation.getAccountExpirationDate(),
+                                                                 UserExpirationInformation.getCredentialExpirationDate());
       this.clearUser(user);      
       mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/registerUser"))
                                                .param("username", user.getUsername())

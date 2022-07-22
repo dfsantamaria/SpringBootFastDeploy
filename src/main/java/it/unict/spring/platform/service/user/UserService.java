@@ -15,6 +15,8 @@ import it.unict.spring.platform.serviceinterface.user.UserServiceInterface;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.persistence.repository.user.UserRepository;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -110,15 +112,16 @@ public class UserService implements UserServiceInterface
 
     @Override 
     @Transactional
-    public UserAccount getAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
+    public UserAccount getAdminUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException
     {
       Privilege priv= privilegeService.getAdminPrivilege(); 
-      return this.getUser(username, password, mail, organization, priv);
+      return this.getUser(username, password, mail, accountExpire,  credentialExpire, organization, priv);
     }
     
     @Override
     @Transactional
-    public UserAccount getUser(String username, String password, String mail, String organization, Privilege priv) throws MultipleUsersFoundException
+    public UserAccount getUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire,
+                               String organization, Privilege priv) throws MultipleUsersFoundException
     {         
         List<UserAccount> users = repository.findByMail(mail);    
         users.addAll(repository.findByUsername(username));
@@ -130,7 +133,7 @@ public class UserService implements UserServiceInterface
         else if(users.isEmpty())        
            {              
             Organization org = organizationService.getOrSetOrganization(organization); 
-            user=new UserAccount(username,getPasswordEncoder.encode(password), mail);                            
+            user=new UserAccount(username,getPasswordEncoder.encode(password), mail, accountExpire, credentialExpire);                            
             this.addOrganizationToUser(org,user); //user.addOrganization(org);           
             organizationService.addUserToOrganization(user, org);
             this.addPrivilegeToUser(priv, user); //user.addPrivileges(priv);  
@@ -142,18 +145,18 @@ public class UserService implements UserServiceInterface
 
     @Override
     @Transactional
-    public UserAccount getStaffUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
+    public UserAccount getStaffUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException
     {
       Privilege priv= privilegeService.getStaffPrivilege(); 
-      return this.getUser(username, password, mail, organization, priv);    
+      return this.getUser(username, password, mail, accountExpire, credentialExpire, organization, priv);    
     }
 
     @Override
     @Transactional
-    public UserAccount getStandardUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
+    public UserAccount getStandardUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException
     {
       Privilege priv= privilegeService.getStandardUserPrivilege(); 
-      return this.getUser(username, password, mail, organization, priv);       
+      return this.getUser(username, password, mail, accountExpire,  credentialExpire, organization, priv);       
     }
     
     @Override
@@ -171,19 +174,19 @@ public class UserService implements UserServiceInterface
 
     @Override
     @Transactional
-    public UserAccount getSuperAdminUser(String username, String password, String mail, String organization) throws MultipleUsersFoundException
+    public UserAccount getSuperAdminUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException
     {
       Privilege priv= privilegeService.getSuperAdminPrivilege(); 
-      return this.getUser(username, password, mail, organization, priv);       
+      return this.getUser(username, password, mail, accountExpire, credentialExpire, organization, priv);       
     }
 
     @Override
     @Transactional
-    public UserAccount mapFromUserDTO(UserAccountDTO userdto, UserRegister register, Organization organization) throws MultipleUsersFoundException
+    public UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException
     {               
       UserAccount user= this.getStandardUser(userdto.getUsername(),
                         userdto.getPassword(),
-                        userdto.getMail(),
+                        userdto.getMail(), accountExpire, credentialExpire,
                         organization.getName());
       this.setRegister(register, user);
       return user;
