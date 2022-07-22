@@ -16,8 +16,8 @@ import org.springframework.stereotype.Repository;
 public interface SecureTokenRepository extends JpaRepository<SecureToken, Long> 
 {    
  @Override
- List<SecureToken> findAll();
- 
+ List<SecureToken> findAll(); 
+ List<SecureToken> findByToken(String token); 
  List<SecureToken> findByUser(UserAccount user);
  @Override 
  SecureToken save(SecureToken user);   

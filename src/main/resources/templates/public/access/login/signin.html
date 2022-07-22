@@ -22,7 +22,7 @@
                  <div th:if="${param.errorLocked}" class="has-error">     User account is locked.  </div>
                 <div th:if="${param.errorCredentials}" class="has-error"> User credentials are expired.  </div>
                 <div th:if="${param.tokenFailed}" class="has-error"> You registration is expired.  </div>
-                      
+                <div th:if="${param.confirmReg}" class="alert-do"> We sent an email.Check your inbox to finalize the registration.  </div>      
                 <div th:if="${param.logout}" class="alert-success">     You have been logged out.  </div>
 
                 <div th:if="${param.tokenSuccess}" class="alert-success">     You registration have been verified.  </div>

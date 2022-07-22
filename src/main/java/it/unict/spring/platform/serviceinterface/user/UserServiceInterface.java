@@ -14,7 +14,6 @@ import it.unict.spring.platform.persistence.model.user.SecureToken;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -47,9 +46,11 @@ public interface UserServiceInterface
     
     UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException;
     
-    
-    //void setUserRegister(UserRegister register, UserAccount user);
     void addRegisterToUser(UserRegister register, UserAccount user);
+    void setRegister(UserRegister register, UserAccount user);
     
-    void sendRegistrationMail(UserAccount user);
+    SecureToken assignTokenToUser(UserAccount user);
+    boolean checkToken(String token);
+    
+    void sendRegistrationMail(UserAccount user, String url);
 }

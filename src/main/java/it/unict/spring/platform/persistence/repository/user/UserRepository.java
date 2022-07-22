@@ -7,6 +7,7 @@ package it.unict.spring.platform.persistence.repository.user;
 
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,8 @@ public interface UserRepository extends JpaRepository<UserAccount, Long>
 {
     List<UserAccount> findByUsername(String username);
     List<UserAccount> findByMail(String email);    
+    @Override
+    Optional<UserAccount> findById(Long id);
     @Override
     List<UserAccount> findAll();
     @Override 

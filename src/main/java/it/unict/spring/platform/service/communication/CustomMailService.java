@@ -19,13 +19,14 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import javax.mail.MessagingException;
-import javax.mail.Store;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 @Service
 public class CustomMailService implements MailServiceInterface
 {
-
+ private static final Logger applogger = LoggerFactory.getLogger(CustomMailService.class);  
  @Autowired
  public JavaMailSender emailSender;
  @Autowired
@@ -58,6 +59,7 @@ public class CustomMailService implements MailServiceInterface
   simpleMailMessage.setSubject(subject);
   simpleMailMessage.setText(message);
   emailSender.send(simpleMailMessage);
+  applogger.info("sending to "+ toAddress +" - " + subject +" - "+ message);
  }
  
  @Override

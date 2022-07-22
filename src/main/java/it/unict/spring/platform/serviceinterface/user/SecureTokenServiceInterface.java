@@ -18,5 +18,6 @@ public interface SecureTokenServiceInterface
     void delete(SecureToken token);  
     void addUserToToken(UserAccount user, SecureToken token);
     List<SecureToken> findByUser(UserAccount user);
+    List<SecureToken> findByToken(String token);
     
 }

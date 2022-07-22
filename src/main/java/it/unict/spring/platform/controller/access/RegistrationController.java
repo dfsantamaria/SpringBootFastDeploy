@@ -16,7 +16,6 @@ import it.unict.spring.platform.service.user.OrganizationService;
 import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
-import java.time.LocalDateTime;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -24,9 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -85,8 +86,10 @@ public class RegistrationController
           {
             UserAccount user=userService.mapFromUserDTO(userdto, UserExpirationInformation.getAccountExpirationDate(),
                                                                  UserExpirationInformation.getCredentialExpirationDate(),
-                                                                 userreg, organization);           
-            userService.sendRegistrationMail(user);
+                                                                 userreg, organization);  
+            
+            userService.sendRegistrationMail(user, request.getRequestURL().toString());
+            
           } 
           catch (MultipleUsersFoundException ex)
            {
@@ -95,7 +98,19 @@ public class RegistrationController
             return new ModelAndView("public/access/registration/register");
            }
          
-         return  new ModelAndView("redirect:/");
+         return  new ModelAndView("redirect:/public/api/access/login/signin?confirmReg");
      }
+     
+     @GetMapping("/registerUser/regitrationConfirm")
+     public ModelAndView confirmRegistration(HttpServletRequest request,HttpServletResponse response,
+                                      @RequestParam("token") String token, Model model)
+     {
+        
+       if(userService.checkToken(token))
+          return  new ModelAndView("redirect:/public/api/access/login/signin?tokenSuccess");
+       else 
+          return new ModelAndView("redirect:/public/api/access/login/signin?tokenFailed");
+     }
+     
     
 }

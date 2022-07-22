@@ -64,15 +64,22 @@ button {
 }
 
 .has-error {
-    color: white;
+    color: black;
     background-color: red;
     text-align: center;
     font-weight: bold;
 }
 
+.alert-do {
+    color: black;
+    background-color: yellow;
+    text-align: center;
+    font-weight: bold;
+}
+
 .alert-success {
-    color: white;
-    background-color: green;
+    color: black;
+    background-color: lightgreen;
     text-align: center;
     font-weight: bold;
 }

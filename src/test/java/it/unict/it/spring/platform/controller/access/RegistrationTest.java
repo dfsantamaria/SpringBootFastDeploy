@@ -6,12 +6,15 @@ package it.unict.it.spring.platform.controller.access;
  */
 
 import it.unict.spring.platform.Application;
+import it.unict.spring.platform.persistence.model.user.SecureToken;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
-import java.time.LocalDateTime;
 import java.util.List;
 import javax.transaction.Transactional;
+import org.hibernate.Hibernate;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -52,8 +55,8 @@ public class RegistrationTest
                                                .param("mail", user.getMail())
                                                .param("name", "test organization").with(csrf())
                 )
-           .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/"));                
-    this.clearUser(user); 
+           .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/public/api/access/login/signin?confirmReg"));                
+      this.clearUser(user); 
     }
     
     @Test
@@ -75,6 +78,31 @@ public class RegistrationTest
       
       this.clearUser(user);   
     }
+    
+    
+    @Test
+    @Transactional
+    public void isVerifyingToken() throws Exception
+    {
+      UserAccount user= new UserAccount("testName2", "PlainPassword", "test2@mail.com", UserExpirationInformation.getAccountExpirationDate(),
+                                                                 UserExpirationInformation.getCredentialExpirationDate());
+      this.clearUser(user);
+      
+      user = service.getStandardUser(user);
+      SecureToken token=service.assignTokenToUser(user);
+      
+      assertFalse(user.isEnabled());
+      
+      mvc.perform(MockMvcRequestBuilders.get("/public/api/access/registration/registerUser/regitrationConfirm").param("token", token.getToken()))
+               .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/public/api/access/login/signin?tokenSuccess"));                
+          
+     
+      //assertTrue(service.findByUsername(user.getUsername()).get(0).isEnabled());
+      assertTrue(service.findById(user.getId()).isEnabled());
+      
+      this.clearUser(user); 
+    }
+    
     
     private void clearUser(UserAccount user)
     {

@@ -15,11 +15,13 @@ import it.unict.spring.platform.serviceinterface.user.UserServiceInterface;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.persistence.repository.user.UserRepository;
+import it.unict.spring.platform.service.communication.CustomMailService;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import javax.transaction.Transactional;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,6 +42,8 @@ public class UserService implements UserServiceInterface
     SecureTokenService secureTokenService;
     @Autowired
     UserRegisterService registryService;
+    @Autowired
+    CustomMailService mailService;
     
     @Autowired
     PasswordEncoder getPasswordEncoder;
@@ -82,6 +86,11 @@ public class UserService implements UserServiceInterface
     public List<UserAccount> findByMail(String email)
     {
       return repository.findByMail(email);
+    }
+    
+    public UserAccount findById(Long id)
+    {
+      return repository.findById(id).get();
     }
     
     @Override
@@ -194,12 +203,22 @@ public class UserService implements UserServiceInterface
 
     @Override
     @Transactional
-    public void sendRegistrationMail(UserAccount user)
+    public SecureToken assignTokenToUser(UserAccount user)
     {
       SecureToken token = secureTokenService.generateToken("FReg");
       secureTokenService.addUserToToken(user, token);
       this.addTokenToUser(token, user);
       this.save(user);
+      return token;
+    }        
+    
+    @Override    
+    public void sendRegistrationMail(UserAccount user, String url)
+    {
+      SecureToken token=this.assignTokenToUser(user);
+      mailService.sendSimpleEmail(user.getMail(), "Confirm registration", url+"/regitrationConfirm?token=" + token.getToken());
+     // ;
+      
     }
 
     @Override
@@ -230,14 +249,32 @@ public class UserService implements UserServiceInterface
       user.setRegister(register);      
     }
     
-    
+    @Override
     @Transactional
     public void setRegister(UserRegister register, UserAccount user)            
     {        
       registryService.setUser(register, user);
       registryService.save(register);
       this.addRegisterToUser(register, user);
-      this.save(user);
+      this.save(user);      
+    }
+    
+    @Override
+    public boolean checkToken(String token)
+    {
+      SecureToken sec= secureTokenService.findByToken(token).get(0);
+      if( sec.getExpireAt().after(Timestamp.valueOf(LocalDateTime.now())))
+      {
+         UserAccount user=this.findById(sec.getId().getTokenId());
+         if(!user.isEnabled())
+         {
+            Hibernate.initialize(user);
+             user.setEnabled(true);
+             this.save(user);
+             return true;
+         }
+      }
+      return false;
     }
   
 }
