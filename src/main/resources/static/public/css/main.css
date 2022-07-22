@@ -64,6 +64,7 @@ button {
 }
 
 .has-error {
+    margin-top: 3px; 
     color: black;
     background-color: red;
     text-align: center;
@@ -71,6 +72,7 @@ button {
 }
 
 .alert-do {
+    margin-top: 3px; 
     color: black;
     background-color: yellow;
     text-align: center;
@@ -78,6 +80,7 @@ button {
 }
 
 .alert-success {
+    margin-top: 3px; 
     color: black;
     background-color: lightgreen;
     text-align: center;

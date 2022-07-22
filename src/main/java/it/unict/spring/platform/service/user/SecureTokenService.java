@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class SecureTokenService implements SecureTokenServiceInterface
 {
+    
+    private static final Logger applogger = LoggerFactory.getLogger(SecureTokenService.class);  
+ 
+    
     @Autowired
     SecureTokenRepository repository;
     
@@ -82,6 +88,13 @@ public class SecureTokenService implements SecureTokenServiceInterface
                                           timestamp, Timestamp.valueOf(expire));                                             
       
       return token;
+    }
+
+    @Override
+    public void consumeToken(SecureToken sec)
+    {
+      sec.setIsConsumed(Timestamp.valueOf(LocalDateTime.now()));
+      applogger.info("Token consumed: "+ sec.getToken() + "user id:"+ sec.getId().getTokenId());
     }
     
     

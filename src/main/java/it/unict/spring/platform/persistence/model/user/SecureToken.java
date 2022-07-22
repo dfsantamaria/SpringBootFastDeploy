@@ -33,6 +33,8 @@ public class SecureToken implements Serializable
     @Column(unique = true)
     private String token;
     
+    private Timestamp isConsumed;
+    
     @CreationTimestamp
     @Column(updatable = false)
     private Timestamp timestamp;
@@ -62,7 +64,7 @@ public class SecureToken implements Serializable
        this.tokenId.setTokenType(tokenType);
        this.timestamp=timestamp;
        this.expireAt=expire;      
-       this.isExpired=false;       
+       this.isExpired=false;        
     }
     
     public boolean isExpired()
@@ -100,6 +102,16 @@ public class SecureToken implements Serializable
       this.user=user;
       this.tokenId.setTokenId(user.getId());
     }   
+    
+    public boolean isConsumed()
+    {
+      return this.isConsumed!=null;
+    }
+    
+    public void setIsConsumed(Timestamp consumed)
+    {
+      this.isConsumed=consumed;
+    }
    
     
 }

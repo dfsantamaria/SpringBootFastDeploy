@@ -7,6 +7,7 @@ package it.unict.spring.platform.service.user;
 
 import it.unict.spring.platform.dto.user.UserAccountDTO;
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
+import it.unict.spring.platform.exception.user.UserAccountAlreadyVerified;
 import it.unict.spring.platform.exception.user.UserNotFoundException;
 import it.unict.spring.platform.persistence.model.user.Organization;
 import it.unict.spring.platform.persistence.model.user.Privilege;
@@ -260,19 +261,23 @@ public class UserService implements UserServiceInterface
     }
     
     @Override
-    public boolean checkToken(String token)
+    @Transactional
+    public boolean checkToken(String token) throws UserAccountAlreadyVerified
     {
       SecureToken sec= secureTokenService.findByToken(token).get(0);
       if( sec.getExpireAt().after(Timestamp.valueOf(LocalDateTime.now())))
       {
          UserAccount user=this.findById(sec.getId().getTokenId());
-         if(!user.isEnabled())
+         if(!user.isEnabled() && !sec.isConsumed())
          {
-            Hibernate.initialize(user);
-             user.setEnabled(true);
+             secureTokenService.consumeToken(sec);
+             secureTokenService.save(sec);
+             Hibernate.initialize(user);
+             user.setEnabled(true);             
              this.save(user);
              return true;
          }
+         else throw new UserAccountAlreadyVerified(sec.getToken());
       }
       return false;
     }

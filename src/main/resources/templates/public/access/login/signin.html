@@ -11,7 +11,7 @@
         <div class="form-group">    
         <form name="form-signin" th:action="@{/public/api/access/login/signin}" method="post">                   
                    
-                 <div class="over-label"><input name="username" type="text" class="form-control" placeholder="Username" autofocus="true"/></div>
+                 <div class="over-label"><input name="username" type="text" class="form-control" placeholder="Username or Email" autofocus="true"/></div>
 
                  <div class="over-label"><input name="password" type="password" class="form-control" placeholder="Password"/> </div>
                  
@@ -22,6 +22,7 @@
                  <div th:if="${param.errorLocked}" class="has-error">     User account is locked.  </div>
                 <div th:if="${param.errorCredentials}" class="has-error"> User credentials are expired.  </div>
                 <div th:if="${param.tokenFailed}" class="has-error"> You registration is expired.  </div>
+                <div th:if="${param.tokenVerified}" class="has-error"> Account already verified.  </div>
                 <div th:if="${param.confirmReg}" class="alert-do"> We sent an email.Check your inbox to finalize the registration.  </div>      
                 <div th:if="${param.logout}" class="alert-success">     You have been logged out.  </div>
 

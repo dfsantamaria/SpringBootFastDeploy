@@ -9,6 +9,7 @@ import it.unict.spring.platform.dto.user.OrganizationDTO;
 import it.unict.spring.platform.dto.user.UserAccountDTO;
 import it.unict.spring.platform.dto.user.UserRegisterDTO;
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
+import it.unict.spring.platform.exception.user.UserAccountAlreadyVerified;
 import it.unict.spring.platform.persistence.model.user.Organization;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
@@ -105,11 +106,17 @@ public class RegistrationController
      public ModelAndView confirmRegistration(HttpServletRequest request,HttpServletResponse response,
                                       @RequestParam("token") String token, Model model)
      {
-        
+       try
+       {
        if(userService.checkToken(token))
           return  new ModelAndView("redirect:/public/api/access/login/signin?tokenSuccess");
        else 
           return new ModelAndView("redirect:/public/api/access/login/signin?tokenFailed");
+       }
+       catch(UserAccountAlreadyVerified exception)
+       {
+         return new ModelAndView("redirect:/public/api/access/login/signin?tokenVerified");
+       }
      }
      
     

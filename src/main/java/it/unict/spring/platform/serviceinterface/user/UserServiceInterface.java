@@ -7,6 +7,7 @@ package it.unict.spring.platform.serviceinterface.user;
 
 import it.unict.spring.platform.dto.user.UserAccountDTO;
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
+import it.unict.spring.platform.exception.user.UserAccountAlreadyVerified;
 import it.unict.spring.platform.exception.user.UserNotFoundException;
 import it.unict.spring.platform.persistence.model.user.Organization;
 import it.unict.spring.platform.persistence.model.user.Privilege;
@@ -50,7 +51,7 @@ public interface UserServiceInterface
     void setRegister(UserRegister register, UserAccount user);
     
     SecureToken assignTokenToUser(UserAccount user);
-    boolean checkToken(String token);
+    boolean checkToken(String token) throws UserAccountAlreadyVerified;
     
     void sendRegistrationMail(UserAccount user, String url);
 }
