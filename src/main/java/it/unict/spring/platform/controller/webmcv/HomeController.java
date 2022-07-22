@@ -24,7 +24,7 @@ public class HomeController
 	public ModelAndView home(Locale locale, Model model)
         {
 		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale); 
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, Locale.ENGLISH); 
 		String formattedDate = dateFormat.format(date); 
 		model.addAttribute("serverTime", formattedDate ); 
 		return new ModelAndView("public/home");

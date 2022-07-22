@@ -1,12 +1,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<title>Home</title>
-</head>
+ <head>
+      <meta charset="utf-8">
+      <title>Home page</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+      <link th:href="@{/public/css/main.css}" rel="stylesheet">
+  </head>
 <body>
-	<h1>Hello world!</h1>
- 
-	<P>
-		The time on the server is <label th:text="${serverTime}"></label>
-	</P>
+	<div class="container">
+	<h2 class="form-heading">Welcome!</h2> 
+		<div><p>Its <label th:text="${serverTime}"> now </label></p></div>
+	</p>
+
+    <form th:action="@{/public/api/access/login/signin}">
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+	</form>
+
+	<form th:action="@{/public/api/access/registration/register}">
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+    </form>
+    </container>
 </body>
 </html>
