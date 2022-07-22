@@ -12,7 +12,6 @@ import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
 import java.util.List;
 import javax.transaction.Transactional;
-import org.hibernate.Hibernate;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
@@ -96,9 +95,9 @@ public class RegistrationTest
       mvc.perform(MockMvcRequestBuilders.get("/public/api/access/registration/registerUser/regitrationConfirm").param("token", token.getToken()))
                .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/public/api/access/login/signin?tokenSuccess"));                
           
-     
-      //assertTrue(service.findByUsername(user.getUsername()).get(0).isEnabled());
       assertTrue(service.findById(user.getId()).isEnabled());
+      //assertTrue(service.findByUsername(user.getUsername()).get(0).isEnabled());
+     
       
       this.clearUser(user); 
     }

@@ -24,6 +24,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -261,7 +262,7 @@ public class UserService implements UserServiceInterface
     }
     
     @Override
-    @Transactional
+    @Transactional    
     public boolean checkToken(String token) throws UserAccountAlreadyVerified
     {
       SecureToken sec= secureTokenService.findByToken(token).get(0);
