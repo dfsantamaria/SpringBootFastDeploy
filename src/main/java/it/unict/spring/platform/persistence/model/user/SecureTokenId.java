@@ -32,11 +32,9 @@ public class SecureTokenId implements Serializable
     
     @Override
     public boolean equals(Object o)
-    {       
-    
+    {     
         if (o == null || getClass() != o.getClass())
-            return false;
-    
+            return false;    
         SecureTokenId that = (SecureTokenId) o;
         return Objects.equals(this.tokenType, that.tokenType) &&
                     Objects.equals(this.user_id, that.user_id);

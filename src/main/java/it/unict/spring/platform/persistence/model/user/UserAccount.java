@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -74,7 +75,7 @@ public class UserAccount implements Serializable
     @PrimaryKeyJoinColumn
     private UserRegister register;   
     
-    @OneToMany(mappedBy ="user", cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval =true, fetch=FetchType.LAZY)
+    @OneToMany(mappedBy ="user", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval =true, fetch=FetchType.LAZY)
     private Set<SecureToken> tokens = new HashSet<>();
     
       
@@ -248,5 +249,20 @@ public class UserAccount implements Serializable
     public void setRegister(UserRegister register)
     {
       this.register=register;
+    }
+    
+    @Override
+    public boolean equals(Object o)
+    {     
+        if (o == null || getClass() != o.getClass())
+            return false;
+    
+        UserAccount that = (UserAccount) o;
+        return Objects.equals(this.id, that.getId());
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
     }
 }

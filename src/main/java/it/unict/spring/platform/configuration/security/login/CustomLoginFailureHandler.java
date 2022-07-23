@@ -21,7 +21,7 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
             throws IOException, ServletException
     {        
-        if(exception.getMessage().startsWith("User is not enabled"))
+        if(exception.getMessage().startsWith("Registration not completed"))
            getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorEnabled"); 
         else if(exception.getMessage().startsWith("User account is expired"))
            getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorExpired"); 

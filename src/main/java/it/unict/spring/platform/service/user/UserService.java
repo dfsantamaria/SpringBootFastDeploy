@@ -19,20 +19,15 @@ import it.unict.spring.platform.persistence.repository.user.UserRepository;
 import it.unict.spring.platform.service.communication.CustomMailService;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 
 
 @Service
@@ -240,8 +235,8 @@ public class UserService implements UserServiceInterface
       
       SecureToken token = secureTokenService.generateToken(type);       
       secureTokenService.addUserToToken(user, token);  
-      secureTokenService.save(token);
-      //this.addTokenToUser(token, user);
+      secureTokenService.save(token);      
+      //this.addTokenToUser(token, user); //Error 
       this.save(user);
       return token;
     }        
@@ -290,7 +285,7 @@ public class UserService implements UserServiceInterface
     {        
       registryService.setUser(register, user);
       registryService.save(register);
-      this.addRegisterToUser(register, user);
+     // this.addRegisterToUser(register, user);
       this.save(user);      
     }
     

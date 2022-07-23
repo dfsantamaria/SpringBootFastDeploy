@@ -11,6 +11,6 @@ public class UserNotEnabledException extends DataAccessException
 {
     public UserNotEnabledException(String string)
     {
-        super("User is not enabled: "+ string);
+        super("Registration not completed: "+ string);
     }    
 }
