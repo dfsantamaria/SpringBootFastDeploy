@@ -6,13 +6,16 @@ package it.unict.spring.platform.service.user;
  */
 
 import it.unict.spring.platform.persistence.model.user.SecureToken;
+import it.unict.spring.platform.persistence.model.user.SecureTokenId;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.repository.user.SecureTokenRepository;
 import it.unict.spring.platform.serviceinterface.user.SecureTokenServiceInterface;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import javax.transaction.Transactional;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -46,6 +49,8 @@ public class SecureTokenService implements SecureTokenServiceInterface
       return repository.findByUser(user);
     }
 
+        
+    
     @Override
     public List<SecureToken> findByToken(String token)
     {
@@ -67,7 +72,7 @@ public class SecureTokenService implements SecureTokenServiceInterface
     }
     
     
-    @Override
+    @Override    
     @Transactional
     public void addUserToToken(UserAccount user, SecureToken token)
     {
@@ -96,6 +101,6 @@ public class SecureTokenService implements SecureTokenServiceInterface
       sec.setIsConsumed(Timestamp.valueOf(LocalDateTime.now()));
       applogger.info("Token consumed: "+ sec.getToken() + "user id:"+ sec.getId().getTokenId());
     }
-    
+           
     
 }

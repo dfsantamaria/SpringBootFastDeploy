@@ -20,4 +20,5 @@ public interface SecureTokenServiceInterface
     List<SecureToken> findByUser(UserAccount user);
     List<SecureToken> findByToken(String token);
     void consumeToken(SecureToken sec);
+    
 }

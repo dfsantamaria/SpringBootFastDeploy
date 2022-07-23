@@ -113,5 +113,9 @@ public class SecureToken implements Serializable
       this.isConsumed=consumed;
     }
    
+    public void removeUser()
+    {
+      this.user=null;
+    }
     
 }

@@ -88,11 +88,11 @@ public class RegistrationTest
       this.clearUser(user);
       
       user = service.getStandardUser(user);
-      SecureToken token=service.assignTokenToUser(user);
+      SecureToken token=service.assignTokenToUser(user, "FReg");
       
       assertFalse(user.isEnabled());
       
-      mvc.perform(MockMvcRequestBuilders.get("/public/api/access/registration/registerUser/regitrationConfirm").param("token", token.getToken()))
+      mvc.perform(MockMvcRequestBuilders.get("/public/api/access/registration/registerUser/registrationConfirm").param("token", token.getToken()))
                .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/public/api/access/login/signin?tokenSuccess"));                
           
       assertTrue(service.findById(user.getId()).isEnabled());
@@ -109,4 +109,23 @@ public class RegistrationTest
       if(!list.isEmpty())
           service.delete(list.get(0));   
     }
+    
+    
+    @Test
+    @Transactional
+    public void isResendRegistrationSavingData() throws Exception
+    {
+     if(service.findByMail("test3@mail.com").isEmpty())   
+        service.getStandardUser("testName3", "PlainPassword", "test3@mail.com", UserExpirationInformation.getAccountExpirationDate(),
+                                                                 UserExpirationInformation.getCredentialExpirationDate(), "organization");
+     
+      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/confirmResendRegister"))
+                                               .param("username", "testName3")
+                                               .param("password", "PlainPassword")
+                                              
+                )
+           .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/public/api/access/registration/resendRegister?confirmReg"));                
+      this.clearUser( (service.findByMail("test3@mail.com")).get(0)); 
+    }
+    
 }

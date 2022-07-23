@@ -6,6 +6,7 @@ package it.unict.spring.platform.persistence.repository.user;
  */
 
 import it.unict.spring.platform.persistence.model.user.SecureToken;
+import it.unict.spring.platform.persistence.model.user.SecureTokenId;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Repository;
 public interface SecureTokenRepository extends JpaRepository<SecureToken, Long> 
 {    
  @Override
- List<SecureToken> findAll(); 
+ List<SecureToken> findAll();  
  List<SecureToken> findByToken(String token); 
  List<SecureToken> findByUser(UserAccount user);
  @Override 

@@ -17,15 +17,19 @@ import it.unict.spring.platform.service.user.OrganizationService;
 import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,7 +47,8 @@ public class RegistrationController
     OrganizationService orgService;
     @Autowired
     UserRegisterService regService;
-    
+    private static final Logger applogger = LoggerFactory.getLogger(RegistrationController.class);  
+ 
     
      @RequestMapping("register")
      public ModelAndView viewRegister(HttpServletRequest request,
@@ -80,7 +85,8 @@ public class RegistrationController
           model.addAttribute("errorMessage","Errors occured, check your fields");
           response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
           return new ModelAndView("public/access/registration/register");   
-         }
+         }         
+                  
          Organization organization = orgService.mapFromOrganization(orgdto);
          UserRegister userreg=regService.mapFromUserRegister(userregdto);
          try 
@@ -102,7 +108,8 @@ public class RegistrationController
          return  new ModelAndView("redirect:/public/api/access/login/signin?confirmReg");
      }
      
-     @GetMapping("/registerUser/regitrationConfirm")
+     
+     @GetMapping(value={"/registerUser/registrationConfirm", "/confirmResendRegister/registrationConfirm" })
      public ModelAndView confirmRegistration(HttpServletRequest request,HttpServletResponse response,
                                       @RequestParam("token") String token, Model model)
      {
@@ -119,5 +126,43 @@ public class RegistrationController
        }
      }
      
+      @RequestMapping("resendRegister")
+     public ModelAndView viewResendRegister(HttpServletRequest request,
+                                      HttpServletResponse response,                                      
+                                      Model model)
+     {
+          
+          return new ModelAndView("public/access/registration/resendRegister");
+     }
+     
+     @PostMapping("confirmResendRegister")
+     public ModelAndView confirmResendRegister(HttpServletRequest request,
+                                      HttpServletResponse response,
+                                      @RequestParam("username") String username,
+                                      @RequestParam("password") String password,
+                                      Model model)
+     {
+        // try
+         {
+           
+           List<UserAccount> user=userService.findByMailOrUsername(username);  
+           if(user.size() == 1  && (!user.get(0).isEnabled()) && userService.comparePassword(user.get(0).getPassword(), password))
+            {
+             userService.sendRegistrationMail(user.get(0), request.getRequestURL().toString());
+             return new ModelAndView("redirect:/public/api/access/registration/resendRegister?confirmReg");
+            }
+            else
+             return new ModelAndView("redirect:/public/api/access/registration/resendRegister?errorCredentials");     
+             
+           }
+          //  catch(Exception e)
+          //  {
+          //   applogger.error("Resend registration email error: "+ e.toString());
+          //   return new ModelAndView("redirect:/public/api/access/registration/resendRegister?error");
+          //  }         
+        
+     }
+    
+    
     
 }

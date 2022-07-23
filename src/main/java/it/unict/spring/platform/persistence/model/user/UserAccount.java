@@ -74,7 +74,7 @@ public class UserAccount implements Serializable
     @PrimaryKeyJoinColumn
     private UserRegister register;   
     
-    @OneToMany(mappedBy ="user", cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+    @OneToMany(mappedBy ="user", cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval =true, fetch=FetchType.LAZY)
     private Set<SecureToken> tokens = new HashSet<>();
     
       
@@ -121,11 +121,16 @@ public class UserAccount implements Serializable
     }
     
     public void addSecureToken(SecureToken token)
-    {
+    {        
       this.tokens.add(token);
     }
     
-     public void removePrivileges(Privilege priv)
+    public Set<SecureToken> getTokens()
+    {
+      return this.tokens;
+    }
+    
+    public void removePrivileges(Privilege priv)
     {     
       this.privileges.remove(priv);
      }

@@ -28,7 +28,9 @@ public interface UserServiceInterface
     void setEnabled(UserAccount user, boolean enabled);
     boolean hasUserPrivilege(String privilege);
     String getUserByEmail(String mail) throws UserNotFoundException;
-   
+    List<UserAccount> findByMailOrUsername(String namemail);
+    boolean comparePassword(String hash, String plain);
+    String encodePassword(String password);
     void addTokenToUser(SecureToken token, UserAccount user);
     void addOrganizationToUser(Organization org, UserAccount user);
     void addPrivilegeToUser(Privilege privilege, UserAccount user);
@@ -50,7 +52,7 @@ public interface UserServiceInterface
     void addRegisterToUser(UserRegister register, UserAccount user);
     void setRegister(UserRegister register, UserAccount user);
     
-    SecureToken assignTokenToUser(UserAccount user);
+    SecureToken assignTokenToUser(UserAccount user, String type);
     boolean checkToken(String token) throws UserAccountAlreadyVerified;
     
     void sendRegistrationMail(UserAccount user, String url);

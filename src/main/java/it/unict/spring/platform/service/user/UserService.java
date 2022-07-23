@@ -19,7 +19,10 @@ import it.unict.spring.platform.persistence.repository.user.UserRepository;
 import it.unict.spring.platform.service.communication.CustomMailService;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.hibernate.Hibernate;
@@ -29,6 +32,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
 
 @Service
@@ -76,7 +80,19 @@ public class UserService implements UserServiceInterface
     {
       return repository.save(g);
     }
-            
+        
+    @Override
+    public String encodePassword(String password)
+    {
+      return getPasswordEncoder.encode(password);
+    }
+    
+    @Override
+    public boolean comparePassword(String hash, String plain)
+    {
+      return getPasswordEncoder.matches(plain, hash);
+    }
+    
     @Override
     @Transactional
     public void delete(UserAccount user)
@@ -88,6 +104,12 @@ public class UserService implements UserServiceInterface
     public List<UserAccount> findByMail(String email)
     {
       return repository.findByMail(email);
+    }
+    
+    @Override 
+    public List<UserAccount> findByMailOrUsername(String namemail)
+    {
+       return repository.findAllByMailOrUsername(namemail, namemail);
     }
     
     public UserAccount findById(Long id)
@@ -144,7 +166,7 @@ public class UserService implements UserServiceInterface
         else if(users.isEmpty())        
            {              
             Organization org = organizationService.getOrSetOrganization(organization); 
-            user=new UserAccount(username,getPasswordEncoder.encode(password), mail, accountExpire, credentialExpire);                            
+            user=new UserAccount(username, this.encodePassword(password), mail, accountExpire, credentialExpire);                            
             this.addOrganizationToUser(org,user); //user.addOrganization(org);           
             organizationService.addUserToOrganization(user, org);
             this.addPrivilegeToUser(priv, user); //user.addPrivileges(priv);  
@@ -203,24 +225,34 @@ public class UserService implements UserServiceInterface
       return user;
     }
 
+      
+    
+       
     @Override
     @Transactional
-    public SecureToken assignTokenToUser(UserAccount user)
-    {
-      SecureToken token = secureTokenService.generateToken("FReg");
-      secureTokenService.addUserToToken(user, token);
-      this.addTokenToUser(token, user);
+    public SecureToken assignTokenToUser(UserAccount user, String type)
+    {      
+      for(SecureToken token : secureTokenService.findByUser(user))
+      {                 
+         secureTokenService.delete(token);                 
+      }  
+      this.save(user);    
+      
+      SecureToken token = secureTokenService.generateToken(type);       
+      secureTokenService.addUserToToken(user, token);  
+      secureTokenService.save(token);
+      //this.addTokenToUser(token, user);
       this.save(user);
       return token;
     }        
     
-    @Override    
+    @Override   
+    @Transactional
     public void sendRegistrationMail(UserAccount user, String url)
-    {
-      SecureToken token=this.assignTokenToUser(user);
-      mailService.sendSimpleEmail(user.getMail(), "Confirm registration", url+"/regitrationConfirm?token=" + token.getToken());
-     // ;
-      
+    {       
+      SecureToken token=this.assignTokenToUser(user, "FReg");      
+      mailService.sendSimpleEmail(user.getMail(), "Confirm registration", url+"/registrationConfirm?token=" + token.getToken());
+           
     }
 
     @Override
@@ -238,8 +270,9 @@ public class UserService implements UserServiceInterface
     }
    
     @Override
+    @Transactional
     public void addTokenToUser(SecureToken token, UserAccount user)
-    {
+    {      
        user.addSecureToken(token);
     }
     
@@ -265,20 +298,23 @@ public class UserService implements UserServiceInterface
     @Transactional    
     public boolean checkToken(String token) throws UserAccountAlreadyVerified
     {
-      SecureToken sec= secureTokenService.findByToken(token).get(0);
-      if( sec.getExpireAt().after(Timestamp.valueOf(LocalDateTime.now())))
+        
+      List<SecureToken> sec= secureTokenService.findByToken(token);
+      if(sec.isEmpty())
+          return false;
+      if(sec.get(0).getExpireAt().after(Timestamp.valueOf(LocalDateTime.now())))
       {
-         UserAccount user=this.findById(sec.getId().getTokenId());
-         if(!user.isEnabled() && !sec.isConsumed())
+         UserAccount user=this.findById(sec.get(0).getId().getTokenId());
+         if(!user.isEnabled() && !sec.get(0).isConsumed())
          {
-             secureTokenService.consumeToken(sec);
-             secureTokenService.save(sec);
+             secureTokenService.consumeToken(sec.get(0));
+             secureTokenService.save(sec.get(0));
              Hibernate.initialize(user);
              user.setEnabled(true);             
              this.save(user);
              return true;
          }
-         else throw new UserAccountAlreadyVerified(sec.getToken());
+         else throw new UserAccountAlreadyVerified(sec.get(0).getToken());
       }
       return false;
     }

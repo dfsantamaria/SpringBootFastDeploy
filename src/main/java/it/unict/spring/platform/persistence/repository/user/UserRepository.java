@@ -21,6 +21,7 @@ public interface UserRepository extends JpaRepository<UserAccount, Long>
     Optional<UserAccount> findById(Long id);
     @Override
     List<UserAccount> findAll();
+    List<UserAccount> findAllByMailOrUsername(String username, String mail);
     @Override 
     UserAccount save(UserAccount user);   
     @Override
