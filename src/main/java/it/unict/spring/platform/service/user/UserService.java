@@ -168,6 +168,7 @@ public class UserService implements UserServiceInterface
             organizationService.save(org);
             this.addPrivilegeToUser(priv, user); //user.addPrivileges(priv);  
             privilegeService.addUserToPrivilege(user, priv);
+            privilegeService.save(priv);
             this.save(user);                    
            } 
         return user;       

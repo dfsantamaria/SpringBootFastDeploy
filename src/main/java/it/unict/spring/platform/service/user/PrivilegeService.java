@@ -70,8 +70,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
        Privilege priv;
        if (privileges.isEmpty())
        {
-            priv = new Privilege(privName);
-            this.save(priv);            
+            priv = new Privilege(privName);                       
         }
        else 
            priv=privileges.get(0);
@@ -82,44 +81,50 @@ public class PrivilegeService implements PrivilegeServiceInterface
   @Transactional
   private  Privilege getOrSetAdminPrivilege()
   {
-    return getOrSetPrivilege("ROLE_ADMIN");
+    Privilege priv = getOrSetPrivilege("ROLE_ADMIN");
+    priv=this.save(priv);
+    return priv;
   }
   
   
   @Transactional
   private  Privilege getOrSetSuperAdminPrivilege()
   {
-    return getOrSetPrivilege("ROLE_SUPERADMIN");
+    Privilege priv = getOrSetPrivilege("ROLE_SUPERADMIN");
+    priv=this.save(priv);
+    return priv;
   }
   
    
   @Transactional
   private  Privilege getOrSetStaffPrivilege()
   {
-    return getOrSetPrivilege("ROLE_STAFF");
+    Privilege priv = getOrSetPrivilege("ROLE_STAFF");
+    priv=this.save(priv);
+    return priv;
   }
   
    
   @Transactional
   private Privilege getOrSetStandardUserPrivilege()
   {
-    return getOrSetPrivilege("ROLE_STANDARDUSER");
+    Privilege priv = getOrSetPrivilege("ROLE_STANDARDUSER");
+    priv=this.save(priv);
+    return priv;
   }
 
   @Override
   @Transactional
   public void addUserToPrivilege(UserAccount user, Privilege priv)
   {
-    priv.addUser(user);
-    repository.save(priv);
+    priv.addUser(user);    
   }
 
    @Override
    @Transactional
     public void removeUserFromPrivilege(UserAccount user, Privilege priv)
     {
-      priv.deleteUser(user);
-      this.save(priv);
+      priv.deleteUser(user);     
     }
 
    @Override
