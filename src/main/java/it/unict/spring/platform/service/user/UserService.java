@@ -309,7 +309,7 @@ public class UserService implements UserServiceInterface
          {
              secureTokenService.consumeToken(sec.get(0));
              secureTokenService.save(sec.get(0));
-             Hibernate.initialize(user);
+             //Hibernate.initialize(user);
              user.setEnabled(true);             
              this.save(user);
              return true;
