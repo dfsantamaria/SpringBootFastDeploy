@@ -6,16 +6,13 @@ package it.unict.spring.platform.service.user;
  */
 
 import it.unict.spring.platform.persistence.model.user.SecureToken;
-import it.unict.spring.platform.persistence.model.user.SecureTokenId;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.repository.user.SecureTokenRepository;
 import it.unict.spring.platform.serviceinterface.user.SecureTokenServiceInterface;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import javax.transaction.Transactional;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -23,10 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author danie
- */
 @Service
 public class SecureTokenService implements SecureTokenServiceInterface
 {
@@ -76,8 +69,7 @@ public class SecureTokenService implements SecureTokenServiceInterface
     @Transactional
     public void addUserToToken(UserAccount user, SecureToken token)
     {
-      token.addUser(user);
-      this.save(token);
+      token.addUser(user);      
     }
     
     @Override
