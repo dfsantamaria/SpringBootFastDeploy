@@ -16,7 +16,6 @@ public interface UserRegisterServiceInterface
     UserRegister save (UserRegister g);
     void addUserToRegister(UserAccount user, UserRegister register);
     void delete(UserRegister register);
-    UserRegister addUserToRegister(UserAccount user, String firstname, String middlename, String lastname);
-    void setUser(UserRegister register, UserAccount user);
+    UserRegister addUserToRegister(UserAccount user, String firstname, String middlename, String lastname);    
     UserRegister mapFromUserRegister(UserRegisterDTO dto);
 }

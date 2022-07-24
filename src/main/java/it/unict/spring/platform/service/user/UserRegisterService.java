@@ -40,7 +40,7 @@ public class UserRegisterService implements UserRegisterServiceInterface
     public void addUserToRegister(UserAccount user, UserRegister register)
     {
        register.setUser(user);
-       this.save(register);
+       //this.save(register);
     }
     
     @Override
@@ -56,18 +56,11 @@ public class UserRegisterService implements UserRegisterServiceInterface
     {
        UserRegister reg = new UserRegister(firstname, middlename, lastname);
        reg.setUser(user);
-       this.save(reg);
+       //this.save(reg);
        return reg;
     }
 
-    @Override
-    @Transactional
-    public void setUser(UserRegister register, UserAccount user)
-    {
-         register.setUser(user);           
-         //this.save(register);       
-    }
-    
+        
     @Override
     public UserRegister mapFromUserRegister(UserRegisterDTO dto)
     {

@@ -289,9 +289,8 @@ public class UserService implements UserServiceInterface
     @Transactional
     public void setRegister(UserRegister register, UserAccount user)            
     {        
-      registryService.setUser(register, user);
-      registryService.save(register);
-     // this.addRegisterToUser(register, user);
+      registryService.addUserToRegister(user, register);
+      registryService.save(register);     
       this.save(user);      
     }
     
