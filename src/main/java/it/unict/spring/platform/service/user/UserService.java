@@ -164,11 +164,11 @@ public class UserService implements UserServiceInterface
             org=organizationService.save(org);
             user=new UserAccount(username, this.encodePassword(password), mail, accountExpire, credentialExpire);                            
             this.addOrganizationToUser(org,user); //user.addOrganization(org);           
-            organizationService.addUserToOrganization(user, org);
-            organizationService.save(org);
+            //organizationService.addUserToOrganization(user, org);            
+            //organizationService.save(org);
             this.addPrivilegeToUser(priv, user); //user.addPrivileges(priv);  
-            privilegeService.addUserToPrivilege(user, priv);
-            privilegeService.save(priv);
+           // privilegeService.addUserToPrivilege(user, priv);
+            //privilegeService.save(priv);
             this.save(user);                    
            } 
         return user;       
@@ -186,6 +186,7 @@ public class UserService implements UserServiceInterface
     @Transactional
     public UserAccount getStandardUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException
     {
+      
       Privilege priv= privilegeService.getStandardUserPrivilege(); 
       return this.getUser(username, password, mail, accountExpire,  credentialExpire, organization, priv);       
     }
@@ -217,7 +218,7 @@ public class UserService implements UserServiceInterface
     @Override
     @Transactional
     public UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException
-    {               
+    {        
       UserAccount user= this.getStandardUser(userdto.getUsername(),
                         userdto.getPassword(),
                         userdto.getMail(), accountExpire, credentialExpire,
@@ -259,8 +260,8 @@ public class UserService implements UserServiceInterface
     @Override
     @Transactional
     public void addOrganizationToUser(Organization org, UserAccount user)
-    {
-        user.addOrganization(org);       
+    {               
+        user.addOrganization(org);        
     }
     
     @Override

@@ -49,7 +49,7 @@ public class LoginControllerTest
   {
     mvc.perform(formLogin("/public/api/access/login/signin").user("dfsantamaria").password("lll@@"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));    
+                .andExpect(redirectedUrl("/auth/api/all/accountview"));    
   }
   
   @Test

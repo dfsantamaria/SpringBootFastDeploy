@@ -91,8 +91,7 @@ public class OrganizationService implements OrganizationServiceInterface
     @Transactional
     public void addUserToOrganization(UserAccount user, Organization org)
     {
-       org.addUser(user);
-       //repository.save(org);
+       org.addUser(user);       
     }
 
     @Override

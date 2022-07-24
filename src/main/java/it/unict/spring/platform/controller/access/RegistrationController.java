@@ -87,7 +87,7 @@ public class RegistrationController
           return new ModelAndView("public/access/registration/register");   
          }         
                   
-         Organization organization = orgService.mapFromOrganization(orgdto);
+         Organization organization = orgService.mapFromOrganization(orgdto);         
          UserRegister userreg=regService.mapFromUserRegister(userregdto);
          try 
           {

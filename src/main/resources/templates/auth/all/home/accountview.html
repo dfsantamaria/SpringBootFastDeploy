@@ -1,0 +1,19 @@
+<html xmlns:th="http://www.thymeleaf.org">
+ <head>
+      <meta charset="utf-8">
+      <title>Home page</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+      <link th:href="@{/public/css/main.css}" rel="stylesheet">
+  </head>
+<body>
+	<div class="container">
+	<h2 class="form-heading">Welcome!</h2> 
+		<div><p>Its <label th:text="${serverTime}"> now </label></p></div>
+	</p>
+
+    <form th:action="@{/auth/api/access/login/signout}">
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Log out</button>
+	</form>
+    </container>
+</body>
+</html>
