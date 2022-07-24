@@ -161,9 +161,11 @@ public class UserService implements UserServiceInterface
         else if(users.isEmpty())        
            {              
             Organization org = organizationService.getOrSetOrganization(organization); 
+            org=organizationService.save(org);
             user=new UserAccount(username, this.encodePassword(password), mail, accountExpire, credentialExpire);                            
             this.addOrganizationToUser(org,user); //user.addOrganization(org);           
             organizationService.addUserToOrganization(user, org);
+            organizationService.save(org);
             this.addPrivilegeToUser(priv, user); //user.addPrivileges(priv);  
             privilegeService.addUserToPrivilege(user, priv);
             this.save(user);                    
@@ -193,7 +195,10 @@ public class UserService implements UserServiceInterface
     {
       Privilege priv= privilegeService.getStandardUserPrivilege();
       user.getOrganization().stream().forEach(org-> 
-                                                   organizationService.getOrSetOrganization(org)                                                   
+              { organizationService.getOrSetOrganization(org);
+                organizationService.save(org);
+                      
+                      }                                              
                                             );
       this.addPrivilegeToUser(priv, user);
       this.save(user);

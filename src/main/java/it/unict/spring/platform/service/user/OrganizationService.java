@@ -58,7 +58,7 @@ public class OrganizationService implements OrganizationServiceInterface
        if (orgs.isEmpty())
        {
           org = new Organization(organization);
-          repository.save(org);
+         // repository.save(org);
        }
        else org=orgs.get(0);
        return org;
@@ -73,7 +73,7 @@ public class OrganizationService implements OrganizationServiceInterface
        if (orgs.isEmpty())
        {    
           org=organization; 
-          repository.save(org);
+         // repository.save(org);
           
        }
        else org=orgs.get(0);
@@ -92,7 +92,7 @@ public class OrganizationService implements OrganizationServiceInterface
     public void addUserToOrganization(UserAccount user, Organization org)
     {
        org.addUser(user);
-       repository.save(org);
+       //repository.save(org);
     }
 
     @Override
@@ -100,7 +100,6 @@ public class OrganizationService implements OrganizationServiceInterface
     public void removeUserFromOrganization(UserAccount user, Organization org)
     {
          org.deleteUser(user);
-         this.save(org);
-      
+         //this.save(org);      
     }
 }
