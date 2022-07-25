@@ -49,8 +49,7 @@ public interface UserServiceInterface
     
     UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException;
     
-    void setRegister(UserRegister register, UserAccount user);
-    
+        
     SecureToken assignTokenToUser(UserAccount user, String type);
     boolean checkToken(String token) throws UserAccountAlreadyVerified;
     

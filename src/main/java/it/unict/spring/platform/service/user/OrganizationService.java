@@ -72,9 +72,7 @@ public class OrganizationService implements OrganizationServiceInterface
        Organization org;
        if (orgs.isEmpty())
        {    
-          org=organization; 
-         // repository.save(org);
-          
+          org=organization;                    
        }
        else org=orgs.get(0);
        return org;
@@ -85,20 +83,5 @@ public class OrganizationService implements OrganizationServiceInterface
     public Organization mapFromOrganization(OrganizationDTO orgdto)
     {      
        return this.getOrSetOrganization(orgdto.getName());
-    }
-
-    @Override
-    @Transactional
-    public void addUserToOrganization(UserAccount user, Organization org)
-    {
-       org.addUser(user);       
-    }
-
-    @Override
-    @Transactional
-    public void removeUserFromOrganization(UserAccount user, Organization org)
-    {
-         org.deleteUser(user);
-         //this.save(org);      
     }
 }

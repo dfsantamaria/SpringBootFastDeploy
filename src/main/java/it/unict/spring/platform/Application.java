@@ -116,7 +116,7 @@ public class Application extends SpringBootServletInitializer
                                                                  "University of Catania");
               userService.setEnabled(user, true); //enable user              
               UserRegister register=new UserRegister("Daniele", "Francesco", "Santamaria");
-              userService.setRegister(register, user); 
+              registerService.setUser(register,user);
               registerService.save(register);
            }
            

@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.hibernate.annotations.CreationTimestamp;
 
-@Entity
+@Entity(name="SecureToken")
 @Table(name = "secureToken", catalog = "useraccount")
 public class SecureToken implements Serializable
 {
@@ -118,4 +118,22 @@ public class SecureToken implements Serializable
       this.user=null;
     }
     
+    @Override
+    public int hashCode() 
+    {        
+        return getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+         
+        if (!(obj instanceof SecureToken)) 
+            return false;
+         
+        return this.getId().getTokenId() != null && 
+                this.getId().getTokenId().equals(((SecureToken) obj).getId().getTokenId());
+   }
 }

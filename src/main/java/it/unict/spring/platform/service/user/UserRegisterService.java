@@ -35,35 +35,22 @@ public class UserRegisterService implements UserRegisterServiceInterface
       return repository.save(g);
     }
     
-    @Override
-    @Transactional
-    public void addUserToRegister(UserAccount user, UserRegister register)
-    {
-       register.setUser(user);
-       //this.save(register);
-    }
-    
+        
     @Override
     @Transactional
     public void delete(UserRegister register)
     {
       repository.delete(register);
     }
-    
-    @Override
-    @Transactional
-    public UserRegister addUserToRegister(UserAccount user, String firstname, String middlename, String lastname)
-    {
-       UserRegister reg = new UserRegister(firstname, middlename, lastname);
-       reg.setUser(user);
-       //this.save(reg);
-       return reg;
-    }
-
-        
+              
     @Override
     public UserRegister mapFromUserRegister(UserRegisterDTO dto)
     {
       return new UserRegister(dto.getFirstName(), dto.getMiddleName(), dto.getLastName());
+    }
+
+    public void setUser(UserRegister reg, UserAccount user)
+    {
+      reg.setUser(user);
     }
 }

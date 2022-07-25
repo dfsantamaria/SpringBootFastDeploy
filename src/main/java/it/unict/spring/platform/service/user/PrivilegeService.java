@@ -113,20 +113,6 @@ public class PrivilegeService implements PrivilegeServiceInterface
     return priv;
   }
 
-  @Override
-  @Transactional
-  public void addUserToPrivilege(UserAccount user, Privilege priv)
-  {
-    priv.addUser(user);    
-  }
-
-   @Override
-   @Transactional
-    public void removeUserFromPrivilege(UserAccount user, Privilege priv)
-    {
-      priv.deleteUser(user);     
-    }
-
    @Override
    @Transactional
    public void startUpPrivileges()

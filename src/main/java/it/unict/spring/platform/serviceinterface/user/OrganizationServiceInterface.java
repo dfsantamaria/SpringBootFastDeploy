@@ -7,7 +7,6 @@ package it.unict.spring.platform.serviceinterface.user;
 
 import it.unict.spring.platform.dto.user.OrganizationDTO;
 import it.unict.spring.platform.persistence.model.user.Organization;
-import it.unict.spring.platform.persistence.model.user.UserAccount;
 import java.util.List;
 
 
@@ -19,8 +18,6 @@ public interface OrganizationServiceInterface
     Organization save(Organization privilege);
     Organization getOrSetOrganization(String organization); 
     Organization getOrSetOrganization(Organization organization);
-    Organization mapFromOrganization(OrganizationDTO orgdto);
-    void addUserToOrganization(UserAccount user, Organization org);
-    void removeUserFromOrganization(UserAccount user, Organization org);
+    Organization mapFromOrganization(OrganizationDTO orgdto);    
     void delete(Organization organization);
 }

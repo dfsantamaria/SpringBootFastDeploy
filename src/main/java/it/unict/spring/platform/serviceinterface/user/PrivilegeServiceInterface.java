@@ -19,9 +19,7 @@ public interface PrivilegeServiceInterface
     Privilege getAdminPrivilege(); 
     Privilege getSuperAdminPrivilege();
     Privilege getStaffPrivilege();
-    Privilege getStandardUserPrivilege();
-    void addUserToPrivilege(UserAccount user, Privilege priv);
-    void removeUserFromPrivilege(UserAccount user, Privilege priv);
+    Privilege getStandardUserPrivilege();   
     void startUpPrivileges();
     void delete(Privilege privilege);
 }

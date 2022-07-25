@@ -166,7 +166,7 @@ public class UserService implements UserServiceInterface
             //organizationService.addUserToOrganization(user, org);  //Error          
             organizationService.save(org);
             this.addPrivilegeToUser(priv, user); //user.addPrivileges(priv);  
-            privilegeService.addUserToPrivilege(user, priv);
+            //privilegeService.addUserToPrivilege(user, priv);
             privilegeService.save(priv);
             this.save(user);                    
            } 
@@ -221,9 +221,7 @@ public class UserService implements UserServiceInterface
       UserAccount user= this.getStandardUser(userdto.getUsername(),
                         userdto.getPassword(),
                         userdto.getMail(), accountExpire, credentialExpire,
-                        organization.getName());
-      this.setRegister(register, user);
-      registryService.save(register);     
+                        organization.getName());      
       this.save(user);
       return user;
     }
@@ -276,16 +274,7 @@ public class UserService implements UserServiceInterface
        user.addSecureToken(token);
     }
         
-       
-    @Override
-    @Transactional
-    public void setRegister(UserRegister register, UserAccount user)            
-    {        
-      registryService.addUserToRegister(user, register);
-     // registryService.save(register);     
-     // this.save(user);      
-    }
-    
+              
     @Override
     @Transactional    
     public boolean checkToken(String token) throws UserAccountAlreadyVerified

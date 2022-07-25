@@ -65,14 +65,7 @@ public class SecureTokenService implements SecureTokenServiceInterface
         repository.delete(token);
     }
     
-    
-    @Override    
-    @Transactional
-    public void addUserToToken(UserAccount user, SecureToken token)
-    {
-      token.addUser(user);      
-    }
-    
+      
     @Override
     @Transactional
     public SecureToken generateToken(UserAccount user, String tokenType)

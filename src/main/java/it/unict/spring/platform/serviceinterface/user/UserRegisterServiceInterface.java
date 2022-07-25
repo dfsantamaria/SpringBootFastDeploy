@@ -13,9 +13,7 @@ import java.util.List;
 public interface UserRegisterServiceInterface
 {
     List<UserRegister> findAll();
-    UserRegister save (UserRegister g);
-    void addUserToRegister(UserAccount user, UserRegister register);
-    void delete(UserRegister register);
-    UserRegister addUserToRegister(UserAccount user, String firstname, String middlename, String lastname);    
+    UserRegister save (UserRegister g);    
+    void delete(UserRegister register);     
     UserRegister mapFromUserRegister(UserRegisterDTO dto);
 }

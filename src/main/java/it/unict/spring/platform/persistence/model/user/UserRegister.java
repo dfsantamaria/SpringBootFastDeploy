@@ -15,7 +15,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-@Entity
+@Entity(name="UserRegister")
 @Table(name = "userregistry", catalog = "useraccount")
 public class UserRegister implements Serializable
 {
@@ -54,7 +54,8 @@ public class UserRegister implements Serializable
     public void setUser(UserAccount user)
     {
       this.user = user;
-      this.id =user.getId();              
+      this.id =user.getId();    
+      user.setRegister(this);
     }
 
     public Long getId() {
@@ -90,4 +91,23 @@ public class UserRegister implements Serializable
     {
       this.lastname=name;
     }
+    
+    @Override
+    public int hashCode() 
+    {        
+        return getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+         
+        if (!(obj instanceof UserRegister)) 
+            return false;
+         
+        return this.id != null && id.equals(((UserRegister) obj).getId());
+   }
+    
 }

@@ -15,8 +15,7 @@ public interface SecureTokenServiceInterface
     List<SecureToken> findAll();
     SecureToken generateToken (UserAccount user, String tokenType);
     SecureToken save (SecureToken token);  
-    void delete(SecureToken token);  
-    void addUserToToken(UserAccount user, SecureToken token);
+    void delete(SecureToken token);      
     List<SecureToken> findByUser(UserAccount user);
     List<SecureToken> findByToken(String token);
     void consumeToken(SecureToken sec);

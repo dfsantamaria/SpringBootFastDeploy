@@ -32,7 +32,7 @@ import javax.persistence.Table;
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
  */
 
-@Entity
+@Entity(name="UserAccount")
 @Table(name = "useraccount", catalog = "useraccount")
 public class UserAccount implements Serializable
 {
@@ -118,7 +118,8 @@ public class UserAccount implements Serializable
     
     public void addOrganization(Organization org)
     {      
-      this.organizations.add(org);      
+      this.organizations.add(org);
+      //org.addUser(this);
     }
     
     public void addSecureToken(SecureToken token)
@@ -252,17 +253,20 @@ public class UserAccount implements Serializable
     }
     
     @Override
-    public boolean equals(Object o)
-    {     
-        if (o == null || getClass() != o.getClass())
-            return false;
-    
-        UserAccount that = (UserAccount) o;
-        return Objects.equals(this.id, that.getId());
+    public int hashCode() 
+    {        
+        return getClass().hashCode();
     }
-    
+
     @Override
-    public int hashCode() {
-        return Objects.hash(this.id);
-    }
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+         
+        if (!(obj instanceof UserAccount)) 
+            return false;
+         
+        return this.id != null && id.equals(((UserAccount) obj).getId());
+   }
 }
