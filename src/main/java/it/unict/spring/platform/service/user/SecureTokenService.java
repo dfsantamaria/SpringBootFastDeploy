@@ -74,13 +74,14 @@ public class SecureTokenService implements SecureTokenServiceInterface
     
     @Override
     @Transactional
-    public SecureToken generateToken(String tokenType)
+    public SecureToken generateToken(UserAccount user, String tokenType)
     {
       byte[] random = new byte[64];
       new SecureRandom().nextBytes(random);
       Timestamp timestamp = java.sql.Timestamp.valueOf(LocalDateTime.now());
       LocalDateTime expire= LocalDateTime.now().plusHours(12);
-      SecureToken token = new SecureToken(Base64.encodeBase64URLSafeString(random),
+      SecureToken token = new SecureToken(user,
+                                          Base64.encodeBase64URLSafeString(random),
                                           tokenType,
                                           timestamp, Timestamp.valueOf(expire));                                             
       

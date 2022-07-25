@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package it.unict.spring.platform.persistence.model.user;
 
 /**
@@ -57,11 +53,12 @@ public class SecureToken implements Serializable
     }
           
     
-    public SecureToken(String token, String tokenType, Timestamp timestamp, Timestamp expire)
+    public SecureToken(UserAccount user, String token, String tokenType, Timestamp timestamp, Timestamp expire)
     {
-       super();
+       super();       
        this.token=token;       
        this.tokenId.setTokenType(tokenType);
+       this.tokenId.setUser(user);
        this.timestamp=timestamp;
        this.expireAt=expire;      
        this.isExpired=false;        
@@ -99,8 +96,7 @@ public class SecureToken implements Serializable
     
     public void addUser(UserAccount user)
     {
-      this.user=user;
-      this.tokenId.setTokenId(user.getId());
+      this.user=user;      
     }   
     
     public boolean isConsumed()

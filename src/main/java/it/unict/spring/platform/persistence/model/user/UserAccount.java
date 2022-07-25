@@ -75,7 +75,7 @@ public class UserAccount implements Serializable
     @PrimaryKeyJoinColumn
     private UserRegister register;   
     
-    @OneToMany(mappedBy ="user", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval =true, fetch=FetchType.LAZY)
+    @OneToMany(mappedBy ="tokenId.user", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval =true, fetch=FetchType.LAZY)
     private Set<SecureToken> tokens = new HashSet<>();
     
       
@@ -111,8 +111,8 @@ public class UserAccount implements Serializable
         return username;
     }
 
-    public void addPrivileges(Privilege priv)
-    {     
+     public void addPrivileges(Privilege priv)
+     {     
       this.privileges.add(priv);
      }
     

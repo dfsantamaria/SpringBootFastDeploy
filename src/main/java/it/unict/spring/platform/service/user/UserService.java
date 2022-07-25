@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import javax.transaction.Transactional;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -164,11 +163,11 @@ public class UserService implements UserServiceInterface
             org=organizationService.save(org);
             user=new UserAccount(username, this.encodePassword(password), mail, accountExpire, credentialExpire);                            
             this.addOrganizationToUser(org,user); //user.addOrganization(org);           
-            //organizationService.addUserToOrganization(user, org);            
-            //organizationService.save(org);
+          // organizationService.addUserToOrganization(user, org);  //Error          
+            organizationService.save(org);
             this.addPrivilegeToUser(priv, user); //user.addPrivileges(priv);  
-           // privilegeService.addUserToPrivilege(user, priv);
-            //privilegeService.save(priv);
+            privilegeService.addUserToPrivilege(user, priv);
+            privilegeService.save(priv);
             this.save(user);                    
            } 
         return user;       
@@ -227,8 +226,7 @@ public class UserService implements UserServiceInterface
       return user;
     }
 
-      
-    
+          
        
     @Override
     @Transactional
@@ -236,12 +234,11 @@ public class UserService implements UserServiceInterface
     {      
       for(SecureToken token : secureTokenService.findByUser(user))
       {                 
-         secureTokenService.delete(token);                 
+         secureTokenService.delete(token);         
       }  
       this.save(user);    
       
-      SecureToken token = secureTokenService.generateToken(type);       
-      secureTokenService.addUserToToken(user, token);  
+      SecureToken token = secureTokenService.generateToken(user, type);       
       secureTokenService.save(token);      
       //this.addTokenToUser(token, user); //Error 
       this.save(user);

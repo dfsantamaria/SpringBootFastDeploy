@@ -50,6 +50,8 @@ public class Privilege implements Serializable
     {
       this.users.remove(user);
     }
+    
+    
     public Long getId() {
         return id;
     }
@@ -70,7 +72,7 @@ public class Privilege implements Serializable
         return users;
     }
 
-    public void getUsers(final Set<UserAccount> users) {
+    public void setUsers(final Set<UserAccount> users) {
         this.users = users;
     }
     //

@@ -6,6 +6,7 @@ package it.unict.spring.platform.controller.data.publicaccess;
  */
 import it.unict.spring.platform.persistence.model.user.Organization;
 import it.unict.spring.platform.service.user.OrganizationService;
+import it.unict.spring.platform.service.user.PrivilegeService;
 import it.unict.spring.platform.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,17 +22,19 @@ public class PublicWebController
     private OrganizationService orgService;
     @Autowired
     private UserService userService;
-      
+    @Autowired
+    private PrivilegeService privService;  
+    
+    
     @GetMapping("orgs")
     public String nonLoggedOrgMap()
-    {        
+    {       
        if(orgService.findByName("test").isEmpty())
           orgService.save(new Organization("test"));
        if(orgService.findAll().isEmpty())
            return "empty";
        return
-            orgService.findAll().toString();
-      
+            orgService.findAll().toString();      
     }
 }
 

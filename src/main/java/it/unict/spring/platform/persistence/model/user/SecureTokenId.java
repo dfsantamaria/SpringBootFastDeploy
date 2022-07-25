@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 
 @Embeddable
@@ -16,17 +19,20 @@ public class SecureTokenId implements Serializable
 {
     @Column(name="tokenType")
     private String tokenType;
-    @Column(name ="user_id")
-    private Long user_id;
+    
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserAccount user;
     
     public SecureTokenId()
     {
         super();
     }   
    
-    public SecureTokenId(Long user_id, String tokenType)
+    public SecureTokenId(String tokenType)
     {
-        this.user_id=user_id;
+        //this.user_id=user_id;
         this.tokenType=tokenType;
     }
     
@@ -37,12 +43,12 @@ public class SecureTokenId implements Serializable
             return false;    
         SecureTokenId that = (SecureTokenId) o;
         return Objects.equals(this.tokenType, that.tokenType) &&
-                    Objects.equals(this.user_id, that.user_id);
+                    Objects.equals(this.user.getId(), that.user.getId());
     }
     
     @Override
     public int hashCode() {
-        return Objects.hash(tokenType, user_id);
+        return Objects.hash(tokenType, this.user.getId());
     }
     
     public void setTokenType(String tokenType)
@@ -55,14 +61,20 @@ public class SecureTokenId implements Serializable
       return this.tokenType;
     }
     
-    public void setTokenId(Long id)
+   
+    public void setUser(UserAccount user)
     {
-      this.user_id=id;
+     this.user=user;
+    }
+            
+    public UserAccount getUser()
+    {
+      return this.user;
     }
     
     public Long getTokenId()
     {
-      return this.user_id;
+      return this.user.getId();
     }
     
         

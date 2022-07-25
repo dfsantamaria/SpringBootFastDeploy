@@ -42,7 +42,7 @@ public class Organization implements Serializable
 
     
     public void addUser(UserAccount user)
-    {
+    {        
       this.users.add(user);
     }
     
