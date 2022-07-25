@@ -22,7 +22,7 @@ For each repository is avaiable a service interface in the folder /spring/applic
 
 Authorization methods are available at  /spring/application/configuration/security. You can find the login and logout handlers in the subfolders /login and /logout respectively.  The web security configurator is available in the subfolder /websecurity.
 
-Currently, four user roles are available, "superadmin", "admin", "staff", and "user".  Login APIs are available in the folder /spring/application/controller/access.
+Currently, four user roles are available, "superadmin", "admin", "staff", and "user".  Login APIs are available in the folder /spring/application/controller/access. Users are required to validate their email userd in the registration. Configure the application.properties in ordet to set the information about the email client used to send and receive email.
 
 For customizing the provided logger, edit the file /resources/logback-spring.xml.
 

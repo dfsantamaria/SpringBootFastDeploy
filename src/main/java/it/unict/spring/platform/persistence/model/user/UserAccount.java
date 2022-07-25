@@ -118,7 +118,7 @@ public class UserAccount implements Serializable
     
     public void addOrganization(Organization org)
     {      
-      this.organizations.add(org);
+      this.organizations.add(org);      
     }
     
     public void addSecureToken(SecureToken token)

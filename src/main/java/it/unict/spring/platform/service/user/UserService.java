@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import javax.transaction.Transactional;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -64,8 +65,7 @@ public class UserService implements UserServiceInterface
     @Transactional
     public void setEnabled(UserAccount user, boolean enabled)
     {      
-      user.setEnabled(enabled);
-      repository.save(user);
+      user.setEnabled(enabled);      
     }
             
     @Override   
@@ -162,8 +162,8 @@ public class UserService implements UserServiceInterface
             Organization org = organizationService.getOrSetOrganization(organization); 
             org=organizationService.save(org);
             user=new UserAccount(username, this.encodePassword(password), mail, accountExpire, credentialExpire);                            
-            this.addOrganizationToUser(org,user); //user.addOrganization(org);           
-          // organizationService.addUserToOrganization(user, org);  //Error          
+            this.addOrganizationToUser(org,user); //user.addOrganization(org);            
+            //organizationService.addUserToOrganization(user, org);  //Error          
             organizationService.save(org);
             this.addPrivilegeToUser(priv, user); //user.addPrivileges(priv);  
             privilegeService.addUserToPrivilege(user, priv);
@@ -223,6 +223,8 @@ public class UserService implements UserServiceInterface
                         userdto.getMail(), accountExpire, credentialExpire,
                         organization.getName());
       this.setRegister(register, user);
+      registryService.save(register);     
+      this.save(user);
       return user;
     }
 
@@ -273,22 +275,15 @@ public class UserService implements UserServiceInterface
     {      
        user.addSecureToken(token);
     }
-    
-    
-    @Transactional
-    @Override
-    public void addRegisterToUser(UserRegister register, UserAccount user)
-    {
-      user.setRegister(register);      
-    }
-    
+        
+       
     @Override
     @Transactional
     public void setRegister(UserRegister register, UserAccount user)            
     {        
       registryService.addUserToRegister(user, register);
-      registryService.save(register);     
-      this.save(user);      
+     // registryService.save(register);     
+     // this.save(user);      
     }
     
     @Override

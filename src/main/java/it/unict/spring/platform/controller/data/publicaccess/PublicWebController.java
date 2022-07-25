@@ -29,6 +29,7 @@ public class PublicWebController
     @GetMapping("orgs")
     public String nonLoggedOrgMap()
     {       
+       //System.out.println(userService.findByMail("daniele.santamaria@unict.it").get(0).getTokens().size());
        if(orgService.findByName("test").isEmpty())
           orgService.save(new Organization("test"));
        if(orgService.findAll().isEmpty())
