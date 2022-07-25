@@ -6,6 +6,7 @@
       <link th:href="@{/public/css/main.css}" rel="stylesheet">
   </head>
 <body>
+	<div class="outer">
 	<div class="container">
 	<h2 class="form-heading">Welcome!</h2> 
 		<div><p>Its <label th:text="${serverTime}"> now </label></p></div>
@@ -18,6 +19,7 @@
 	<form th:action="@{/public/api/access/registration/register}">
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
     </form>
-    </container>
+    </div>
+</div>
 </body>
 </html>

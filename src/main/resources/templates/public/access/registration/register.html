@@ -6,6 +6,7 @@
       <link th:href="@{/public/css/main.css}" rel="stylesheet">
   </head>
   <body>
+  	<div class="outer">
     <div class="container">
         <h2 class="form-heading">Register your account</h2> 
         <div class="form-group">  
@@ -61,7 +62,8 @@
           <div class="has-error" th:if="${errorMessage}"  th:text="${errorMessage}">Error</div>
        
   <button type="submit" class="btn btn-lg btn-primary btn-block">Submit</button>
-</div>    
+  </div>    
     </div>
+</div>
   </body>
 </html>
