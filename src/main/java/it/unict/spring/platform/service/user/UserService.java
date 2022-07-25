@@ -236,8 +236,7 @@ public class UserService implements UserServiceInterface
       {                 
          secureTokenService.delete(token);         
       }  
-      this.save(user);    
-      
+      this.save(user);     
       SecureToken token = secureTokenService.generateToken(user, type);       
       secureTokenService.save(token);      
       //this.addTokenToUser(token, user); //Error 

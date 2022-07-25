@@ -53,13 +53,13 @@ public class RegistrationController
      @RequestMapping("register")
      public ModelAndView viewRegister(HttpServletRequest request,
                                       HttpServletResponse response,
-                                @ModelAttribute("userregdto") UserRegisterDTO userregdto,
-                                BindingResult userRegBindResult,
-                                @ModelAttribute("userdto") UserAccountDTO userdto, 
-                                BindingResult userBindResult,
-                                @ModelAttribute("orgdto") OrganizationDTO orgdto, 
-                                BindingResult orgBindResult,
-                                Model model)
+                                      @ModelAttribute("userregdto") UserRegisterDTO userregdto,
+                                      BindingResult userRegBindResult,
+                                      @ModelAttribute("userdto") UserAccountDTO userdto, 
+                                      BindingResult userBindResult,
+                                      @ModelAttribute("orgdto") OrganizationDTO orgdto, 
+                                      BindingResult orgBindResult,
+                                      Model model)
      {    
          model.addAttribute("userregdto", userregdto);
          model.addAttribute("userdto", userdto);  
