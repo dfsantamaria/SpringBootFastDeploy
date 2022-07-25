@@ -24,7 +24,7 @@ import org.hibernate.annotations.CreationTimestamp;
 public class SecureToken implements Serializable
 {
     @EmbeddedId
-    public SecureTokenId tokenId= new SecureTokenId();
+    public SecureTokenId tokenId;
 
     @Column(unique = true)
     private String token;
@@ -53,12 +53,11 @@ public class SecureToken implements Serializable
     }
           
     
-    public SecureToken(UserAccount user, String token, String tokenType, Timestamp timestamp, Timestamp expire)
+    public SecureToken(SecureTokenId tokenId, String token, Timestamp timestamp, Timestamp expire)
     {
-       super();       
-       this.token=token;       
-       this.tokenId.setTokenType(tokenType);
-       this.tokenId.setUser(user);
+       super();   
+       this.tokenId=tokenId;
+       this.token=token;    
        this.timestamp=timestamp;
        this.expireAt=expire;      
        this.isExpired=false;        
@@ -83,7 +82,12 @@ public class SecureToken implements Serializable
     {
         return this.tokenId.getTokenType();
     }
-            
+        
+    public void setTokenType(String tokenType)
+    {
+       this.token=tokenType;
+    }
+    
     public Timestamp getExpireAt()
     {
       return this.expireAt;

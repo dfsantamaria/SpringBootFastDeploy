@@ -30,9 +30,9 @@ public class SecureTokenId implements Serializable
         super();
     }   
    
-    public SecureTokenId(String tokenType)
+    public SecureTokenId(UserAccount user, String tokenType)
     {
-        //this.user_id=user_id;
+        this.user=user;
         this.tokenType=tokenType;
     }
     

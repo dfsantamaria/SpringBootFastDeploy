@@ -6,6 +6,7 @@ package it.unict.spring.platform.service.user;
  */
 
 import it.unict.spring.platform.persistence.model.user.SecureToken;
+import it.unict.spring.platform.persistence.model.user.SecureTokenId;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.repository.user.SecureTokenRepository;
 import it.unict.spring.platform.serviceinterface.user.SecureTokenServiceInterface;
@@ -80,11 +81,9 @@ public class SecureTokenService implements SecureTokenServiceInterface
       new SecureRandom().nextBytes(random);
       Timestamp timestamp = java.sql.Timestamp.valueOf(LocalDateTime.now());
       LocalDateTime expire= LocalDateTime.now().plusHours(12);
-      SecureToken token = new SecureToken(user,
-                                          Base64.encodeBase64URLSafeString(random),
-                                          tokenType,
-                                          timestamp, Timestamp.valueOf(expire));                                             
-      
+      SecureToken token = new SecureToken(new SecureTokenId(user, tokenType),Base64.encodeBase64URLSafeString(random),                                          
+                                          timestamp, Timestamp.valueOf(expire));
+         
       return token;
     }
 
