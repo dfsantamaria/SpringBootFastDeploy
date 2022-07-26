@@ -37,7 +37,7 @@ public class WebSecurityConfig
  
                 authorizeHttpRequests().                
                 antMatchers("/public/**", "/").permitAll(). 
-                antMatchers("/auth/api/all/").authenticated().
+                antMatchers("/auth/api/all/**").authenticated().
                 antMatchers("/auth/api/superadmin/**").hasAnyRole("SUPERADMIN").
                 antMatchers("/auth/api/admin/**").hasAnyRole("SUPERADMIN","ADMIN").
                 antMatchers("/auth/api/staff/**").hasAnyRole("SUPERADMIN","ADMIN","STAFF").
@@ -51,7 +51,7 @@ public class WebSecurityConfig
                 loginProcessingUrl("/public/api/access/login/signin").
                 successHandler(new CustomLoginSuccessHandler()).
                 failureHandler(new CustomLoginFailureHandler()).
-                defaultSuccessUrl("/auth/api/all/accountview").
+                defaultSuccessUrl("/auth/api/all/accountView").
                 permitAll().   
                 
                 and()

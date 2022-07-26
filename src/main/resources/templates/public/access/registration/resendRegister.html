@@ -13,7 +13,7 @@
         <form name="form-signin" th:action="@{/public/api/access/registration/confirmResendRegister}" method="post">                   
                    
                  <div class="over-label"><input name="username" type="text" class="form-control" placeholder="Username or Email" autofocus="true"/></div>
-                 <div class="over-label"><input name="password" type="password" class="form-control"  placeholder="Password"/> </div>
+                 <div class="over-label"><input name="password" type="password" class="form-control"  placeholder="Password"  minlength="8"/> </div>
                  
 
                 <div th:if="${param.errorCredentials}" class="has-error">    Invalid username and password or account already registered.       </div>  

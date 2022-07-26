@@ -12,7 +12,7 @@
 
 <body>
  <div class="topnav">
-  <a class="active" th:href="@{/auth/api/all/accountview}"> Account </a>
+  <a class="active" th:href="@{/auth/api/all/accountView}"> Account </a>
   <a th:href="@{/auth/api/access/login/signout}">Signout</a> 
  </div>
 
@@ -20,7 +20,21 @@
 	<div class="container">
 	<h2 class="form-heading">Welcome!</h2> 
 	<div><p>Its <label th:text="${serverTime}"> now </label></p></div>	  
-  </div>
-</div>
+  
+   
+      <form name="form-edit" th:action="@{/auth/api/all/updateData}" method="post">   
+        <div class="form-group">
+          <p>  Change password </p>
+          <input name="password" type="password" class="form-control"  minlength="8" placeholder="New Password"/>
+          <input name="confirmPassword" type="password" class="form-control"  minlength="8" placeholder="Confirm Password"/>                              
+          <div th:if="${param.accepted}" class="alert-success">  Password modified  </div>
+          <div th:if="${param.passwordError}" class="has-error">  Error, check the passowrd fields  </div>
+       </div>          
+          
+       <button type="submit" class="btn btn-lg btn-primary btn-block">Submit</button>                 
+       </form>
+                  
+   </div>
+   </div>
 </body>
 </html>

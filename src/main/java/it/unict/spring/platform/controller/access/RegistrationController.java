@@ -144,8 +144,8 @@ public class RegistrationController
                                       @RequestParam("password") String password,
                                       Model model)
      {
-       //  try
-       //  {           
+         try
+         {           
            List<UserAccount> user=userService.findByMailOrUsername(username);  
            if(user.size() == 1  && (!user.get(0).isEnabled()) && userService.comparePassword(user.get(0).getPassword(), password))
             {
@@ -155,12 +155,12 @@ public class RegistrationController
             else
              return new ModelAndView("redirect:/public/api/access/registration/resendRegister?errorCredentials");     
              
-          // }
-         //  catch(Exception e)
-         //  {
-         //   applogger.error("Resend registration email error: "+ e.toString());
-          //  return new ModelAndView("redirect:/public/api/access/registration/resendRegister?error");
-          // }         
+          }
+          catch(Exception e)
+           {
+            applogger.error("Resend registration email error: "+ e.toString());
+           return new ModelAndView("redirect:/public/api/access/registration/resendRegister?error");
+          }         
         
      }
     
