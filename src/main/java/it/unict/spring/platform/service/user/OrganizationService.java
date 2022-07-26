@@ -49,21 +49,34 @@ public class OrganizationService implements OrganizationServiceInterface
       repository.delete(organization);
     }    
     
+    
+    /*
+    * Retrieve an organization with the given name
+    */
     @Override
     @Transactional
     public Organization getOrSetOrganization(String organization)
     {
        List<Organization> orgs = repository.findByName(organization);
        Organization org;
-       if (orgs.isEmpty())
-       {
-          org = new Organization(organization);
-         // repository.save(org);
-       }
-       else org=orgs.get(0);
+       if (orgs.isEmpty())      
+          org = new Organization(organization);      
+       else 
+           org=orgs.get(0);
        return org;
     }
     
+    /*
+    * From the give DTO to organization
+    */
+    @Override
+    @Transactional
+    public Organization mapFromOrganization(OrganizationDTO orgdto)
+    {      
+       return this.getOrSetOrganization(orgdto.getName());
+    }
+    
+    /*
     @Override
     @Transactional
     public Organization getOrSetOrganization(Organization organization)
@@ -78,10 +91,6 @@ public class OrganizationService implements OrganizationServiceInterface
        return org;
     }
     
-    @Override
-    @Transactional
-    public Organization mapFromOrganization(OrganizationDTO orgdto)
-    {      
-       return this.getOrSetOrganization(orgdto.getName());
-    }
+    
+   */
 }

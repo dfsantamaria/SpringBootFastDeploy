@@ -17,7 +17,7 @@ public interface OrganizationServiceInterface
     
     Organization save(Organization privilege);
     Organization getOrSetOrganization(String organization); 
-    Organization getOrSetOrganization(Organization organization);
+   // Organization getOrSetOrganization(Organization organization);
     Organization mapFromOrganization(OrganizationDTO orgdto);    
     void delete(Organization organization);
 }

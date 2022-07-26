@@ -44,6 +44,7 @@ public class UserRegister implements Serializable
        this.firstname=name;       
        this.middlename=middlename;
        this.lastname=lastname;
+       user=null;
     }
     
     public UserAccount getUser()
@@ -55,7 +56,6 @@ public class UserRegister implements Serializable
     {
       this.user = user;
       this.id =user.getId();    
-      user.setRegister(this);
     }
 
     public Long getId() {

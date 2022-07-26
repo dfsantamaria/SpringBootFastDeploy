@@ -42,7 +42,10 @@ public class UserRegisterService implements UserRegisterServiceInterface
     {
       repository.delete(register);
     }
-              
+     
+    /*
+    * Map from the give DTO to UserRegister
+    */
     @Override
     public UserRegister mapFromUserRegister(UserRegisterDTO dto)
     {
@@ -53,4 +56,5 @@ public class UserRegisterService implements UserRegisterServiceInterface
     {
       reg.setUser(user);
     }
+
 }

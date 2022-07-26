@@ -42,8 +42,7 @@ public class SecureTokenService implements SecureTokenServiceInterface
     {
       return repository.findByUser(user);
     }
-
-        
+       
     
     @Override
     public List<SecureToken> findByToken(String token)
@@ -66,6 +65,7 @@ public class SecureTokenService implements SecureTokenServiceInterface
     }
     
       
+    
     @Override
     @Transactional
     public SecureToken generateToken(UserAccount user, String tokenType)
@@ -75,12 +75,14 @@ public class SecureTokenService implements SecureTokenServiceInterface
       Timestamp timestamp = java.sql.Timestamp.valueOf(LocalDateTime.now());
       LocalDateTime expire= LocalDateTime.now().plusHours(12);
       SecureToken token = new SecureToken(new SecureTokenId(user, tokenType),Base64.encodeBase64URLSafeString(random),                                          
-                                          timestamp, Timestamp.valueOf(expire));
-         
+                                          timestamp, Timestamp.valueOf(expire));      
+      
       return token;
     }
 
+    
     @Override
+    @Transactional
     public void consumeToken(SecureToken sec)
     {
       sec.setIsConsumed(Timestamp.valueOf(LocalDateTime.now()));

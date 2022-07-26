@@ -47,7 +47,7 @@ public class UserServiceTest
     private final String mail="daniele.santamaria@unict.it";
     private final String username = "dfsantamaria";
         
-    
+   
     @BeforeEach    
     public void createUser() throws MultipleUsersFoundException
     {
@@ -58,7 +58,8 @@ public class UserServiceTest
                                                          UserExpirationInformation.getAccountExpirationDate(),
                                                                  UserExpirationInformation.getCredentialExpirationDate(),
                                                          "Univeristy of Catania");
-          userServ.setEnabled(user, true);          
+          userServ.setEnabled(user, true);  
+          userServ.save(user);
        }
        users = userServ.findByUsername(username);
        assertTrue(users.get(0).isEnabled());
@@ -74,4 +75,5 @@ public class UserServiceTest
         assertEquals(users.get(0).getUsername(), username); 
         
     }
+
 }

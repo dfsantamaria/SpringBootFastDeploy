@@ -7,7 +7,6 @@ package it.unict.spring.platform.service.user;
 
 import it.unict.spring.platform.serviceinterface.user.PrivilegeServiceInterface;
 import it.unict.spring.platform.persistence.model.user.Privilege;
-import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.repository.user.PrivilegeRepository;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -48,21 +47,34 @@ public class PrivilegeService implements PrivilegeServiceInterface
       repository.delete(privilege);
     }
     
+   /*
+     Persist the default user roles
+    */ 
+   @Override
+   @Transactional
+   public void startUpPrivileges()
+   {
+      this.getOrSetSuperAdminPrivilege();
+      this.getOrSetAdminPrivilege();
+      this.getOrSetStaffPrivilege();
+      this.getOrSetStandardUserPrivilege();     
+   }
    
-  @Override
-  public Privilege getPrivilege(String privName)
-  {
-       List<Privilege> privileges = repository.findByName(privName);
-       Privilege priv;
-       if (privileges.isEmpty())
-       {
-            return null;        
-        }
-       else 
-           priv=privileges.get(0);
-       return priv;
-  }  
-    
+   /*
+     Persist or retrieve the superadmin user role
+   */ 
+   @Transactional
+   private  Privilege getOrSetSuperAdminPrivilege()
+   {
+    Privilege priv = getOrSetPrivilege("ROLE_SUPERADMIN");
+    priv=this.save(priv);
+    return priv;
+   }
+  
+   /* 
+    * Retrive the user role given in input
+    *
+   */
   @Transactional
   private Privilege getOrSetPrivilege(String privName)
   {
@@ -76,35 +88,35 @@ public class PrivilegeService implements PrivilegeServiceInterface
            priv=privileges.get(0);
        return priv;
   }
-    
-    
-  @Transactional
-  private  Privilege getOrSetAdminPrivilege()
-  {
-    Privilege priv = getOrSetPrivilege("ROLE_ADMIN");
+  
+  /* 
+    * Persist or retrive the admin role 
+    *
+   */
+   @Transactional
+   private  Privilege getOrSetAdminPrivilege()
+   {
+    Privilege priv = this.getOrSetPrivilege("ROLE_ADMIN");
     priv=this.save(priv);
     return priv;
-  }
+   }
   
-  
-  @Transactional
-  private  Privilege getOrSetSuperAdminPrivilege()
-  {
-    Privilege priv = getOrSetPrivilege("ROLE_SUPERADMIN");
-    priv=this.save(priv);
-    return priv;
-  }
-  
-   
-  @Transactional
-  private  Privilege getOrSetStaffPrivilege()
-  {
+   /* 
+    * Persist or retrive the staff role 
+    *
+   */
+   @Transactional
+   private  Privilege getOrSetStaffPrivilege()
+   {
     Privilege priv = getOrSetPrivilege("ROLE_STAFF");
     priv=this.save(priv);
     return priv;
   }
-  
    
+   /* 
+    * Persist or retrive the standard user role 
+    *
+   */   
   @Transactional
   private Privilege getOrSetStandardUserPrivilege()
   {
@@ -112,16 +124,54 @@ public class PrivilegeService implements PrivilegeServiceInterface
     priv=this.save(priv);
     return priv;
   }
+   
+  /* 
+    * Return the superadmin user role
+    *
+   */
+  @Override
+  @Transactional
+  public  Privilege getSuperAdminPrivilege()
+  {
+    return this.getPrivilege("ROLE_SUPERADMIN");
+  }
+  
+  
+  @Override 
+  @Transactional
+  public Privilege getStandardUserPrivilege()
+  {
+    return getPrivilege("ROLE_STANDARDUSER");
+  }
+  
+  /* 
+    * Retrive the admin user role given in input
+    *
+   */
+  @Override
+  public Privilege getPrivilege(String privName)
+  {
+       List<Privilege> privileges = repository.findByName(privName);
+       Privilege priv;
+       if (privileges.isEmpty())
+       {
+            return null;        
+        }
+       else 
+           priv=privileges.get(0);
+       return priv;
+  }  
+  /*
+  
+ 
+  
+  
+    
 
-   @Override
-   @Transactional
-   public void startUpPrivileges()
-   {
-      this.getOrSetSuperAdminPrivilege();
-      this.getOrSetAdminPrivilege();
-      this.getOrSetStaffPrivilege();
-      this.getOrSetStandardUserPrivilege();     
-   }
+      
+  
+
+ 
   
   @Override 
   @Transactional
@@ -131,12 +181,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
   }
   
   
-  @Override
-  @Transactional
-  public  Privilege getSuperAdminPrivilege()
-  {
-    return getPrivilege("ROLE_SUPERADMIN");
-  }
+  
   
    
   @Override
@@ -146,11 +191,5 @@ public class PrivilegeService implements PrivilegeServiceInterface
     return getPrivilege("ROLE_STAFF");
   }
   
-  @Override 
-  @Transactional
-  public Privilege getStandardUserPrivilege()
-  {
-    return getPrivilege("ROLE_STANDARDUSER");
-  }
-  
+  */
 }

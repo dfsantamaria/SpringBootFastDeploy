@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -75,11 +74,10 @@ public class UserAccount implements Serializable
     @PrimaryKeyJoinColumn
     private UserRegister register;   
     
-    @OneToMany(mappedBy ="tokenId.user", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval =true, fetch=FetchType.LAZY)
+    @OneToMany(mappedBy ="tokenId.user", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
     private Set<SecureToken> tokens = new HashSet<>();
     
-      
-    
+         
     //
 
     public UserAccount() {
@@ -114,17 +112,19 @@ public class UserAccount implements Serializable
      public void addPrivileges(Privilege priv)
      {     
       this.privileges.add(priv);
+      priv.addUser(this);
      }
     
     public void addOrganization(Organization org)
     {      
       this.organizations.add(org);
-      //org.addUser(this);
+      org.addUser(this);
     }
     
     public void addSecureToken(SecureToken token)
     {        
       this.tokens.add(token);
+      token.addUser(this);
     }
     
     public Set<SecureToken> getTokens()
@@ -145,6 +145,7 @@ public class UserAccount implements Serializable
     public void removeSecureToken(SecureToken token)
     {
       this.tokens.remove(token);
+      token.removeUser();
     }    
         
     public void setUsername(String username) {
@@ -250,6 +251,7 @@ public class UserAccount implements Serializable
     public void setRegister(UserRegister register)
     {
       this.register=register;
+      register.setUser(this);
     }
     
     @Override

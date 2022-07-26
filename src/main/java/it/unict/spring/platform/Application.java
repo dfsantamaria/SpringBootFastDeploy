@@ -80,24 +80,11 @@ public class Application extends SpringBootServletInitializer
       {          
        applogger.info("Connected to DB schema: "+ ((DataSource)appContext.getBean("userSource")).getConnection().getCatalog());
        applogger.info("Connected to DB schema: "+ ((DataSource)appContext.getBean("dataSource")).getConnection().getCatalog());   
-           }
+      }
       catch (SQLException ex)
       {
         applogger.info("Error on DBConnection: " + ex.toString());
-      } 
-     // catch (MultipleUsersFoundException ex)
-     // {
-    //      applogger.warn(ex.toString());
-    //  }
-      /* Data p = new Data("admin");
-       Data p1 = new Data("admin2");
-       EntityManager datamanager=dataEntityManagerFactory.getObject().createEntityManager();
-       datamanager.getTransaction().begin();
-       datamanager.persist(p); 
-       datamanager.persist(p1);
-       datamanager.getTransaction().commit(); 
-       EntityManager usermanager=userEntityManagerFactory.getObject().createEntityManager();
-       */    
+      }      
       }    
 
       
@@ -113,11 +100,13 @@ public class Application extends SpringBootServletInitializer
               UserAccount user = userService.getSuperAdminUser("dfsantamaria", "lll@@", "daniele.santamaria@unict.it",
                                                                  UserExpirationInformation.getAccountExpirationDate(),
                                                                  UserExpirationInformation.getCredentialExpirationDate(),
-                                                                 "University of Catania");
+                                                                 "University of Catania"
+                                                                 );
               userService.setEnabled(user, true); //enable user              
               UserRegister register=new UserRegister("Daniele", "Francesco", "Santamaria");
-              registerService.setUser(register,user);
+              userService.addRegisterToUser(register,user);
               registerService.save(register);
+              userService.save(user);
            }
            
         } 

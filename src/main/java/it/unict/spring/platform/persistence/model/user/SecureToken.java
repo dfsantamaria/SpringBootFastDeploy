@@ -40,8 +40,8 @@ public class SecureToken implements Serializable
     private Timestamp expireAt;
 
     @MapsId("user_id")
-    @JoinColumn(name = "user_id", referencedColumnName ="id")
-    @ManyToOne    
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName ="id")        
     private UserAccount user;
 
     @Transient
@@ -133,7 +133,8 @@ public class SecureToken implements Serializable
         if (!(obj instanceof SecureToken)) 
             return false;
          
-        return this.getId().getTokenId() != null && 
-                this.getId().getTokenId().equals(((SecureToken) obj).getId().getTokenId());
+        return this.getId().getTokenId() != null && this.getId().getTokenType()!=null &&
+                this.getId().getTokenId().equals(((SecureToken) obj).getId().getTokenId()) &&
+                this.getId().getTokenType().equals(((SecureToken) obj).getId().getTokenType());
    }
 }

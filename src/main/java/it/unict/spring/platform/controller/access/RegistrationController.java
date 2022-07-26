@@ -41,6 +41,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class RegistrationController
 {
+    
     @Autowired
     UserService userService;
     @Autowired
@@ -67,7 +68,7 @@ public class RegistrationController
          return new ModelAndView("public/access/registration/register");
      }
      
-     
+    
      
      @RequestMapping(value="registerUser", method = RequestMethod.POST)
      public ModelAndView registerUser(HttpServletRequest request,
@@ -100,7 +101,7 @@ public class RegistrationController
           } 
           catch (MultipleUsersFoundException ex)
            {
-            model.addAttribute("errorMessage","Account already exists");
+             model.addAttribute("errorMessage","Account already exists");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return new ModelAndView("public/access/registration/register");
            }
@@ -126,7 +127,8 @@ public class RegistrationController
        }
      }
      
-      @RequestMapping("resendRegister")
+     
+     @RequestMapping("resendRegister")
      public ModelAndView viewResendRegister(HttpServletRequest request,
                                       HttpServletResponse response,                                      
                                       Model model)
@@ -142,28 +144,24 @@ public class RegistrationController
                                       @RequestParam("password") String password,
                                       Model model)
      {
-         try
-         {           
+       //  try
+       //  {           
            List<UserAccount> user=userService.findByMailOrUsername(username);  
            if(user.size() == 1  && (!user.get(0).isEnabled()) && userService.comparePassword(user.get(0).getPassword(), password))
             {
              userService.sendRegistrationMail(user.get(0), request.getRequestURL().toString());
-            // Hibernate.initialize(user.get(0).getTokens());
-            // user.get(0).getTokens().forEach(token-> System.out.println(token.getToken()));
              return new ModelAndView("redirect:/public/api/access/registration/resendRegister?confirmReg");
             }
             else
              return new ModelAndView("redirect:/public/api/access/registration/resendRegister?errorCredentials");     
              
-           }
-           catch(Exception e)
-           {
-            applogger.error("Resend registration email error: "+ e.toString());
-            return new ModelAndView("redirect:/public/api/access/registration/resendRegister?error");
-           }         
+          // }
+         //  catch(Exception e)
+         //  {
+         //   applogger.error("Resend registration email error: "+ e.toString());
+          //  return new ModelAndView("redirect:/public/api/access/registration/resendRegister?error");
+          // }         
         
      }
-    
-    
     
 }

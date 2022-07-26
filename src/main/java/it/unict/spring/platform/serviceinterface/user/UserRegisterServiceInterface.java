@@ -1,7 +1,6 @@
 package it.unict.spring.platform.serviceinterface.user;
 
 import it.unict.spring.platform.dto.user.UserRegisterDTO;
-import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import java.util.List;
 

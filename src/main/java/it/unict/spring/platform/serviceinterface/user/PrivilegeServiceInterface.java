@@ -15,11 +15,14 @@ public interface PrivilegeServiceInterface
     List<Privilege> findAll();
     List<Privilege> findByName(String name);
     Privilege save(Privilege privilege);
-    Privilege getPrivilege(String privName);
-    Privilege getAdminPrivilege(); 
-    Privilege getSuperAdminPrivilege();
-    Privilege getStaffPrivilege();
+    void startUpPrivileges();//   Persist the default user roles    
+    Privilege getPrivilege(String privName); // Retrieve the user role given in input
+    Privilege getSuperAdminPrivilege(); //Retrieve the superadmin user role
     Privilege getStandardUserPrivilege();   
-    void startUpPrivileges();
+//  Privilege getAdminPrivilege(); 
+    
+ //   Privilege getStaffPrivilege();
+ //   
+ //   
     void delete(Privilege privilege);
 }

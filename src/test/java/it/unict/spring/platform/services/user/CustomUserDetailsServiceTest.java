@@ -45,6 +45,7 @@ public class CustomUserDetailsServiceTest
    private final String mail="daniele.santamaria@unict.it";
    private final String username = "dfsantamaria";
    
+   
    @Test
    @Transactional
    public void loadUserByUsername() throws MultipleUsersFoundException 
@@ -66,4 +67,5 @@ public class CustomUserDetailsServiceTest
        }
        assertEquals(details.getMail(), mail);
    }
+
 }

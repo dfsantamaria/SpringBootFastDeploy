@@ -8,6 +8,7 @@ package it.unict.it.spring.platform.controller.access;
 import it.unict.spring.platform.Application;
 import it.unict.spring.platform.persistence.model.user.SecureToken;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
+import it.unict.spring.platform.service.user.SecureTokenService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
 import java.util.List;
@@ -33,6 +34,8 @@ public class RegistrationTest
     private MockMvc mvc;
     @Autowired
     private UserService service;
+    @Autowired
+    private SecureTokenService tokenService;
     
     @Test
     public void isRegistrationPubliclyAvailable() throws Exception 
@@ -87,8 +90,12 @@ public class RegistrationTest
                                                                  UserExpirationInformation.getCredentialExpirationDate());
       this.clearUser(user);
       
-      user = service.getStandardUser(user);
+      user = service.getStandardUser("testName2", "PlainPassword", "test2@mail.com", UserExpirationInformation.getAccountExpirationDate(),
+                                                                 UserExpirationInformation.getCredentialExpirationDate(), "org");
+      service.save(user);
       SecureToken token=service.assignTokenToUser(user, "FReg");
+      tokenService.save(token);
+      service.save(user);
       
       assertFalse(user.isEnabled());
       
@@ -116,9 +123,11 @@ public class RegistrationTest
     public void isResendRegistrationSavingData() throws Exception
     {
      if(service.findByMail("test3@mail.com").isEmpty())   
-        service.getStandardUser("testName3", "PlainPassword", "test3@mail.com", UserExpirationInformation.getAccountExpirationDate(),
+     {
+       UserAccount user =  service.getStandardUser("testName3", "PlainPassword", "test3@mail.com", UserExpirationInformation.getAccountExpirationDate(),
                                                                  UserExpirationInformation.getCredentialExpirationDate(), "organization");
-     
+       service.save(user);
+     }
       mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/confirmResendRegister"))
                                                .param("username", "testName3")
                                                .param("password", "PlainPassword")
@@ -126,6 +135,5 @@ public class RegistrationTest
                 )
            .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/public/api/access/registration/resendRegister?confirmReg"));                
       this.clearUser( (service.findByMail("test3@mail.com")).get(0)); 
-    }
-    
+    }   
 }

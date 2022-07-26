@@ -23,35 +23,47 @@ public interface UserServiceInterface
     List<UserAccount> findAll();
     List<UserAccount> findByUsername(String username);
     List<UserAccount> findByMail(String email);
+    List<UserAccount> findByMailOrUsername(String namemail);
+    UserAccount findById(Long id);
+    
     UserAccount save (UserAccount g);  
     void delete(UserAccount user);
-    void setEnabled(UserAccount user, boolean enabled);
-    boolean hasUserPrivilege(String privilege);
-    String getUserByEmail(String mail) throws UserNotFoundException;
-    List<UserAccount> findByMailOrUsername(String namemail);
+    
     boolean comparePassword(String hash, String plain);
     String encodePassword(String password);
-    void addTokenToUser(SecureToken token, UserAccount user);
-    void addOrganizationToUser(Organization org, UserAccount user);
-    void addPrivilegeToUser(Privilege privilege, UserAccount user);
-    
     UserAccount getUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization, Privilege priv) throws MultipleUsersFoundException;
-
-    
-    UserAccount getAdminUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException;
-    
-    UserAccount getStaffUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException;
-   
-    UserAccount getStandardUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException;
-    UserAccount getStandardUser(UserAccount user);
-   
     UserAccount getSuperAdminUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire ,String organization) throws MultipleUsersFoundException;
-    
+    UserAccount getStandardUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException;
     UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException;
     
-        
+    void addRegisterToUser(UserRegister register, UserAccount account);
+    void setEnabled(UserAccount user, boolean enabled);
+   
+    
+    void sendRegistrationMail(UserAccount user, String url);
     SecureToken assignTokenToUser(UserAccount user, String type);
     boolean checkToken(String token) throws UserAccountAlreadyVerified;
     
-    void sendRegistrationMail(UserAccount user, String url);
+  //  boolean hasUserPrivilege(String privilege);
+  //  String getUserByEmail(String mail) throws UserNotFoundException;
+ //   
+
+ //   void addTokenToUser(SecureToken token, UserAccount user);
+ //   void addOrganizationToUser(Organization org, UserAccount user);
+ //   void addPrivilegeToUser(Privilege privilege, UserAccount user);
+
+    
+ //   UserAccount getAdminUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException;
+    
+  //  UserAccount getStaffUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException;
+   
+ //  //   UserAccount getStandardUser(UserAccount user);
+   
+ //   
+//   
+        
+ //   
+ //   
+    
+//    
 }

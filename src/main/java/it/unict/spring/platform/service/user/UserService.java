@@ -62,19 +62,31 @@ public class UserService implements UserServiceInterface
     }
     
     @Override
-    @Transactional
-    public void setEnabled(UserAccount user, boolean enabled)
-    {      
-      user.setEnabled(enabled);      
+    public List<UserAccount> findByMail(String email)
+    {
+      return repository.findByMail(email);
     }
-            
+    
+    @Override 
+    public List<UserAccount> findByMailOrUsername(String namemail)
+    {
+       return repository.findAllByMailOrUsername(namemail, namemail);
+    }
+  
+    @Override
+    @Transactional
+    public void delete(UserAccount user)
+    {
+      repository.delete(user);
+    }
+    
     @Override   
     @Transactional
     public UserAccount save (UserAccount g)
     {
       return repository.save(g);
     }
-        
+    
     @Override
     public String encodePassword(String password)
     {
@@ -87,29 +99,147 @@ public class UserService implements UserServiceInterface
       return getPasswordEncoder.matches(plain, hash);
     }
     
+    /*
+    * Enable the give user
+    */
     @Override
     @Transactional
-    public void delete(UserAccount user)
-    {
-      repository.delete(user);
+    public void setEnabled(UserAccount user, boolean enabled)
+    {      
+      user.setEnabled(enabled);      
     }
     
     @Override
-    public List<UserAccount> findByMail(String email)
-    {
-      return repository.findByMail(email);
-    }
-    
-    @Override 
-    public List<UserAccount> findByMailOrUsername(String namemail)
-    {
-       return repository.findAllByMailOrUsername(namemail, namemail);
-    }
-    
+    @Transactional
     public UserAccount findById(Long id)
     {
       return repository.findById(id).get();
     }
+    
+    @Override
+    @Transactional
+    public UserAccount getSuperAdminUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException
+    {
+      Privilege priv= privilegeService.getSuperAdminPrivilege(); 
+      return this.getUser(username, password, mail, accountExpire, credentialExpire, organization, priv);       
+    }
+    
+    /*
+    * Create or retrive a user assigning the given organization and privilege
+    */
+    @Override
+    @Transactional
+    public UserAccount getUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire,
+                               String organization, Privilege priv) throws MultipleUsersFoundException
+    {         
+        List<UserAccount> users = repository.findAllByMailOrUsername(mail, username);    
+        
+        UserAccount user=null;
+        if(users.size()>1)
+            throw new MultipleUsersFoundException("Combination of username and password gets multiple users: "+ username + ", "+mail);
+        else if(users.size()==1)
+             user = users.get(0);
+        else if(users.isEmpty())        
+           { 
+             user=new UserAccount(username, this.encodePassword(password), mail, accountExpire, credentialExpire);                            
+           }  
+           if (user==null)
+               return null;
+            user.addPrivileges(priv);
+            privilegeService.save(priv);
+            Organization org = organizationService.getOrSetOrganization(organization);            
+            user.addOrganization(org);
+            organizationService.save(org);           
+        return user;       
+    }
+    
+    @Override
+    @Transactional
+    public void addRegisterToUser(UserRegister register, UserAccount account)
+    {
+      account.setRegister(register);      
+    }
+    
+    
+    @Override
+    @Transactional
+    public UserAccount getStandardUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException
+    {
+      
+      Privilege priv= privilegeService.getStandardUserPrivilege(); 
+      return this.getUser(username, password, mail, accountExpire,  credentialExpire, organization, priv);       
+    }
+    
+      
+
+    @Override
+    @Transactional
+    public UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException
+    {        
+      UserAccount user= this.getStandardUser(userdto.getUsername(),
+                        userdto.getPassword(),
+                        userdto.getMail(), accountExpire, credentialExpire,
+                        organization.getName());      
+      this.save(user);
+      return user;
+    }
+    
+
+    @Override   
+    @Transactional
+    public void sendRegistrationMail(UserAccount user, String url)
+    {       
+      SecureToken token=this.assignTokenToUser(user, "FReg");     
+      user=this.save(user);
+      token=secureTokenService.save(token);
+      mailService.sendSimpleEmail(user.getMail(), "Confirm registration", url+"/registrationConfirm?token=" + token.getToken());
+           
+    }
+    
+    @Override
+    @Transactional
+    public SecureToken assignTokenToUser(UserAccount user, String type)
+    {         
+      for(SecureToken token : secureTokenService.findByUser(user))                       
+         secureTokenService.delete(token);      
+      SecureToken token = secureTokenService.generateToken(user, type); 
+      //user.addSecureToken(token); Error
+      return token;
+    }  
+    
+    
+              
+    @Override
+    @Transactional    
+    public boolean checkToken(String token) throws UserAccountAlreadyVerified
+    {
+        
+      List<SecureToken> sec= secureTokenService.findByToken(token);
+      if(sec.isEmpty())
+          return false;
+      if(sec.get(0).getExpireAt().after(Timestamp.valueOf(LocalDateTime.now())))
+      {
+         UserAccount user=this.findById(sec.get(0).getId().getTokenId());
+         if(!user.isEnabled() && !sec.get(0).isConsumed())
+         {
+             secureTokenService.consumeToken(sec.get(0));
+             secureTokenService.save(sec.get(0));             
+             user.setEnabled(true);             
+             this.save(user);
+             return true;
+         }
+         else throw new UserAccountAlreadyVerified(sec.get(0).getToken());
+      }
+      return false;
+    }
+    
+    
+    
+    /* 
+      
+ 
+    
+    
     
     @Override
     @Transactional
@@ -180,124 +310,7 @@ public class UserService implements UserServiceInterface
       Privilege priv= privilegeService.getStaffPrivilege(); 
       return this.getUser(username, password, mail, accountExpire, credentialExpire, organization, priv);    
     }
-
-    @Override
-    @Transactional
-    public UserAccount getStandardUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException
-    {
-      
-      Privilege priv= privilegeService.getStandardUserPrivilege(); 
-      return this.getUser(username, password, mail, accountExpire,  credentialExpire, organization, priv);       
-    }
+            
     
-    @Override
-    @Transactional
-    public UserAccount getStandardUser(UserAccount user)
-    {
-      Privilege priv= privilegeService.getStandardUserPrivilege();
-      user.getOrganization().stream().forEach(org-> 
-              { organizationService.getOrSetOrganization(org);
-                organizationService.save(org);
-                      
-                      }                                              
-                                            );
-      this.addPrivilegeToUser(priv, user);
-      this.save(user);
-      return user;
-    }
-
-    @Override
-    @Transactional
-    public UserAccount getSuperAdminUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException
-    {
-      Privilege priv= privilegeService.getSuperAdminPrivilege(); 
-      return this.getUser(username, password, mail, accountExpire, credentialExpire, organization, priv);       
-    }
-
-    @Override
-    @Transactional
-    public UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException
-    {        
-      UserAccount user= this.getStandardUser(userdto.getUsername(),
-                        userdto.getPassword(),
-                        userdto.getMail(), accountExpire, credentialExpire,
-                        organization.getName());      
-      this.save(user);
-      return user;
-    }
-
-          
-       
-    @Override
-    @Transactional
-    public SecureToken assignTokenToUser(UserAccount user, String type)
-    {      
-      for(SecureToken token : secureTokenService.findByUser(user))
-      {                 
-         secureTokenService.delete(token);         
-      }  
-      this.save(user);     
-      SecureToken token = secureTokenService.generateToken(user, type);       
-      secureTokenService.save(token);      
-      //this.addTokenToUser(token, user); //Error 
-      this.save(user);
-      return token;
-    }        
-    
-    @Override   
-    @Transactional
-    public void sendRegistrationMail(UserAccount user, String url)
-    {       
-      SecureToken token=this.assignTokenToUser(user, "FReg");      
-      mailService.sendSimpleEmail(user.getMail(), "Confirm registration", url+"/registrationConfirm?token=" + token.getToken());
-           
-    }
-
-    @Override
-    @Transactional
-    public void addOrganizationToUser(Organization org, UserAccount user)
-    {               
-        user.addOrganization(org);        
-    }
-    
-    @Override
-    @Transactional
-    public void addPrivilegeToUser(Privilege priv, UserAccount user)
-    {
-       user.addPrivileges(priv);       
-    }
-   
-    @Override
-    @Transactional
-    public void addTokenToUser(SecureToken token, UserAccount user)
-    {      
-       user.addSecureToken(token);
-    }
-        
-              
-    @Override
-    @Transactional    
-    public boolean checkToken(String token) throws UserAccountAlreadyVerified
-    {
-        
-      List<SecureToken> sec= secureTokenService.findByToken(token);
-      if(sec.isEmpty())
-          return false;
-      if(sec.get(0).getExpireAt().after(Timestamp.valueOf(LocalDateTime.now())))
-      {
-         UserAccount user=this.findById(sec.get(0).getId().getTokenId());
-         if(!user.isEnabled() && !sec.get(0).isConsumed())
-         {
-             secureTokenService.consumeToken(sec.get(0));
-             secureTokenService.save(sec.get(0));
-             //Hibernate.initialize(user);
-             user.setEnabled(true);             
-             this.save(user);
-             return true;
-         }
-         else throw new UserAccountAlreadyVerified(sec.get(0).getToken());
-      }
-      return false;
-    }
-  
+  */
 }
