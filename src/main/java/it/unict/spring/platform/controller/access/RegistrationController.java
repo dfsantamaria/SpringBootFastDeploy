@@ -83,6 +83,7 @@ public class RegistrationController
      {        
          if(userBindResult.hasErrors() || orgBindResult.hasErrors() || userRegBindResult.hasErrors())
          {  
+             System.out.println(userBindResult.getAllErrors().toString());
           model.addAttribute("fieldError","Errors occured, check your fields");
           response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
           return new ModelAndView("public/access/registration/register");   
@@ -117,7 +118,7 @@ public class RegistrationController
      {
        try
        {
-       if(userService.checkToken(token))       
+       if(userService.verifyRegistrationToken(token))       
        {
            model.addAttribute("tokenSuccess","You registration have been verified");
            response.setStatus(HttpServletResponse.SC_OK);
@@ -161,13 +162,11 @@ public class RegistrationController
              userService.sendRegistrationMail(user.get(0), request.getRequestURL().toString());
              response.setStatus(HttpServletResponse.SC_OK);
              model.addAttribute("confirmReg", "We sent an email. Check your inbox to finalize the registration");
-             //return new ModelAndView("redirect:/public/api/access/registration/resendRegister?confirmReg");
             }
             else
              {
                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                model.addAttribute("errorCredentials", "Invalid username and password or account already registered.");
-               //return new ModelAndView("redirect:/public/api/access/registration/resendRegister?errorCredentials");
              }     
              
           }
@@ -175,8 +174,7 @@ public class RegistrationController
            {
             applogger.error("Resend registration email error: "+ e.toString());
             model.addAttribute("generalError", "An error occurred");              
-            //return new ModelAndView("redirect:/public/api/access/registration/resendRegister?error");
-          }         
+           }         
          return new ModelAndView("public/access/registration/resendRegister");       
      }
     

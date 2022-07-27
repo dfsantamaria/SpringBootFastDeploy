@@ -23,12 +23,11 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
 @AutoConfigureMockMvc
-public class RegistrationTest
+public class RegistrationControllerTest
 {       
     @Autowired
     private MockMvc mvc;
@@ -49,16 +48,16 @@ public class RegistrationTest
     {
       UserAccount user= new UserAccount("testName", "PlainPassword", "test@mail.com", UserExpirationInformation.getAccountExpirationDate(),
                                                                  UserExpirationInformation.getCredentialExpirationDate());
-      this.clearUser(user);       
+      service.deleteUser(user);       
       mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/registerUser"))
                                                .param("username", user.getUsername())
-                                               .param("password", user.getPassword())
-                                               .param("confirmPassword", user.getPassword())
+                                               .param("password.password", user.getPassword())
+                                               .param("password.confirmPassword", user.getPassword())
                                                .param("mail", user.getMail())
                                                .param("name", "test organization").with(csrf())
                 )
            .andExpect(status().isOk());                
-      this.clearUser(user); 
+      service.deleteUser(user); 
     }
     
     @Test
@@ -67,7 +66,7 @@ public class RegistrationTest
     {
       UserAccount user= new UserAccount("testName", "PlainPassword", "test@mail.com", UserExpirationInformation.getAccountExpirationDate(),
                                                                  UserExpirationInformation.getCredentialExpirationDate());
-      this.clearUser(user);      
+      service.deleteUser(user);      
       mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/registerUser"))
                                                .param("username", user.getUsername())
                                                .param("password", user.getPassword())
@@ -78,7 +77,7 @@ public class RegistrationTest
            .andExpect(status().isBadRequest());
          //  .andExpect(model().attribute("errorMessage", "Errors occured, check your fields"));
       
-      this.clearUser(user);   
+      service.deleteUser(user);   
     }
     
     
@@ -88,7 +87,7 @@ public class RegistrationTest
     {
       UserAccount user= new UserAccount("testName2", "PlainPassword", "test2@mail.com", UserExpirationInformation.getAccountExpirationDate(),
                                                                  UserExpirationInformation.getCredentialExpirationDate());
-      this.clearUser(user);
+      service.deleteUser(user);
       
       user = service.getStandardUser("testName2", "PlainPassword", "test2@mail.com", UserExpirationInformation.getAccountExpirationDate(),
                                                                  UserExpirationInformation.getCredentialExpirationDate(), "org");
@@ -106,16 +105,10 @@ public class RegistrationTest
       //assertTrue(service.findByUsername(user.getUsername()).get(0).isEnabled());
      
       
-      this.clearUser(user); 
+      service.deleteUser(user); 
     }
     
-    
-    private void clearUser(UserAccount user)
-    {
-      List<UserAccount> list = service.findByMail(user.getMail());
-      if(!list.isEmpty())
-          service.delete(list.get(0));   
-    }
+       
     
     
     @Test
@@ -134,6 +127,6 @@ public class RegistrationTest
                                               
                 )
            .andExpect(status().isOk());                
-      this.clearUser( (service.findByMail("test3@mail.com")).get(0)); 
+      service.deleteUser( (service.findByMail("test3@mail.com")).get(0)); 
     }   
 }

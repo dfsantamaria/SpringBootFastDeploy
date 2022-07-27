@@ -81,6 +81,15 @@ public class UserService implements UserServiceInterface
       repository.delete(user);
     }
     
+    @Override
+    @Transactional
+    public void deleteUser(UserAccount user)
+    {
+      List<UserAccount> list = this.findByMail(user.getMail());
+      if(!list.isEmpty())
+          this.delete(list.get(0));   
+    }
+    
     @Override   
     @Transactional
     public UserAccount save (UserAccount g)
@@ -179,7 +188,7 @@ public class UserService implements UserServiceInterface
       if(!(this.findByMailOrUsername(userdto.getMail(), userdto.getUsername())).isEmpty() )  
           throw new MultipleUsersFoundException("Account already exists");
       UserAccount user= this.getStandardUser(userdto.getUsername(),
-                        userdto.getPassword(),
+                        userdto.getPassword().getPassword(),
                         userdto.getMail(), accountExpire, credentialExpire,
                         organization.getName());      
       this.save(user);
@@ -189,13 +198,26 @@ public class UserService implements UserServiceInterface
 
     @Override   
     @Transactional
+    public void sendRecoverPasswordMail(UserAccount user, String url)
+    {       
+      this.sendEmail(user, "Reset your password", url, "/checkResetPassword?token=", "RPass");  
+    }
+    
+    @Override   
+    @Transactional
     public void sendRegistrationMail(UserAccount user, String url)
     {       
-      SecureToken token=this.assignTokenToUser(user, "FReg");     
+      this.sendEmail(user, "Confirm registration", url,"/registrationConfirm?token=", "FReg");  
+    }
+    
+    @Transactional
+    private void sendEmail(UserAccount user, String body,  String url, String prefix, String type)
+    {
+       
+      SecureToken token=this.assignTokenToUser(user, type);     
       user=this.save(user);
       token=secureTokenService.save(token);
-      mailService.sendSimpleEmail(user.getMail(), "Confirm registration", url+"/registrationConfirm?token=" + token.getToken());
-           
+      mailService.sendSimpleEmail(user.getMail(), body, url+prefix + token.getToken());
     }
     
     @Override
@@ -213,7 +235,7 @@ public class UserService implements UserServiceInterface
               
     @Override
     @Transactional    
-    public boolean checkToken(String token) throws UserAccountAlreadyVerified
+    public boolean verifyRegistrationToken(String token) throws UserAccountAlreadyVerified
     {
         
       List<SecureToken> sec= secureTokenService.findByToken(token);
@@ -235,7 +257,24 @@ public class UserService implements UserServiceInterface
       return false;
     }
     
-    
+    @Override
+    @Transactional    
+    public boolean verifyPasswordChangedToken(String token, String password)
+    {        
+      List<SecureToken> sec= secureTokenService.findByToken(token);
+      if(sec.isEmpty())
+          return false;
+      if(!sec.get(0).isConsumed() && sec.get(0).getTokenType().equals("RPass") && sec.get(0).getExpireAt().after(Timestamp.valueOf(LocalDateTime.now())))
+      {
+         UserAccount user=this.findById(sec.get(0).getId().getTokenId());
+         secureTokenService.consumeToken(sec.get(0));
+         secureTokenService.save(sec.get(0)); 
+         user.setPassword(this.encodePassword(password));
+         this.save(user);
+         return true;
+       }      
+      return false;
+    }
     
     /* 
       

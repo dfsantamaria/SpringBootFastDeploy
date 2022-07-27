@@ -7,41 +7,28 @@ package it.unict.spring.platform.dto.user;
 
 import com.sun.istack.NotNull;
 import it.unict.spring.platform.validation.PasswordMatches;
-import it.unict.spring.platform.validation.ValidPassword;
+import javax.validation.Valid;
 
 
-@PasswordMatches
+//@PasswordMatches
 public class UserAccountDTO
 {    
     @NotNull    
     private String username;   
     @NotNull   
-    private String mail;  
-    @NotNull
-    @ValidPassword
-    private String password;
-    @NotNull
-    private String confirmPassword;
+    private String mail;      
+    @Valid    
+    private AccountPasswordDTO password;
     
     
     public UserAccountDTO(String username, String mail, String password, String confirmPassword)
     {
       this.username=username;
       this.mail = mail;
-      this.password = password;
-      this.confirmPassword = confirmPassword;
+      this.password=new AccountPasswordDTO(password, confirmPassword);      
     }
     
-    public String getPassword()
-    {
-      return this.password;
-    }
-    
-    public String getConfirmPassword()
-    {
-      return this.confirmPassword;
-    }
-    
+       
     public String getMail()
     {
       return this.mail;
@@ -62,13 +49,13 @@ public class UserAccountDTO
       this.mail = mail;
     }
     
-    public void setPassword(String password)
+    public AccountPasswordDTO getPassword()
     {
-      this.password = password;
+      return this.password;
     }
     
-    public void setConfirmPassword(String password)
+    public void setPassword(AccountPasswordDTO password)
     {
-      this.confirmPassword = password;
-    }
+      this.password = password;
+    }    
 }

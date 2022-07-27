@@ -28,7 +28,8 @@
                
                 <div th:if="${confirmReg}" class="alert-do"> 
                 	<span th:text="${confirmReg}"> Registration ok </span>	<span> or <a th:href="@{/public/api/access/registration/resendRegister}"> request a new registration email. </a> </span>
-                </div>                                
+                </div> 
+                <div th:if="${changedPassword}" th:text="${changedPassword}" class="alert-success"> Password changed </div>                                
                 <div th:if="${tokenVerified}" th:text="${tokenVerified}" class="has-error"> Registration already verified </div>                                
                 <div th:if="${tokenFailed}"  class="has-error">
                 	<span th:text="${tokenFailed}"> Token Failed </span> <span>, <a th:href="@{/public/api/access/registration/resendRegister}"> request a new registration email. </a> </span>
@@ -39,7 +40,7 @@
 
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
                 <div class="left-align"><td><a th:href="@{/public/api/access/registration/register}"> Register a new account</a></td></div>
-                <div class="right-align"><td ><a th:href="@{/public/api/access/registration/register}"> Recover password</a></td> </div>
+                <div class="right-align"><td ><a th:href="@{/public/api/access/recover/viewRecoverPassword}"> Recover password</a></td> </div>
             </div>
         </form>
     </div>

@@ -28,7 +28,8 @@ public interface UserServiceInterface
     
     UserAccount save (UserAccount g);  
     void delete(UserAccount user);
-    
+    void deleteUser(UserAccount user);
+            
     boolean comparePassword(String hash, String plain);
     String encodePassword(String password);
     UserAccount getUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization, Privilege priv) throws MultipleUsersFoundException;
@@ -41,8 +42,11 @@ public interface UserServiceInterface
    
     
     void sendRegistrationMail(UserAccount user, String url);
+    void sendRecoverPasswordMail(UserAccount user, String url);
+    
     SecureToken assignTokenToUser(UserAccount user, String type);
-    boolean checkToken(String token) throws UserAccountAlreadyVerified;
+    boolean verifyRegistrationToken(String token) throws UserAccountAlreadyVerified;
+    boolean verifyPasswordChangedToken(String token, String password);
     
   //  boolean hasUserPrivilege(String privilege);
   //  String getUserByEmail(String mail) throws UserNotFoundException;
