@@ -8,7 +8,6 @@ package it.unict.spring.platform.serviceinterface.user;
 import it.unict.spring.platform.dto.user.UserAccountDTO;
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
 import it.unict.spring.platform.exception.user.UserAccountAlreadyVerified;
-import it.unict.spring.platform.exception.user.UserNotFoundException;
 import it.unict.spring.platform.persistence.model.user.Organization;
 import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.persistence.model.user.SecureToken;
@@ -24,6 +23,7 @@ public interface UserServiceInterface
     List<UserAccount> findByUsername(String username);
     List<UserAccount> findByMail(String email);
     List<UserAccount> findByMailOrUsername(String namemail);
+    List<UserAccount> findByMailOrUsername(String namemail, String username);
     UserAccount findById(Long id);
     
     UserAccount save (UserAccount g);  

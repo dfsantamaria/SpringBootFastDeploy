@@ -83,15 +83,14 @@ public class RegistrationController
      {        
          if(userBindResult.hasErrors() || orgBindResult.hasErrors() || userRegBindResult.hasErrors())
          {  
-          model.addAttribute("errorMessage","Errors occured, check your fields");
+          model.addAttribute("fieldError","Errors occured, check your fields");
           response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
           return new ModelAndView("public/access/registration/register");   
-         }         
-                  
-         Organization organization = orgService.mapFromOrganization(orgdto);         
-         UserRegister userreg=regService.mapFromUserRegister(userregdto);
+         }       
          try 
           {
+            Organization organization = orgService.mapFromOrganization(orgdto);     
+            UserRegister userreg=regService.mapFromUserRegister(userregdto);
             UserAccount user=userService.mapFromUserDTO(userdto, UserExpirationInformation.getAccountExpirationDate(),
                                                                  UserExpirationInformation.getCredentialExpirationDate(),
                                                                  userreg, organization);  
@@ -101,12 +100,14 @@ public class RegistrationController
           } 
           catch (MultipleUsersFoundException ex)
            {
-             model.addAttribute("errorMessage","Account already exists");
+            model.addAttribute("accountExists","This account already exists");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return new ModelAndView("public/access/registration/register");
            }
          
-         return  new ModelAndView("redirect:/public/api/access/login/signin?confirmReg");
+         response.setStatus(HttpServletResponse.SC_OK);
+         model.addAttribute("confirmReg", "We sent an email. Check your inbox to complete the registration");
+         return  new ModelAndView("public/access/login/signin");
      }
      
      
@@ -116,15 +117,23 @@ public class RegistrationController
      {
        try
        {
-       if(userService.checkToken(token))
-          return  new ModelAndView("redirect:/public/api/access/login/signin?tokenSuccess");
-       else 
-          return new ModelAndView("redirect:/public/api/access/login/signin?tokenFailed");
+       if(userService.checkToken(token))       
+       {
+           model.addAttribute("tokenSuccess","You registration have been verified");
+           response.setStatus(HttpServletResponse.SC_OK);
+       }    
+       else  
+       {
+          response.setStatus(HttpServletResponse.SC_BAD_REQUEST); 
+          model.addAttribute("tokenFailed", "Registration failed");         
+       }
        }
        catch(UserAccountAlreadyVerified exception)
        {
-         return new ModelAndView("redirect:/public/api/access/login/signin?tokenVerified");
+         model.addAttribute("tokenVerified", "Registration already verified");
+         response.setStatus(HttpServletResponse.SC_BAD_REQUEST); 
        }
+       return  new ModelAndView("public/access/login/signin");
      }
      
      
@@ -150,18 +159,25 @@ public class RegistrationController
            if(user.size() == 1  && (!user.get(0).isEnabled()) && userService.comparePassword(user.get(0).getPassword(), password))
             {
              userService.sendRegistrationMail(user.get(0), request.getRequestURL().toString());
-             return new ModelAndView("redirect:/public/api/access/registration/resendRegister?confirmReg");
+             response.setStatus(HttpServletResponse.SC_OK);
+             model.addAttribute("confirmReg", "We sent an email. Check your inbox to finalize the registration");
+             //return new ModelAndView("redirect:/public/api/access/registration/resendRegister?confirmReg");
             }
             else
-             return new ModelAndView("redirect:/public/api/access/registration/resendRegister?errorCredentials");     
+             {
+               response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+               model.addAttribute("errorCredentials", "Invalid username and password or account already registered.");
+               //return new ModelAndView("redirect:/public/api/access/registration/resendRegister?errorCredentials");
+             }     
              
           }
           catch(Exception e)
            {
             applogger.error("Resend registration email error: "+ e.toString());
-           return new ModelAndView("redirect:/public/api/access/registration/resendRegister?error");
+            model.addAttribute("generalError", "An error occurred");              
+            //return new ModelAndView("redirect:/public/api/access/registration/resendRegister?error");
           }         
-        
+         return new ModelAndView("public/access/registration/resendRegister");       
      }
     
 }

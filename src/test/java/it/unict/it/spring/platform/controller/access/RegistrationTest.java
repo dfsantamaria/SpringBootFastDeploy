@@ -57,7 +57,7 @@ public class RegistrationTest
                                                .param("mail", user.getMail())
                                                .param("name", "test organization").with(csrf())
                 )
-           .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/public/api/access/login/signin?confirmReg"));                
+           .andExpect(status().isOk());                
       this.clearUser(user); 
     }
     
@@ -100,7 +100,7 @@ public class RegistrationTest
       assertFalse(user.isEnabled());
       
       mvc.perform(MockMvcRequestBuilders.get("/public/api/access/registration/registerUser/registrationConfirm").param("token", token.getToken()))
-               .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/public/api/access/login/signin?tokenSuccess"));                
+               .andExpect(status().isOk());                
           
       assertTrue(service.findById(user.getId()).isEnabled());
       //assertTrue(service.findByUsername(user.getUsername()).get(0).isEnabled());
@@ -133,7 +133,7 @@ public class RegistrationTest
                                                .param("password", "PlainPassword")
                                               
                 )
-           .andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/public/api/access/registration/resendRegister?confirmReg"));                
+           .andExpect(status().isOk());                
       this.clearUser( (service.findByMail("test3@mail.com")).get(0)); 
     }   
 }

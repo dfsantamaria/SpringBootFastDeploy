@@ -11,7 +11,6 @@ import it.unict.spring.platform.service.security.CustomUserDetailsService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
-import java.time.LocalDateTime;
 import java.util.List;
 import javax.transaction.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;

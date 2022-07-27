@@ -16,9 +16,12 @@
                  <div class="over-label"><input name="password" type="password" class="form-control"  placeholder="Password"  minlength="8"/> </div>
                  
 
-                <div th:if="${param.errorCredentials}" class="has-error">    Invalid username and password or account already registered.       </div>  
-                <div th:if="${param.error}" class="has-error">    An error occurred.       </div>               
-                <div th:if="${param.confirmReg}" class="alert-do"> We sent an email. Check your inbox to finalize the registration.  </div>  
+                <div th:if="${errorCredentials}" th:text="${errorCredentials}" class="has-error">  Error credentials   </div>  
+                <div th:if="${generalError}" th:text="${generalError}" class="has-error"> General error  </div>               
+                
+                <div th:if="${confirmReg}" th:text="${confirmReg}"class="alert-do"> Confirm registration  </div>  
+                
+
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button> 
             
         </form>

@@ -18,16 +18,24 @@
                  
 
                 <div th:if="${param.error}" class="has-error">    Invalid username and password.       </div>
+                <div th:if="${param.logout}" class="alert-success">     You have been logged out.  </div>
+
                  <div th:if="${param.errorEnabled}" class="has-error">   Registration not completed. Chech your inbox or  <a th:href="@{/public/api/access/registration/resendRegister}">request a new registration email.     </div>
                  <div th:if="${param.errorExpired}" class="has-error">   User account is expired.   </div>
                  <div th:if="${param.errorLocked}" class="has-error">     User account is locked.  </div>
-                <div th:if="${param.errorCredentials}" class="has-error"> User credentials are expired.  </div>
-                <div th:if="${param.tokenFailed}" class="has-error"> You registration is expired. <a th:href="@{/public/api/access/registration/resendRegister}">Send a new registration email. </a></div>
-                <div th:if="${param.tokenVerified}" class="has-error"> Account already verified.  </div>
-                <div th:if="${param.confirmReg}" class="alert-do"> We sent an email. Check your inbox to complete the registration or <a th:href="@{/public/api/access/registration/resendRegister}">send a new registration email. </a> </div>      
-                <div th:if="${param.logout}" class="alert-success">     You have been logged out.  </div>
+                 <div th:if="${param.errorCredentials}" class="has-error"> User credentials are expired.  </div>
+                
+               
+                <div th:if="${confirmReg}" class="alert-do"> 
+                	<span th:text="${confirmReg}"> Registration ok </span>	<span> or <a th:href="@{/public/api/access/registration/resendRegister}"> request a new registration email. </a> </span>
+                </div>                                
+                <div th:if="${tokenVerified}" th:text="${tokenVerified}" class="has-error"> Registration already verified </div>                                
+                <div th:if="${tokenFailed}"  class="has-error">
+                	<span th:text="${tokenFailed}"> Token Failed </span> <span>, <a th:href="@{/public/api/access/registration/resendRegister}"> request a new registration email. </a> </span>
+                </div>
 
-                <div th:if="${param.tokenSuccess}" class="alert-success">     You registration have been verified.  </div>
+
+                <div th:if="${tokenSuccess}" th:text="${tokenSuccess}" class="alert-success">   Token success  </div>
 
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
                 <div class="left-align"><td><a th:href="@{/public/api/access/registration/register}"> Register a new account</a></td></div>

@@ -68,6 +68,12 @@ public class UserService implements UserServiceInterface
        return repository.findAllByMailOrUsername(namemail, namemail);
     }
   
+    @Override 
+    public List<UserAccount> findByMailOrUsername(String namemail, String username)
+    {
+       return repository.findAllByMailOrUsername(namemail, username);
+    }
+    
     @Override
     @Transactional
     public void delete(UserAccount user)
@@ -127,10 +133,9 @@ public class UserService implements UserServiceInterface
     public UserAccount getUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire,
                                String organization, Privilege priv) throws MultipleUsersFoundException
     {         
-        List<UserAccount> users = repository.findAllByMailOrUsername(mail, username);    
-        
+        List<UserAccount> users = repository.findAllByMailOrUsername(mail, username);            
         UserAccount user=null;
-        if(users.size()>1)
+        if(users.size()> 1)
             throw new MultipleUsersFoundException("Combination of username and password gets multiple users: "+ username + ", "+mail);
         else if(users.size()==1)
              user = users.get(0);
@@ -170,7 +175,9 @@ public class UserService implements UserServiceInterface
     @Override
     @Transactional
     public UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException
-    {        
+    {    
+      if(!(this.findByMailOrUsername(userdto.getMail(), userdto.getUsername())).isEmpty() )  
+          throw new MultipleUsersFoundException("Account already exists");
       UserAccount user= this.getStandardUser(userdto.getUsername(),
                         userdto.getPassword(),
                         userdto.getMail(), accountExpire, credentialExpire,
