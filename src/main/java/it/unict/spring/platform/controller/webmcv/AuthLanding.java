@@ -10,11 +10,14 @@ package it.unict.spring.platform.controller.webmcv;
 
 import it.unict.spring.platform.dto.user.AccountPasswordDTO;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
+import it.unict.spring.platform.persistence.model.user.UserRegister;
+import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -35,11 +38,13 @@ public class AuthLanding
 {
     @Autowired
     UserService userService;
+    @Autowired
+    UserRegisterService regService;
     
 	@RequestMapping(value = "/accountView", method = RequestMethod.GET)
-	public ModelAndView home(Locale locale, Model model)
+	public ModelAndView home(Locale locale, @AuthenticationPrincipal CustomUserDetails user, Model model)
         {
-	 this.setModel(model);
+	 this.setModel(model, user);
 	 return new ModelAndView("auth/all/home/accountview");
 	}
         
@@ -52,7 +57,7 @@ public class AuthLanding
                                       BindingResult passdtoBinding,
                                       Model model)
         {
-          this.setModel(model);
+          this.setModel(model, user);
           
           if(!passdtoBinding.hasErrors()) 
            {            
@@ -71,11 +76,21 @@ public class AuthLanding
         }
         
         
-        private void setModel(Model model)
+        private void setModel(Model model, CustomUserDetails user)
         {
           Date date = new Date();
 	  DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, Locale.ENGLISH); 
-	  String formattedDate = dateFormat.format(date); 
-	  model.addAttribute("serverTime", formattedDate );           
+	  String formattedDate = dateFormat.format(date);    
+          
+	  model.addAttribute("serverTime", formattedDate ); 
+          
+          UserRegister reg = userService.findByCustomUserDetail(user);          
+          
+          model.addAttribute("viewName", reg.getFirstName());
+          if(!reg.getMiddleName().isBlank())
+                 model.addAttribute("viewMiddleName", reg.getMiddleName());
+          model.addAttribute("viewLastName", reg.getLastName());
+          model.addAttribute("viewUsername", user.getUsername() );  
+          model.addAttribute("viewMail",  user.getMail());
         }
 }

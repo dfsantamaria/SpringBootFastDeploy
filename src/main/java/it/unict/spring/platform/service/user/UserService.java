@@ -16,9 +16,11 @@ import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.persistence.repository.user.UserRepository;
 import it.unict.spring.platform.service.communication.CustomMailService;
+import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -72,6 +74,19 @@ public class UserService implements UserServiceInterface
     public List<UserAccount> findByMailOrUsername(String namemail, String username)
     {
        return repository.findAllByMailOrUsername(namemail, username);
+    }
+    
+    public UserRegister findByCustomUserDetail(CustomUserDetails userdetails)
+    {
+        String mail =userdetails.getMail();
+        List<UserAccount> users= this.findByMail(mail);
+       
+        if(!(users.isEmpty()))
+        {            
+            Optional<UserRegister> r = registryService.findByUser(users.get(0));
+            return (r.isPresent()?r.get():null);
+        }
+        return null;
     }
     
     @Override

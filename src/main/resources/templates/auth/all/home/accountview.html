@@ -18,19 +18,32 @@
 
   <div class="outer">
 	<div class="container">
-	<h2 class="form-heading">Welcome!</h2> 
+	<h1 class="form-heading">Welcome!</h1> 
 	<div><p>Its <label th:text="${serverTime}"> now </label></p></div>	  
-  
+      
+      <fieldset>
+      	  <legend> Your information </legend>      	  
+      	  <p>
+      	  <span th:if="${viewName}"> Name: <span style="font-weight: bold" th:text="${viewName}"> Name </span> </br> </span>	
+      	  <span th:if="${viewMiddleName}"> Middle name: <span style="font-weight: bold" th:text="${viewMiddleName}"> Middle name </span> </br> </span>	
+      	  <span th:if="${viewLastName}"> Last name: <span style="font-weight: bold" th:text="${viewLastName}"> Last name </span> </br> </span>	
+          <span th:if="${viewUsername}"> Username: <span style="font-weight: bold" th:text="${viewUsername}"> Username </span> </br> </span>
+          <span th:if="${viewMail}"> Email: <span style="font-weight: bold" th:text="${viewMail}"> Mail </span> </br> </span>   
+          </p>        
+      </fieldset>
+     
    
       <form name="form-edit" th:action="@{/auth/api/all/updateData}" method="post">   
         <div class="form-group">
-          <p>  Change password </p>
+         <fieldset>
+          <legend>  Change password </legend>          
           <div th:object="${passdto}">
-          <input name="password" type="password" class="form-control"  minlength="8" placeholder="New Password"/>
+          <input name="password" type="password" class="form-control"  minlength="8" placeholder="New Password"/>          
           <input name="confirmPassword" type="password" class="form-control"  minlength="8" placeholder="Confirm Password"/>  
           </div>                            
           <div th:if="${passwordAccepted}" th:text="${passwordAccepted}" class="alert-success">  Password modified  </div>
-          <div th:if="${passwordError}" th:text="${passwordError}" class="has-error">  Error, check the passowrd fields  </div>
+          <div th:if="${passwordError}" th:text="${passwordError}" class="has-error">  Error, check the passowrd fields  </div>          
+        </fieldset>
        </div>          
           
        <button type="submit" class="btn btn-lg btn-primary btn-block">Submit</button>                 

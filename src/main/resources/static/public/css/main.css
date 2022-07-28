@@ -41,7 +41,7 @@ body
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;    
-    font-size: 16px;       
+    font-size: 16px;          
 }
 
 
@@ -93,3 +93,30 @@ button {
     font-weight: bold;
 }
 
+fieldset
+ {
+    margin:0;
+    padding:0;
+    border:solid
+ }
+
+legend
+{
+  width:auto; 
+  margin-bottom: 3px;   
+  margin-left:10px;
+  color: #1f497d;
+}
+
+fieldset > p
+{
+  margin-left: 30px     
+}
+
+fieldset > div > input
+{
+  margin-bottom: 7px;
+  margin-left: 20px; 
+  max-width: 90%;  
+
+}

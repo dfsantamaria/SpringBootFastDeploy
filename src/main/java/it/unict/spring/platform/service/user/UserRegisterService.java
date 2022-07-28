@@ -10,7 +10,9 @@ import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.persistence.repository.user.UserRegisterRepository;
 import it.unict.spring.platform.serviceinterface.user.UserRegisterServiceInterface;
+import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,19 @@ public class UserRegisterService implements UserRegisterServiceInterface
         return (List<UserRegister>) repository.findAll();
     }
     
+    @Override
+    public Optional<UserRegister> findByUser(UserAccount user)
+    {
+      return repository.findById(user.getId());
+    }
+    
+    @Override
+    public Optional<UserRegister> findById(Long id)
+    {
+      return repository.findById(id);
+    }
+    
+        
     @Override
     @Transactional
     public UserRegister save (UserRegister g)
