@@ -16,11 +16,11 @@
 }
 
 .topnav a:hover {
-  background-color: blue;
-  color: black;
+  background-color: #0d47a1;
+  color: white;
 }
 
 .topnav a.active {
-  background-color: blue;
+  background-color: #4285F4;
   color: white;
 }
