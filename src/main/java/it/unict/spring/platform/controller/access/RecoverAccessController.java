@@ -9,6 +9,8 @@ import it.unict.spring.platform.dto.user.AccountPasswordDTO;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.UserService;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @RequestMapping("/public/api/access/recover")
@@ -29,6 +33,8 @@ public class RecoverAccessController
 {    
     @Autowired
     UserService userService;
+    
+    private static final Logger applogger = LoggerFactory.getLogger(RecoverAccessController.class);  
     
     @RequestMapping("viewRecoverPassword")
     public ModelAndView recoverPasswordView(HttpServletRequest request,
@@ -45,7 +51,7 @@ public class RecoverAccessController
     public ModelAndView sendRecoverPasswordView(HttpServletRequest request,
                                             HttpServletResponse response,  
                                             @RequestParam("mail") String mail,
-                                            Model model)
+                                            Model model) 
     {
        List<UserAccount> users = userService.findByMail(mail); 
        model.addAttribute("requestNewPassword", "We sent an email to reset your password");
@@ -53,7 +59,19 @@ public class RecoverAccessController
        if(!users.isEmpty())
        {
          userService.sendRecoverPasswordMail(users.get(0), request.getRequestURL().toString());
-       }       
+       }
+       else
+       {  
+           try 
+           {
+           //Simulate sending mail
+           TimeUnit.SECONDS.sleep((long) (2+(Math.random()*3)));
+           }
+           catch (InterruptedException ex)
+           {
+               applogger.error(ex.toString());
+           }
+       }
        return  new ModelAndView("public/access/recover/recoverPassword");        
     }
     
