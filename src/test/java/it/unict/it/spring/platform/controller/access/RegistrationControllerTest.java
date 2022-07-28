@@ -12,7 +12,6 @@ import it.unict.spring.platform.service.user.SecureTokenService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
 import javax.transaction.Transactional;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
@@ -102,7 +101,7 @@ public class RegistrationControllerTest
                .andExpect(status().isOk());                
           
       assertTrue(service.findById(user.getId()).isEnabled());
-      //assertTrue(service.findByUsername(user.getUsername()).get(0).isEnabled());
+      //assertTrue(service.findByUsername(user.getUsername()).get(0).isEnabled()); // False
       //assertTrue(service.findByUsername(user.getUsername()).get(0).isEnabled());
      
       

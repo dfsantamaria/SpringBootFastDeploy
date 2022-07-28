@@ -6,6 +6,7 @@ package it.unict.spring.platform;
  */
 
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
+import it.unict.spring.platform.persistence.model.user.SecureToken;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.service.user.PrivilegeService;
@@ -14,6 +15,8 @@ import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
@@ -106,6 +109,10 @@ public class Application extends SpringBootServletInitializer
               UserRegister register=new UserRegister("Daniele", "Francesco", "Santamaria");
               userService.addRegisterToUser(register,user);
               registerService.save(register);
+              
+              SecureToken token = tokenService.generateToken(user, "FReg");
+              token.setIsConsumed(Timestamp.valueOf(LocalDateTime.now()));
+              tokenService.save(token);
               userService.save(user);
            }
            

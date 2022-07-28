@@ -11,13 +11,15 @@ import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
-import java.time.LocalDateTime;
 import java.util.List;
 import javax.transaction.Transactional;
+import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -37,6 +39,7 @@ import org.springframework.test.context.ContextConfiguration;
 @ComponentScan(basePackages = {"it.unict.spring.platform.service.*", "it.unict.spring.platform.configuration.*"})
 
 @Transactional
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserServiceTest
 {
 
@@ -44,11 +47,11 @@ public class UserServiceTest
    // private TestEntityManager entityManager;
     @SpyBean
     private  UserService userServ;    
-    private final String mail="daniele.santamaria@unict.it";
-    private final String username = "dfsantamaria";
+    private final String mail="test@unict.it";
+    private final String username = "testatunict";
         
    
-    @BeforeEach    
+    @BeforeAll    
     public void createUser() throws MultipleUsersFoundException
     {
        List<UserAccount> users = userServ.findByUsername(username);
@@ -57,13 +60,20 @@ public class UserServiceTest
           UserAccount user = userServ.getSuperAdminUser(username, "lll@@", mail,
                                                          UserExpirationInformation.getAccountExpirationDate(),
                                                                  UserExpirationInformation.getCredentialExpirationDate(),
-                                                         "Univeristy of Catania");
+                                                         "My nice organization");
           userServ.setEnabled(user, true);  
           userServ.save(user);
        }
        users = userServ.findByUsername(username);
        assertTrue(users.get(0).isEnabled());
        assertEquals(users.get(0).getMail(), mail);
+    }
+    
+    @AfterAll
+    public void clear()
+    {
+       List<UserAccount> users = userServ.findByUsername(username);
+       userServ.delete(users.get(0));
     }
     
     @Test

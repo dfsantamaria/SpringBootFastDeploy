@@ -13,6 +13,7 @@ import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.persistence.model.user.SecureToken;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
+import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -35,6 +36,10 @@ public interface UserServiceInterface
     UserAccount getUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization, Privilege priv) throws MultipleUsersFoundException;
     UserAccount getSuperAdminUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire ,String organization) throws MultipleUsersFoundException;
     UserAccount getStandardUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException;
+    
+    UserRegister findRegisterByCustomUserDetail(CustomUserDetails userdetails);
+    Organization getOrganizationFromCustomUserDetails(CustomUserDetails userdetails);
+    
     UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException;
     
     void addRegisterToUser(UserRegister register, UserAccount account);

@@ -29,16 +29,14 @@ public class PublicWebController
     @GetMapping("orgs")
     public String nonLoggedOrgMap()
     {    
-        
-       // privService.findAll().forEach(privilege->{System.out.println(privilege.getUsers().toString());});
-       //System.out.println(userService.findByMail("daniele.santamaria@unict.it").get(0).getTokens().size());
-       if(orgService.findByName("test").isEmpty())
+      // return userService.getOrganizationFromMail("daniele.santamaria@unict.it").getName();
+      
+        if(orgService.findByName("test").isEmpty())
           orgService.save(new Organization("test"));
        if(orgService.findAll().isEmpty())
            return "empty";
        return
-            orgService.findAll().toString();     
-       
+            orgService.findAll().toString();       
     }
 }
 

@@ -9,6 +9,7 @@ package it.unict.spring.platform.controller.webmcv;
 
 
 import it.unict.spring.platform.dto.user.AccountPasswordDTO;
+import it.unict.spring.platform.persistence.model.user.Organization;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.service.user.UserRegisterService;
@@ -17,7 +18,6 @@ import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -29,7 +29,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -84,7 +83,8 @@ public class AuthLanding
           
 	  model.addAttribute("serverTime", formattedDate ); 
           
-          UserRegister reg = userService.findByCustomUserDetail(user);          
+          UserRegister reg = userService.findRegisterByCustomUserDetail(user);          
+          Organization org = userService.getOrganizationFromCustomUserDetails(user);
           
           model.addAttribute("viewName", reg.getFirstName());
           if(!reg.getMiddleName().isBlank())
@@ -92,5 +92,6 @@ public class AuthLanding
           model.addAttribute("viewLastName", reg.getLastName());
           model.addAttribute("viewUsername", user.getUsername() );  
           model.addAttribute("viewMail",  user.getMail());
+          model.addAttribute("viewOrgName", org.getName());
         }
 }

@@ -82,8 +82,7 @@ public class RegistrationController
                                   Model model)
      {        
          if(userBindResult.hasErrors() || orgBindResult.hasErrors() || userRegBindResult.hasErrors())
-         {  
-             System.out.println(userBindResult.getAllErrors().toString());
+         {               
           model.addAttribute("fieldError","Errors occured, check your fields");
           response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
           return new ModelAndView("public/access/registration/register");   

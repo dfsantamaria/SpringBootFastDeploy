@@ -21,6 +21,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -76,17 +77,29 @@ public class UserService implements UserServiceInterface
        return repository.findAllByMailOrUsername(namemail, username);
     }
     
-    public UserRegister findByCustomUserDetail(CustomUserDetails userdetails)
+    @Override
+    @Transactional
+    public UserRegister findRegisterByCustomUserDetail(CustomUserDetails userdetails)
     {
         String mail =userdetails.getMail();
-        List<UserAccount> users= this.findByMail(mail);
-       
-        if(!(users.isEmpty()))
-        {            
-            Optional<UserRegister> r = registryService.findByUser(users.get(0));
-            return (r.isPresent()?r.get():null);
-        }
+        List<UserAccount> users= this.findByMail(mail);       
+        if(!(users.isEmpty()))                       
+            return users.get(0).getRegister();          
         return null;
+    }
+    
+    @Override    
+    @Transactional
+    public Organization getOrganizationFromCustomUserDetails(CustomUserDetails userdetails)
+    {
+      String mail =userdetails.getMail();
+      List<UserAccount> users= this.findByMail(mail);       
+        if(!(users.isEmpty()))                       
+        {
+            Set<Organization> organizations = users.get(0).getOrganization();
+            return organizations.iterator().next();
+        }
+      return null;
     }
     
     @Override
@@ -205,8 +218,11 @@ public class UserService implements UserServiceInterface
       UserAccount user= this.getStandardUser(userdto.getUsername(),
                         userdto.getPassword().getPassword(),
                         userdto.getMail(), accountExpire, credentialExpire,
-                        organization.getName());      
+                        organization.getName());       
       this.save(user);
+      this.addRegisterToUser(register,user);
+      registryService.save(register);
+      
       return user;
     }
     

@@ -9,10 +9,12 @@ import it.unict.spring.platform.persistence.model.user.Organization;
 import it.unict.spring.platform.service.user.OrganizationService;
 import java.util.List;
 import javax.transaction.Transactional;
+import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -33,22 +35,31 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 @EntityScan(basePackages =  {"it.unict.spring.platform.persistence.model"})
 @EnableJpaRepositories(basePackages = {"it.unict.spring.platform.persistence.repository"})
 @Transactional
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class OrganizationServiceTest
 {
 
     
     @SpyBean
     private  OrganizationService orgServ;    
-    private final String organization="Univerity of Catania";
+    private final String organization="test_org";
         
     
-    @BeforeEach    
+    @BeforeAll    
     public void createOrganization()
     {
         assertNotNull(orgServ.save(new Organization(organization)));
        // Organization persist = entityManager.persist(new Organization(organization));
        // assertNotNull(persist);
     }
+    
+    @AfterAll
+    public void clear()
+    {
+        List<Organization> orgs = orgServ.findByName(organization);
+        orgServ.delete(orgs.get(0));
+    }
+    
     
     @Test
     public void testFindByName()
