@@ -40,12 +40,8 @@ public class RecoverAccessController
     public ModelAndView recoverPasswordView(HttpServletRequest request,
                                             HttpServletResponse response,                                          
                                             Model model)
-    {
-         //model.addAttribute("requestNewPassword", "We sent an email to reset your password");
-       //response.setStatus(HttpServletResponse.SC_BAD_REQUEST); 
-       System.out.println("mail");
-       return  new ModelAndView("public/access/recover/recoverPassword");
-        
+    {      
+       return  new ModelAndView("public/access/recover/recoverPassword");        
     }
     @RequestMapping("sendRecoverPassword")
     public ModelAndView sendRecoverPasswordView(HttpServletRequest request,

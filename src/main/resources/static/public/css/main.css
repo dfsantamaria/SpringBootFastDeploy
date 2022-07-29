@@ -108,15 +108,15 @@ legend
   color: #1f497d;
 }
 
-fieldset > p
-{
-  margin-left: 30px     
-}
 
-fieldset > div > input
+fieldset > div 
 {
   margin-bottom: 7px;
   margin-left: 20px; 
   max-width: 90%;  
+}
 
+field-inside
+{
+  margin-top: 10px;
 }
