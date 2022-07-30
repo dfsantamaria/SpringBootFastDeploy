@@ -137,8 +137,11 @@ field-inside
 
 .wordWrap 
 {
+  word-break: break-all; 
     word-wrap: break-word;      /* IE 5.5-7 */
     white-space: -moz-pre-wrap; /* Firefox 1.0-2.0 */
     white-space: pre-wrap;      /* current browsers */
-    font-weight: bold;
+    font-weight: bold; 
+    overflow: hidden; 
+    text-align: left;
 }
