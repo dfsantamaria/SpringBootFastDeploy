@@ -11,11 +11,20 @@ body
     background-color: #eee;
 }
 
-.container {
-  max-width: 500px;
+.container-in {
+  max-width: 700px;
+  min-width: 400px;
   margin: auto;  
   padding: 10px;
 }
+
+.container {
+  max-width: 500px;
+  min-width: 400px;
+  margin: auto;  
+  padding: 10px;
+}
+
 
 .form-signin {
     max-width: 330px;
@@ -118,5 +127,15 @@ fieldset > div
 
 field-inside
 {
+  display: flex;
+  flex-wrap: wrap;	
   margin-top: 10px;
+}
+
+.wordWrap 
+{
+    word-wrap: break-word;      /* IE 5.5-7 */
+    white-space: -moz-pre-wrap; /* Firefox 1.0-2.0 */
+    white-space: pre-wrap;      /* current browsers */
+    font-weight: bold;
 }

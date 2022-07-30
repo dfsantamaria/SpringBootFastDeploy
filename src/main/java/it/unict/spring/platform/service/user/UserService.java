@@ -19,11 +19,13 @@ import it.unict.spring.platform.service.communication.CustomMailService;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -79,7 +81,7 @@ public class UserService implements UserServiceInterface
     
     @Override
     @Transactional
-    public UserRegister findRegisterByCustomUserDetail(CustomUserDetails userdetails)
+    public UserRegister findRegisterFromCustomUserDetail(CustomUserDetails userdetails)
     {
         String mail =userdetails.getMail();
         List<UserAccount> users= this.findByMail(mail);       
@@ -90,7 +92,7 @@ public class UserService implements UserServiceInterface
     
     @Override    
     @Transactional
-    public Organization getOrganizationFromCustomUserDetails(CustomUserDetails userdetails)
+    public Organization findOrganizationFromCustomUserDetails(CustomUserDetails userdetails)
     {
       String mail =userdetails.getMail();
       List<UserAccount> users= this.findByMail(mail);       
@@ -101,6 +103,21 @@ public class UserService implements UserServiceInterface
         }
       return null;
     }
+    
+    //@Override    
+    @Transactional
+    public Set<Privilege> findPrivilegeFromCustomUserDetails(CustomUserDetails userdetails)
+    {
+      String mail =userdetails.getMail();
+      List<UserAccount> users= this.findByMail(mail);       
+        if(!(users.isEmpty()))                       
+        {
+            Set<Privilege> privileges = users.get(0).getPrivileges();
+            return privileges;
+        }
+      return null;     
+    }
+    
     
     @Override
     @Transactional

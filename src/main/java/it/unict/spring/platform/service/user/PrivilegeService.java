@@ -66,7 +66,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
    @Transactional
    private  Privilege getOrSetSuperAdminPrivilege()
    {
-    Privilege priv = getOrSetPrivilege("ROLE_SUPERADMIN");
+    Privilege priv = getOrSetPrivilege("ROLE_SUPERADMIN", "Superadministrator");
     priv=this.save(priv);
     return priv;
    }
@@ -76,13 +76,13 @@ public class PrivilegeService implements PrivilegeServiceInterface
     *
    */
   @Transactional
-  private Privilege getOrSetPrivilege(String privName)
+  private Privilege getOrSetPrivilege(String privName, String label)
   {
        List<Privilege> privileges = repository.findByName(privName);
        Privilege priv;
        if (privileges.isEmpty())
        {
-            priv = new Privilege(privName);                       
+            priv = new Privilege(privName, label);                       
         }
        else 
            priv=privileges.get(0);
@@ -96,7 +96,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
    @Transactional
    private  Privilege getOrSetAdminPrivilege()
    {
-    Privilege priv = this.getOrSetPrivilege("ROLE_ADMIN");
+    Privilege priv = this.getOrSetPrivilege("ROLE_ADMIN", "Administrator");
     priv=this.save(priv);
     return priv;
    }
@@ -108,7 +108,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
    @Transactional
    private  Privilege getOrSetStaffPrivilege()
    {
-    Privilege priv = getOrSetPrivilege("ROLE_STAFF");
+    Privilege priv = getOrSetPrivilege("ROLE_STAFF", "Staff");
     priv=this.save(priv);
     return priv;
   }
@@ -120,7 +120,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
   @Transactional
   private Privilege getOrSetStandardUserPrivilege()
   {
-    Privilege priv = getOrSetPrivilege("ROLE_STANDARDUSER");
+    Privilege priv = getOrSetPrivilege("ROLE_STANDARDUSER", "Standard User");
     priv=this.save(priv);
     return priv;
   }

@@ -14,7 +14,6 @@ import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -49,7 +48,7 @@ public class PrivilegeServiceTest
     @BeforeAll   
     public void createOrganization()
     {
-        assertNotNull(privServ.save(new Privilege(privilege)));
+        assertNotNull(privServ.save(new Privilege(privilege, "label")));
        // Organization persist = entityManager.persist(new Organization(organization));
        // assertNotNull(persist);
     }

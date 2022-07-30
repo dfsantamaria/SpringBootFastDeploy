@@ -37,8 +37,8 @@ public interface UserServiceInterface
     UserAccount getSuperAdminUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire ,String organization) throws MultipleUsersFoundException;
     UserAccount getStandardUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException;
     
-    UserRegister findRegisterByCustomUserDetail(CustomUserDetails userdetails);
-    Organization getOrganizationFromCustomUserDetails(CustomUserDetails userdetails);
+    UserRegister findRegisterFromCustomUserDetail(CustomUserDetails userdetails);
+    Organization findOrganizationFromCustomUserDetails(CustomUserDetails userdetails);
     
     UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException;
     

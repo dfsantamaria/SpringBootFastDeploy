@@ -10,6 +10,7 @@ package it.unict.spring.platform.controller.webmcv;
 
 import it.unict.spring.platform.dto.user.AccountPasswordDTO;
 import it.unict.spring.platform.persistence.model.user.Organization;
+import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.service.user.UserRegisterService;
@@ -17,7 +18,9 @@ import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -83,8 +86,18 @@ public class AuthLanding
           
 	  model.addAttribute("serverTime", formattedDate ); 
           
-          UserRegister reg = userService.findRegisterByCustomUserDetail(user);          
-          Organization org = userService.getOrganizationFromCustomUserDetails(user);
+          UserRegister reg = userService.findRegisterFromCustomUserDetail(user);          
+          Organization org = userService.findOrganizationFromCustomUserDetails(user);
+          
+          Iterator privileges = userService.findPrivilegeFromCustomUserDetails(user).iterator();
+          String privs ="";
+          while(privileges.hasNext())
+          {            
+           privs=privs.concat( ((Privilege) privileges.next()).getDescription());
+           if(privileges.hasNext())
+               privs+=", ";
+          }
+          model.addAttribute("viewPrivilege", privs);
           
           model.addAttribute("viewName", reg.getFirstName());
           if(!reg.getMiddleName().isBlank())

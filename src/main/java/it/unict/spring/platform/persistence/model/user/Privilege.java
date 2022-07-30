@@ -28,6 +28,9 @@ public class Privilege implements Serializable
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(nullable = false)
+    private String description;
+    
     @ManyToMany(mappedBy= "privileges")    
     private Set<UserAccount> users = new HashSet<>();
     
@@ -36,9 +39,10 @@ public class Privilege implements Serializable
         super();
     }
 
-    public Privilege(String name) {
+    public Privilege(String name, String label) {
         super();
         this.name = name;
+        this.description = label;
     }
 
     public void addUser(UserAccount user)
@@ -49,6 +53,16 @@ public class Privilege implements Serializable
     public void deleteUser(UserAccount user)
     {
       this.users.remove(user);
+    }
+    
+    public String getDescription()
+    {
+      return this.description;
+    }
+    
+    public void setDescription(String description)
+    {
+      this.description = description;
     }
     
     

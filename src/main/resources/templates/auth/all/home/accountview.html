@@ -21,7 +21,7 @@
  </div>
 
   <div class="outer">
-	<div class="container" style="margin-top: 10px">
+	<div class="container-in" style="margin-top: 10px">
 	<h1 class="form-heading">Welcome!</h1> 
 	<div><p>Its <label th:text="${serverTime}"> now </label></p></div>	  
       
@@ -30,35 +30,42 @@
       	  
                <div class="field-inside">        
               <div class="input-group-text"><i class="fa fa-address-book"></i>
-              <div th:if="${viewName}" style="margin-left: 10px"> Name: <span style="font-weight: bold;" th:text="${viewName}"> Name </span> </br> </div>
+              <div th:if="${viewName}" style="margin-left: 10px"> Name: <span class="wordWrap" th:text="${viewName}"> Name </span> </br> </div>
                </div>                    </div>        
       	     	
              <div class="field-inside"> 
       	     <div class="input-group-text"> <i class="fa fa-address-book"></i>
-             <div th:if="${viewMiddleName}" style="margin-left: 10px;"> Middle name: <span style="font-weight: bold" th:text="${viewMiddleName}"> Middle name </span> </br> </div>	
+             <div th:if="${viewMiddleName}" style="margin-left: 10px;"> Middle name: <span class="wordWrap" th:text="${viewMiddleName}"> Middle name </span> </br> </div>	
       	     </div>
              </div>
 
             <div class="field-inside">
              <div class="input-group-text"><i class="fa fa-address-book"></i>
-             <div th:if="${viewLastName}" style="margin-left: 10px"> Last name: <span style="font-weight: bold" th:text="${viewLastName}"> Last name </span> </br> </div>	
+             <div th:if="${viewLastName}" style="margin-left: 10px"> Last name: <span class="wordWrap"th:text="${viewLastName}"> Last name </span> </br> </div>	
              </div>
            </div>
 
              <div class="field-inside">
              <div class="input-group-text"><i class="fas fa-user"></i>
-             <div th:if="${viewUsername}" style="margin-left: 10px"> Username: <span style="font-weight: bold" th:text="${viewUsername}"> Username </span> </br> </div>
+             <div th:if="${viewUsername}" style="margin-left: 10px"> Username: <span class="wordWrap" th:text="${viewUsername}"> Username </span> </br> </div>
              </div></div>
              
              <div class="field-inside">
              <div class="input-group-text"><i class="fas fa-user"></i>
-            <div th:if="${viewMail}" style="margin-left: 10px"> Email: <span style="font-weight: bold" th:text="${viewMail}"> Mail </span> </br> </div> 
+            <div th:if="${viewMail}" style="margin-left: 10px"> Email: <span class="wordWrap" th:text="${viewMail}"> Mail </span> </br> </div> 
             </div></div>
 
             <div class="field-inside">
             <div class="input-group-text"><i class="fa fa-university"></i>
-            <div th:if="${viewOrgName}" style="margin-left: 10px"> Organization name: <span style="font-weight: bold" th:text="${viewOrgName}"> Org name </span> </br> </div> 
-            </div></div>          
+            <div th:if="${viewOrgName}" style="margin-left: 10px;"> Organization name: <span class="wordWrap" th:text="${viewOrgName}"> Org name </span> </br> </div> 
+            </div></div>
+
+            <div class="field-inside">
+            <div class="input-group-text"><i class="fa fa-key"></i>
+            <div th:if="${viewPrivilege}" style="margin-left: 10px;"> Role: <span class="wordWrap" th:text="${viewPrivilege}"> Privilege </span> </br> </div> 
+            </div></div>
+             
+                    
                  
       </fieldset>
      
@@ -68,7 +75,7 @@
          <fieldset>
           <legend>  Change password </legend>          
           <div th:object="${passdto}">
-          <div class="over-label">
+          <div class="field-inside">
                     <div class="input-group mb-3">
                        <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock"></i></span>
@@ -106,8 +113,7 @@
        </div>          
           
        <button type="submit" class="btn btn-lg btn-primary btn-block">Submit</button>                 
-       </form>
-                  
+       </form>                  
    </div>
    </div>
 </body>
