@@ -3,7 +3,10 @@ package it.unict.spring.platform.persistence.repository.user;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
  */
+
 
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import java.util.List;

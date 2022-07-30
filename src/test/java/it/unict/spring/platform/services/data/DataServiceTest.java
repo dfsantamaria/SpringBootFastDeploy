@@ -3,7 +3,10 @@ package it.unict.spring.platform.services.data;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
  */
+
 
 //remember to modify the file schema.sql if the name of "data" schema changes
 

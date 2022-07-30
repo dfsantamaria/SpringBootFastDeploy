@@ -3,7 +3,10 @@ package it.unict.spring.platform.configuration.security.login;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
  */
+
 
 import java.io.IOException;
 import javax.servlet.ServletException;

@@ -3,6 +3,8 @@ package it.unict.spring.platform.configuration.communication;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
  */
 
 import it.unict.spring.platform.utility.communication.JavaMailReader;

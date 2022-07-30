@@ -3,7 +3,10 @@ package it.unict.spring.platform.utility.communication;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
  */
+
 
 import javax.mail.MessagingException;
 import javax.mail.Store;

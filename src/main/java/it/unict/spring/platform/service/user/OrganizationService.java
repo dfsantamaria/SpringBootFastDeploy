@@ -3,12 +3,14 @@ package it.unict.spring.platform.service.user;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
  */
+
 
 import it.unict.spring.platform.dto.user.OrganizationDTO;
 import it.unict.spring.platform.serviceinterface.user.OrganizationServiceInterface;
 import it.unict.spring.platform.persistence.model.user.Organization;
-import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.repository.user.OrganizationRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;

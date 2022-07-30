@@ -3,6 +3,8 @@ package it.unict.spring.platform.serviceinterface.user;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
  */
 
 import it.unict.spring.platform.persistence.model.user.SecureToken;

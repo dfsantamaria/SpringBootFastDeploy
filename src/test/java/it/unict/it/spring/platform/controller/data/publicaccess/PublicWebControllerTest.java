@@ -3,6 +3,8 @@ package it.unict.it.spring.platform.controller.data.publicaccess;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
  */
 
 

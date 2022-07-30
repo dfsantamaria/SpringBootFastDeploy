@@ -3,7 +3,10 @@ package it.unict.spring.platform.configuration.security.authentication;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
  */
+
 
 import it.unict.spring.platform.service.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;

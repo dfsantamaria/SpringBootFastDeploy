@@ -3,6 +3,8 @@ package it.unict.spring.platform.service.user;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
  */
 
 import it.unict.spring.platform.dto.user.UserRegisterDTO;
@@ -10,7 +12,6 @@ import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.persistence.repository.user.UserRegisterRepository;
 import it.unict.spring.platform.serviceinterface.user.UserRegisterServiceInterface;
-import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;

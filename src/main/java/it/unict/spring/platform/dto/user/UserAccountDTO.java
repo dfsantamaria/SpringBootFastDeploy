@@ -3,10 +3,12 @@ package it.unict.spring.platform.dto.user;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
  */
 
+
 import com.sun.istack.NotNull;
-import it.unict.spring.platform.validation.PasswordMatches;
 import javax.validation.Valid;
 
 

@@ -3,7 +3,10 @@ package it.unict.spring.platform.controller.data.publicaccess;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
  */
+
 import it.unict.spring.platform.persistence.model.user.Organization;
 import it.unict.spring.platform.service.user.OrganizationService;
 import it.unict.spring.platform.service.user.PrivilegeService;

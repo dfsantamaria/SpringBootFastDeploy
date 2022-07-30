@@ -1,3 +1,6 @@
+ /* @author Daniele Francesco Santamaria daniele.santamaria@unict.it 
+ -- https://github.com/dfsantamaria/SpringBootFastDeploy.git -- */
+
 function togglePassword(password, show, hide)
  {
   var x = document.getElementById(password);
