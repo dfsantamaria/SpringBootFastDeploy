@@ -35,10 +35,6 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 
-/**
- *
- * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
- */
 
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer
