@@ -9,6 +9,7 @@ package it.unict.it.spring.platform.controller.data.publicaccess;
 
 
 import it.unict.spring.platform.Application;
+import it.unict.spring.platform.utility.user.PomReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -38,8 +39,8 @@ public class InfoControllerTest
     @Test
     public void checkPomCopied() throws FileNotFoundException
     {
-     FileReader file= new FileReader("pom.xml");
-     assertNotNull(file.toString());
+     PomReader pom= new PomReader();
+     assertNotNull(pom.getForkInfo().toString());
     }
     
     @Test
