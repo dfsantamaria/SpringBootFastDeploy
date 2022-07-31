@@ -9,6 +9,8 @@ package it.unict.it.spring.platform.controller.data.publicaccess;
 
 
 import it.unict.spring.platform.Application;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +28,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
 @AutoConfigureMockMvc
-public class PublicWebControllerTest
+public class InfoControllerTest
 {       
     @Autowired
     private MockMvc mvc;
     private String name="name";
     
-       
+      
+    @Test
+    public void checkPomCopied() throws FileNotFoundException
+    {
+     FileReader file= new FileReader("pom.xml");
+     assertNotNull(file.toString());
+    }
+    
     @Test
     @WithMockUser(username = "admin", roles = { "STAFF" })
-    public void orgsAuthTest() throws Exception
+    public void aboutAuthTest() throws Exception
     {        
-        ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/public/api/orgs"));
+        ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/public/api/info/about"));
         perform.andExpect(status().isOk());
         assertNotNull(perform.andReturn().getResponse().getContentAsString());
         
@@ -45,9 +54,9 @@ public class PublicWebControllerTest
     
     @Test
     @WithAnonymousUser
-    void orgsUnauthorizedTest() throws Exception 
+    void aboutUnauthorizedTest() throws Exception 
     {
-       ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/public/api/orgs"));
+       ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/public/api/info/about"));
        perform.andExpect(status().isOk());
        assertNotNull(perform.andReturn().getResponse().getContentAsString());
     }

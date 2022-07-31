@@ -19,10 +19,23 @@
 	<packaging>war</packaging>
 	<name>SpringPlatform</name>        
 	<description>Thanks to Springboot Fast Deploy</description>
-	<properties>
-		<java.version>11</java.version>
-                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-                <start-class>Application</start-class>
+        <developers>
+            <developer>
+                <name> Daniele Francesco Santamaria </name>
+            </developer>
+        </developers>
+        <licenses>
+                 <license>
+                        <name>GNU General Public License, Version 3.0</name>
+                        <url>https://github.com/dfsantamaria/SpringBootFastDeploy/blob/main/LICENSE</url>
+                        <distribution>repo</distribution>
+                </license>
+         </licenses>
+        
+        <properties>
+	<java.version>11</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <start-class>Application</start-class>
 	</properties>
 	<dependencies>
             
@@ -122,6 +135,12 @@
             <scope>test</scope>
             </dependency>
           
+            <dependency>
+  <groupId>org.apache.maven</groupId>
+  <artifactId>maven-model</artifactId>
+  <version>3.3.9</version>
+</dependency>
+          
 	</dependencies>
 
 	<build>
@@ -138,7 +157,35 @@
 		  <configuration>
 		   <showDeprecation>true</showDeprecation>
 		  </configuration>
-		 </plugin>
+		 </plugin>  
+                 
+                                  
+                  <plugin>
+    <artifactId>maven-resources-plugin</artifactId>
+    <version>3.0.2</version>
+    <executions>
+        <execution>
+            <id>copy-resource-one</id>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+                <outputDirectory>${basedir}/target/classes</outputDirectory>
+                <resources>
+                    <resource>
+                        <directory>${basedir}</directory>
+                        <includes>
+                            <include>pom.xml</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>              
+                                               
+                                                                             
 		</plugins>
 	</build>
 	<repositories>
