@@ -1,4 +1,4 @@
-package it.unict.spring.platform.controller.access;
+package it.unict.spring.platform.controller.user.authall;
 
 /**
  *
@@ -6,9 +6,6 @@ package it.unict.spring.platform.controller.access;
  * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
  * 
  */
-
-
-
 
 import it.unict.spring.platform.dto.user.AccountPasswordDTO;
 import it.unict.spring.platform.persistence.model.user.Organization;
@@ -39,6 +36,9 @@ import it.unict.spring.platform.utility.user.ModelTemplate;
 
 @Controller
 @RequestMapping("/auth/api/all")
+/*
+* Manage the landing page of logged users
+*/
 public class AuthLanding
 {
     @Autowired
@@ -81,6 +81,9 @@ public class AuthLanding
         }
         
         
+        /*
+        * Set the model page 
+        */
         private void setModel(Model model, CustomUserDetails user)
         {
           Date date = new Date();
@@ -92,7 +95,8 @@ public class AuthLanding
           UserRegister reg = userService.findRegisterFromCustomUserDetail(user);          
           Organization org = userService.findOrganizationFromCustomUserDetails(user);
           Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);
-                    
+             
+          //set the navigation bar depending on the user roles
           ModelTemplate.setNavBar(setPriv.iterator(), model);
           
           Iterator privileges = setPriv.iterator();
