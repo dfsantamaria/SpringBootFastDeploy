@@ -15,7 +15,7 @@
         
 	<groupId>it.unict.spring</groupId>
 	<artifactId>SpringPlatform</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>SpringPlatform</name>        
 	<description>Thanks to Springboot Fast Deploy</description>

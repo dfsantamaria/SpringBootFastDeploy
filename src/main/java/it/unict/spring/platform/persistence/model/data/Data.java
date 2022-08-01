@@ -8,27 +8,35 @@ package it.unict.spring.platform.persistence.model.data;
  */
 
 
+import it.unict.spring.platform.persistence.model.user.UserAccount;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "data", catalog = "data")
 public class Data implements Serializable
 {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
     private String name;
-
-    //
+  
+     /*
+    @ManyToOne(targetEntity = UserAccount.class,  cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private UserAccount user;
+    */
 
     public Data() {
         super();
@@ -41,6 +49,10 @@ public class Data implements Serializable
 
     //
 
+    
+   
+            
+    
     public Long getId() {
         return id;
     }
@@ -67,41 +79,21 @@ public class Data implements Serializable
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = (prime * result) + ((id == null) ? 0 : id.hashCode());
-        result = (prime * result) + ((name == null) ? 0 : name.hashCode());
-        return result;
+    public int hashCode() 
+    {        
+        return getClass().hashCode();
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+         
+        if (!(obj instanceof Data)) 
             return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Data other = (Data) obj;
-        if (id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!id.equals(other.id)) {
-            return false;
-        }
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
-        return true;
-    }
+         
+        return this.id != null && id.equals(((Data) obj).getId());
+   }
 
 }

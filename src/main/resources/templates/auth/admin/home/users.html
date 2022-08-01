@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.thymeleaf.org">
+ <!-- @author Daniele Francesco Santamaria daniele.santamaria@unict.it 
+ -- https://github.com/dfsantamaria/SpringBootFastDeploy.git -- -->
+ <head>
+      <meta charset="utf-8">
+      <title>Home page</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
+
+      <link th:href="@{/public/css/topNav.css}" rel="stylesheet">
+      <link th:href="@{/public/css/main.css}" rel="stylesheet">
+
+      <script th:src="@{/public/js/togglePassword.js}" type="text/javascript"></script>
+  </head>
+
+ 
+    
+
+<body>
+ <div class="topnav">
+  <a class="active" th:href="@{/auth/api/all/accountView}"> Account </a>
+  <a th:href="@{/auth/api/access/login/signout}">Signout</a> 
+  <a th:href="@{/auth/api/admin/usersView}">Users</a> 
+ </div>
+
+  <div class="outer">
+	<div class="container-in" style="margin-top: 10px">
+	<h1 class="form-heading">Welcome!</h1> 
+	  <h2> This page is not ready yet </h2>                     
+   </div>
+  </div>
+</body>
+</html>

@@ -95,9 +95,13 @@ public class AuthLanding
           String privs ="";
           while(privileges.hasNext())
           {            
-           privs=privs.concat( ((Privilege) privileges.next()).getDescription());
+           Privilege auth=((Privilege) privileges.next());  
+           if(auth.getType().equals("Access") && auth.getId()<=1)
+               model.addAttribute("userPage", "Users");           
+           privs=privs.concat(auth.getDescription());
            if(privileges.hasNext())
                privs+=", ";
+           
           }
           model.addAttribute("viewPrivilege", privs);
           

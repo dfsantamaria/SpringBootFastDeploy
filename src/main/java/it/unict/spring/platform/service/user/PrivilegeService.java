@@ -68,7 +68,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
    @Transactional
    private  Privilege getOrSetSuperAdminPrivilege()
    {
-    Privilege priv = getOrSetPrivilege("ROLE_SUPERADMIN", "Superadministrator");
+    Privilege priv = getOrSetPrivilege("ROLE_SUPERADMIN", "Superadministrator", "Access");
     priv=this.save(priv);
     return priv;
    }
@@ -78,13 +78,13 @@ public class PrivilegeService implements PrivilegeServiceInterface
     *
    */
   @Transactional
-  private Privilege getOrSetPrivilege(String privName, String label)
+  private Privilege getOrSetPrivilege(String privName, String label, String type)
   {
        List<Privilege> privileges = repository.findByName(privName);
        Privilege priv;
        if (privileges.isEmpty())
        {
-            priv = new Privilege(privName, label);                       
+            priv = new Privilege(privName, label, type);                       
         }
        else 
            priv=privileges.get(0);
@@ -98,7 +98,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
    @Transactional
    private  Privilege getOrSetAdminPrivilege()
    {
-    Privilege priv = this.getOrSetPrivilege("ROLE_ADMIN", "Administrator");
+    Privilege priv = this.getOrSetPrivilege("ROLE_ADMIN", "Administrator", "Access");
     priv=this.save(priv);
     return priv;
    }
@@ -110,7 +110,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
    @Transactional
    private  Privilege getOrSetStaffPrivilege()
    {
-    Privilege priv = getOrSetPrivilege("ROLE_STAFF", "Staff");
+    Privilege priv = getOrSetPrivilege("ROLE_STAFF", "Staff", "Access");
     priv=this.save(priv);
     return priv;
   }
@@ -122,7 +122,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
   @Transactional
   private Privilege getOrSetStandardUserPrivilege()
   {
-    Privilege priv = getOrSetPrivilege("ROLE_STANDARDUSER", "Standard User");
+    Privilege priv = getOrSetPrivilege("ROLE_STANDARDUSER", "Standard User", "Access");
     priv=this.save(priv);
     return priv;
   }
