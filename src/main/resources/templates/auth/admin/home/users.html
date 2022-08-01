@@ -17,11 +17,7 @@
     
 
 <body>
- <div class="topnav">
-  <a class="active" th:href="@{/auth/api/all/accountView}"> Account </a>
-  <a th:href="@{/auth/api/access/login/signout}">Signout</a> 
-  <a th:href="@{/auth/api/admin/usersView}">Users</a> 
- </div>
+ <div th:insert="fragments/topNav.html"> </div> 
 
   <div class="outer">
 	<div class="container-in" style="margin-top: 10px">

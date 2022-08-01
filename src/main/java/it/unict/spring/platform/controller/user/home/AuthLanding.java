@@ -1,4 +1,4 @@
-package it.unict.spring.platform.controller.webmcv;
+package it.unict.spring.platform.controller.access;
 
 /**
  *
@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import it.unict.spring.platform.utility.user.ModelTemplate;
 
 @Controller
 @RequestMapping("/auth/api/all")
@@ -90,18 +91,19 @@ public class AuthLanding
           
           UserRegister reg = userService.findRegisterFromCustomUserDetail(user);          
           Organization org = userService.findOrganizationFromCustomUserDetails(user);
+          Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);
+                    
+          ModelTemplate.setNavBar(setPriv.iterator(), model);
           
-          Iterator privileges = userService.findPrivilegeFromCustomUserDetails(user).iterator();
+          Iterator privileges = setPriv.iterator();
           String privs ="";
+          
           while(privileges.hasNext())
-          {            
-           Privilege auth=((Privilege) privileges.next());  
-           if(auth.getType().equals("Access") && auth.getId()<=1)
-               model.addAttribute("userPage", "Users");           
+          {  
+           Privilege auth=((Privilege) privileges.next());   
            privs=privs.concat(auth.getDescription());
            if(privileges.hasNext())
-               privs+=", ";
-           
+               privs+=", ";           
           }
           model.addAttribute("viewPrivilege", privs);
           

@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org">
+ <!-- @author Daniele Francesco Santamaria daniele.santamaria@unict.it 
+ -- https://github.com/dfsantamaria/SpringBootFastDeploy.git -- -->
+ <head>
+      <meta charset="utf-8">
+ </head>
+<body>
+ <div class="topnav" th:fragment="topNav">
+  <a class="active" th:href="@{/auth/api/all/accountView}"> Account </a>
+  <a th:href="@{/auth/api/access/login/signout}">Signout</a> 
+  <a th:if="${userPage}" th:href="@{/auth/api/admin/usersView}" th:text="${userPage}">Users</a> 
+ </div>
+</body>
