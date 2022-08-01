@@ -42,14 +42,14 @@ public class SecureTokenService implements SecureTokenServiceInterface
     @Override   
     public List<SecureToken> findByUser(UserAccount user)
     {
-      return repository.findByUser(user);
+      return repository.findAllByUser(user);
     }
        
     
     @Override
     public List<SecureToken> findByToken(String token)
     {
-     return repository.findByToken(token);
+     return repository.findAllByToken(token);
     }
 
     @Override

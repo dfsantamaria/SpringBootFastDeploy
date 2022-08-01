@@ -18,7 +18,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Repository
 public interface OrganizationRepository extends JpaRepository<Organization, Long> 
 {
-    List<Organization> findByName(String name);
+    List<Organization> findAllByName(String name);
     @Override
     List<Organization> findAll();
     @Override 

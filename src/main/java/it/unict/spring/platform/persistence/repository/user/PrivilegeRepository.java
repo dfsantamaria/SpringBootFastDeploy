@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PrivilegeRepository extends JpaRepository<Privilege, Long> 
 {
-    List<Privilege> findByName(String name);
+    List<Privilege> findAllByName(String name);
     @Override
     List<Privilege> findAll();
     @Override 

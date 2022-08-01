@@ -20,10 +20,9 @@ import org.springframework.stereotype.Repository;
 public interface UserRegisterRepository extends JpaRepository<UserRegister, Long> 
 {
     @Override
-    List<UserRegister> findAll();
-    @Override
-    Optional<UserRegister> findById(Long id);
-    List<UserRegister> findByUser(UserAccount user);
+    List<UserRegister> findAll();   
+    List<UserRegister> findAllById(Long id);
+    List<UserRegister> findAllByUser(UserAccount user);
     @Override 
     UserRegister save(UserRegister register);   
     @Override

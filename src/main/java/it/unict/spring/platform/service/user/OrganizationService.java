@@ -34,7 +34,7 @@ public class OrganizationService implements OrganizationServiceInterface
     @Override
     public List<Organization> findByName(String name)
     { 
-      return repository.findByName(name);
+      return repository.findAllByName(name);
     }
     
     @Override
@@ -59,7 +59,7 @@ public class OrganizationService implements OrganizationServiceInterface
     @Transactional
     public Organization getOrSetOrganization(String organization)
     {
-       List<Organization> orgs = repository.findByName(organization);
+       List<Organization> orgs = this.findByName(organization);
        Organization org;
        if (orgs.isEmpty())      
           org = new Organization(organization);      

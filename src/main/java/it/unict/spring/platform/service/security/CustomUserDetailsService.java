@@ -34,8 +34,8 @@ public class CustomUserDetailsService implements UserDetailsService
     public UserDetails loadUserByUsername(String username)
     {
         List<UserAccount> users = new ArrayList<>();
-        users.addAll(userRepository.findByUsername(username));
-        users.addAll(userRepository.findByMail(username));        
+        users.addAll(userRepository.findAllByUsername(username));
+        users.addAll(userRepository.findAllByMail(username));        
         if (users.isEmpty())       
            throw new UsernameNotFoundException(username);                
         if (!users.get(0).isEnabled())

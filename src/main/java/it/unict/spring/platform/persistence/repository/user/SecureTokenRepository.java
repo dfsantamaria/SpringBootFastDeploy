@@ -20,8 +20,8 @@ public interface SecureTokenRepository extends JpaRepository<SecureToken, Long>
 {    
  @Override
  List<SecureToken> findAll();  
- List<SecureToken> findByToken(String token); 
- List<SecureToken> findByUser(UserAccount user);
+ List<SecureToken> findAllByToken(String token); 
+ List<SecureToken> findAllByUser(UserAccount user);
  @Override 
  SecureToken save(SecureToken user);   
  @Override

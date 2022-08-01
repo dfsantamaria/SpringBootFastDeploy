@@ -61,13 +61,13 @@ public class UserService implements UserServiceInterface
     @Override
     public List<UserAccount> findByUsername(String name)
     {
-      return repository.findByUsername(name);
+      return repository.findAllByUsername(name);
     }
     
     @Override
     public List<UserAccount> findByMail(String email)
     {
-      return repository.findByMail(email);
+      return repository.findAllByMail(email);
     }
     
     @Override 
@@ -325,84 +325,5 @@ public class UserService implements UserServiceInterface
          return true;
        }      
       return false;
-    }
-    
-    /* 
-      
- 
-    
-    
-    
-    @Override
-    @Transactional
-    public boolean hasUserPrivilege(String privilege)
-    {
-     Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)
-     SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-     boolean hasRole = false;
-     for (GrantedAuthority authority : authorities)
-     {
-      hasRole = authority.getAuthority().equals(privilege);
-      if (hasRole)
-       break;     
-     }
-      return hasRole;      
-  } 
-    
-    @Override
-    public String getUserByEmail(String mail) throws UserNotFoundException
-    {
-        List<UserAccount> users = repository.findByMail(mail);
-        if(users.isEmpty())        
-              throw new UserNotFoundException("user not found using email "+ mail); 
-        else
-            return users.get(0).getMail();
-    }
-
-    @Override 
-    @Transactional
-    public UserAccount getAdminUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException
-    {
-      Privilege priv= privilegeService.getAdminPrivilege(); 
-      return this.getUser(username, password, mail, accountExpire,  credentialExpire, organization, priv);
-    }
-    
-    @Override
-    @Transactional
-    public UserAccount getUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire,
-                               String organization, Privilege priv) throws MultipleUsersFoundException
-    {         
-        List<UserAccount> users = repository.findByMail(mail);    
-        users.addAll(repository.findByUsername(username));
-        UserAccount user=null;
-        if(users.size()>1)
-            throw new MultipleUsersFoundException("Combination of username and password gets multiple users: "+ username + ", "+mail);
-        else if(users.size()==1)
-             user=users.get(0);
-        else if(users.isEmpty())        
-           {              
-            Organization org = organizationService.getOrSetOrganization(organization); 
-            org=organizationService.save(org);
-            user=new UserAccount(username, this.encodePassword(password), mail, accountExpire, credentialExpire);                            
-            this.addOrganizationToUser(org,user); //user.addOrganization(org);            
-            //organizationService.addUserToOrganization(user, org);  //Error          
-            organizationService.save(org);
-            this.addPrivilegeToUser(priv, user); //user.addPrivileges(priv);  
-            //privilegeService.addUserToPrivilege(user, priv);
-            privilegeService.save(priv);
-            this.save(user);                    
-           } 
-        return user;       
-    }
-
-    @Override
-    @Transactional
-    public UserAccount getStaffUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException
-    {
-      Privilege priv= privilegeService.getStaffPrivilege(); 
-      return this.getUser(username, password, mail, accountExpire, credentialExpire, organization, priv);    
-    }
-            
-    
-  */
+    }    
 }

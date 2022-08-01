@@ -32,7 +32,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
     @Override
     public List<Privilege> findByName(String name)
     {
-      return repository.findByName(name);
+      return repository.findAllByName(name);
     }
     
     @Override
@@ -80,7 +80,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
   @Transactional
   private Privilege getOrSetPrivilege(String privName, String label, String type)
   {
-       List<Privilege> privileges = repository.findByName(privName);
+       List<Privilege> privileges = this.findByName(privName);
        Privilege priv;
        if (privileges.isEmpty())
        {
@@ -153,7 +153,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
   @Override
   public Privilege getPrivilege(String privName)
   {
-       List<Privilege> privileges = repository.findByName(privName);
+       List<Privilege> privileges = this.findByName(privName);
        Privilege priv;
        if (privileges.isEmpty())
        {
