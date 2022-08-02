@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/public/api/info")
 public class InfoController
-{       
-    
-    
+{           
     private final PomReader pomreader=new PomReader();
        
     @GetMapping("about")
