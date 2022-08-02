@@ -11,7 +11,6 @@ package it.unict.it.spring.platform.controller.data.publicaccess;
 import it.unict.spring.platform.Application;
 import it.unict.spring.platform.utility.user.PomReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
