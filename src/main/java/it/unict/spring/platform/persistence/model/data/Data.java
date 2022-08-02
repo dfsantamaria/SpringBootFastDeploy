@@ -32,13 +32,15 @@ public class Data implements Serializable
     @Column(nullable = false, unique = true)
     private String name;
   
-     /*
-    @ManyToOne(targetEntity = UserAccount.class,  cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
-    @PrimaryKeyJoinColumn
-    private UserAccount user;
+    
+    /*
+     @ManyToOne(targetEntity = UserAccount.class,  cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+     @PrimaryKeyJoinColumn
+     private UserAccount user;
     */
 
-    public Data() {
+    public Data()
+    {
         super();
     }
 
