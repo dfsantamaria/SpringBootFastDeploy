@@ -1,4 +1,4 @@
-package it.unict.spring.platform.validation;
+package it.unict.spring.platform.validation.user;
 
 /**
  *

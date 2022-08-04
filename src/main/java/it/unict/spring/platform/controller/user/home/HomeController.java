@@ -1,4 +1,4 @@
-package it.unict.spring.platform.controller.webmcv;
+package it.unict.spring.platform.controller.user.home;
  
 /**
  *
