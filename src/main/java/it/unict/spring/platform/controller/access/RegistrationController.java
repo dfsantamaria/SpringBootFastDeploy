@@ -103,10 +103,16 @@ public class RegistrationController
           } 
           catch (MultipleUsersFoundException ex)
            {
-            model.addAttribute("accountExists","This account already exists");
+            model.addAttribute("fieldError","This account already exists");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return new ModelAndView("public/access/registration/register");
            }
+          catch (Exception ex)
+          {
+            model.addAttribute("fieldError","Internal errors occured, try to login or register again");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return new ModelAndView("public/access/registration/register");
+          }
          
          response.setStatus(HttpServletResponse.SC_OK);
          model.addAttribute("confirmReg", "We sent an email. Check your inbox to complete the registration");
