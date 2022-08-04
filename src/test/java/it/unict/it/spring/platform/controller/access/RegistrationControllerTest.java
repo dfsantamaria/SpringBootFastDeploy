@@ -1,5 +1,26 @@
 package it.unict.it.spring.platform.controller.access;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
@@ -14,18 +35,6 @@ import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.SecureTokenService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
-import javax.transaction.Transactional;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
 @AutoConfigureMockMvc
@@ -84,7 +93,7 @@ public class RegistrationControllerTest
     
     
     @Test
-    @Transactional
+    //@Transactional
     public void isVerifyingToken() throws Exception
     {
       UserAccount user= new UserAccount("testName2", "PlainPassword", "test2@mail.com", UserExpirationInformation.getAccountExpirationDate(),
@@ -102,11 +111,13 @@ public class RegistrationControllerTest
       
       mvc.perform(MockMvcRequestBuilders.get("/public/api/access/registration/registerUser/registrationConfirm").param("token", token.getToken()))
                .andExpect(status().isOk());                
-          
-      assertTrue(service.findById(user.getId()).isEnabled());
-      //assertTrue(service.findByUsername(user.getUsername()).get(0).isEnabled()); // False
-      //assertTrue(service.findByUsername(user.getUsername()).get(0).isEnabled());
-     
+
+      List<UserAccount> usersByName = service.findByUsername(user.getUsername());
+      assertEquals(1, usersByName.size());
+      UserAccount userByName = usersByName.get(0);
+      assertTrue(userByName.isEnabled());
+      UserAccount userById = service.findById(user.getId());
+      assertTrue(userById.isEnabled());
       
       service.deleteUser(user); 
     }
