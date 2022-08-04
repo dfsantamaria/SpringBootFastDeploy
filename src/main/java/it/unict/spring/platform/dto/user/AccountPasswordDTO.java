@@ -1,5 +1,6 @@
 package it.unict.spring.platform.dto.user;
 
+
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
@@ -10,6 +11,7 @@ package it.unict.spring.platform.dto.user;
 import com.sun.istack.NotNull;
 import it.unict.spring.platform.validation.user.PasswordMatches;
 import it.unict.spring.platform.validation.user.ValidPassword;
+
 
 
 @PasswordMatches
