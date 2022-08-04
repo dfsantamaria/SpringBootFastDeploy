@@ -248,14 +248,14 @@ public class UserService implements UserServiceInterface
     @Transactional
     public void sendRecoverPasswordMail(UserAccount user, String url)
     {       
-      this.sendEmail(user, "Reset your password:", "Click to proceed:", url, "/checkResetPassword?token=", "RPass");  
+      this.sendEmail(user, "Reset your password:", "Click to proceed: ", url, "/checkResetPassword?token=", "RPass");  
     }
     
     @Override   
     @Transactional
     public void sendRegistrationMail(UserAccount user, String url)
     {       
-      this.sendEmail(user, "Confirm registration", "Click to proceed:", url,"/registrationConfirm?token=", "FReg");  
+      this.sendEmail(user, "Confirm registration", "Click to proceed: ", url,"/registrationConfirm?token=", "FReg");  
     }
     
     @Transactional
