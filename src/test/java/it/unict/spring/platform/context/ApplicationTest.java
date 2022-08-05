@@ -31,17 +31,12 @@ public class ApplicationTest
   @Autowired  
   @Qualifier("dataEntityManager")  
   public LocalContainerEntityManagerFactoryBean dataEntityManagerFactory;
-    
-  @Autowired
-  @Qualifier("userEntityManager")
-  public LocalContainerEntityManagerFactoryBean userEntityManagerFactory;
-  
+      
     
   @Test //Check that data source are present
   void contextLoads(ApplicationContext context) throws SQLException
   {
     assertNotNull(context); //check context ok
-    assertEquals(((DataSource) context.getBean("userSource")).getConnection().getCatalog(), "useraccount");
     assertEquals(((DataSource) context.getBean("dataSource")).getConnection().getCatalog(), "data"); 
   }    
 }

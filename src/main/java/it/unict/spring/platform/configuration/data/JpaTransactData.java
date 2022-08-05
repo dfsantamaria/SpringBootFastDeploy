@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "dataEntityManager",
         transactionManagerRef = "dataTransactionManager",
-        basePackages = {"it.unict.spring.platform.persistence.repository.data"}
+        basePackages = {"it.unict.spring.platform.persistence.repository.data", "it.unict.spring.platform.persistence.repository.user"}
         )
 public class JpaTransactData
 {
@@ -41,7 +41,7 @@ public class JpaTransactData
                     @Qualifier("dataSource") DataSource serversDataSource){
         return builder
                 .dataSource(serversDataSource)
-                .packages("it.unict.spring.platform.persistence.model.data")
+                .packages("it.unict.spring.platform.persistence.model.data", "it.unict.spring.platform.persistence.model.user")
                 .persistenceUnit("dataUnit")
                 .properties(additionalJpaProperties())
                 .build();
@@ -55,6 +55,9 @@ public class JpaTransactData
         map.put("hibernate.hbm2ddl.auto", "update"); 
         //map.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         map.put("hibernate.show_sql", "true");
+        // required to create che secondary schema useraccount
+        //see https://www.javafixing.com/2022/03/fixed-create-schema-if-does-not-exist.html
+        map.put("javax.persistence.create-database-schemas", "true");
         return map;
     }
 

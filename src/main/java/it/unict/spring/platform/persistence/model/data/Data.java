@@ -1,15 +1,7 @@
 package it.unict.spring.platform.persistence.model.data;
 
-/**
- *
- * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
- * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
- * 
- */
-
-
-import it.unict.spring.platform.persistence.model.user.UserAccount;
 import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +12,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+/**
+ *
+ * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
+ */
+
+
+import it.unict.spring.platform.persistence.model.user.UserAccount;
 
 @Entity
 @Table(name = "data", catalog = "data")
@@ -33,11 +35,9 @@ public class Data implements Serializable
     private String name;
   
     
-    /*
      @ManyToOne(targetEntity = UserAccount.class,  cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
      @PrimaryKeyJoinColumn
      private UserAccount user;
-    */
 
     public Data()
     {

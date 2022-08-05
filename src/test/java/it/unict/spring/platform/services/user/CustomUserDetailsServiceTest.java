@@ -1,5 +1,32 @@
 package it.unict.spring.platform.services.user;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+
+import it.unict.spring.platform.Application;
+
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
@@ -18,34 +45,9 @@ import it.unict.spring.platform.service.user.SecureTokenService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
-import javax.transaction.Transactional;
-import org.junit.jupiter.api.AfterAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 
 @ActiveProfiles("test")
-@DataJpaTest
-@AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.ANY, connection=EmbeddedDatabaseConnection.H2)
-@ContextConfiguration(classes={CustomUserDetailsService.class})
-@EntityScan(basePackages =  {"it.unict.spring.platform.persistence.model"})
-//@EnableJpaRepositories(basePackages = {"it.unict.spring.platform.persistence.repository.*"})
-@ComponentScan(basePackages = {"it.unict.spring.platform.service.*", 
-                               "it.unict.spring.platform.configuration.*"})
+@SpringBootTest(classes=Application.class)
 @Transactional
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CustomUserDetailsServiceTest

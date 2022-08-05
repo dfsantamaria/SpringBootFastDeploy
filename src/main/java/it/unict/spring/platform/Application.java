@@ -47,9 +47,9 @@ public class Application extends SpringBootServletInitializer
   @Qualifier("dataEntityManager")  
   public LocalContainerEntityManagerFactoryBean dataEntityManagerFactory;
     
-  @Autowired
-  @Qualifier("userEntityManager")
-  public LocalContainerEntityManagerFactoryBean userEntityManagerFactory;
+//  @Autowired
+//  @Qualifier("userEntityManager")
+//  public LocalContainerEntityManagerFactoryBean userEntityManagerFactory;
  
   @Autowired
   public UserService userService;
@@ -79,7 +79,8 @@ public class Application extends SpringBootServletInitializer
       System.out.println("Console -- Application started"); 
       try
       {          
-       applogger.info("Connected to DB schema: "+ ((DataSource)appContext.getBean("userSource")).getConnection().getCatalog());
+       //applogger.info("Connected to DB schema: "+ ((DataSource)appContext.getBean("userSource")).getConnection().getCatalog());
+       //TODO
        applogger.info("Connected to DB schema: "+ ((DataSource)appContext.getBean("dataSource")).getConnection().getCatalog());   
       }
       catch (SQLException ex)

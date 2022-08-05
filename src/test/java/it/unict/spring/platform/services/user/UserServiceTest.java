@@ -1,5 +1,7 @@
 package it.unict.spring.platform.services.user;
 
+import it.unict.spring.platform.Application;
+
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
@@ -24,20 +26,14 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
 @ActiveProfiles("test")
-@DataJpaTest
-@AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.ANY, connection=EmbeddedDatabaseConnection.H2)
-//@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-@ContextConfiguration(classes={UserService.class}) // don't user or h2 will not create USERS catalog, loader=AnnotationConfigContextLoader.class)
-@EntityScan(basePackages =  {"it.unict.spring.platform.persistence.model.*"})
-//@EnableJpaRepositories(basePackages = {"it.unict.spring.application.persistence.repository"})
-@ComponentScan(basePackages = {"it.unict.spring.platform.service.*", "it.unict.spring.platform.configuration.*"})
-
+@SpringBootTest(classes=Application.class)
 @Transactional
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserServiceTest
