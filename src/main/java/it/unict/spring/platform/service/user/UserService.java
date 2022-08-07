@@ -22,13 +22,10 @@ import it.unict.spring.platform.service.communication.CustomMailService;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -251,24 +248,24 @@ public class UserService implements UserServiceInterface
     @Transactional
     public void sendRecoverPasswordMail(UserAccount user, String url)
     {       
-      this.sendEmail(user, "Reset your password", url, "/checkResetPassword?token=", "RPass");  
+      this.sendEmail(user, "Reset your password:", "Click to proceed: ", url, "/checkResetPassword?token=", "RPass");  
     }
     
     @Override   
     @Transactional
     public void sendRegistrationMail(UserAccount user, String url)
     {       
-      this.sendEmail(user, "Confirm registration", url,"/registrationConfirm?token=", "FReg");  
+      this.sendEmail(user, "Confirm registration", "Click to proceed: ", url,"/registrationConfirm?token=", "FReg");  
     }
     
     @Transactional
-    private void sendEmail(UserAccount user, String body,  String url, String prefix, String type)
+    private void sendEmail(UserAccount user, String object, String body,  String url, String prefix, String type)
     {
        
       SecureToken token=this.assignTokenToUser(user, type);     
       user=this.save(user);
       token=secureTokenService.save(token);
-      mailService.sendSimpleEmail(user.getMail(), body, url+prefix + token.getToken());
+      mailService.sendSimpleEmail(user.getMail(), object, body +  url+prefix + token.getToken());
     }
     
     @Override
