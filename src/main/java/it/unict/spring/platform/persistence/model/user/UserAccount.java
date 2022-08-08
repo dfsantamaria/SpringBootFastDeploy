@@ -59,15 +59,15 @@ public class UserAccount implements Serializable
     
     private Timestamp accountExpire;
         
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER) //LAZY
-    @JoinTable(name = "user_to_privileges",
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+    @JoinTable(name = "user_to_privileges", catalog = "useraccount",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "privilege_id",  referencedColumnName = "id", nullable = false)})
     private Set<Privilege> privileges= new HashSet<>();
 
     
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
-    @JoinTable(name = "user_to_organizations",
+    @JoinTable(name = "user_to_organizations", catalog = "useraccount",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "organization_id",  referencedColumnName = "id", nullable = false)})
     private Set<Organization> organizations= new HashSet<>();

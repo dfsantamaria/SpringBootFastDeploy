@@ -11,6 +11,7 @@ package it.unict.spring.platform.persistence.repository.user;
 import it.unict.spring.platform.persistence.model.user.Organization;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
@@ -19,6 +20,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface OrganizationRepository extends JpaRepository<Organization, Long> 
 {
     List<Organization> findAllByName(String name);
+    Optional<Organization> findOneByName(String name);
     @Override
     List<Organization> findAll();
     @Override 

@@ -14,6 +14,7 @@ import it.unict.spring.platform.persistence.model.user.Organization;
 import it.unict.spring.platform.persistence.repository.user.OrganizationRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -59,13 +60,12 @@ public class OrganizationService implements OrganizationServiceInterface
     @Transactional
     public Organization getOrSetOrganization(String organization)
     {
-       List<Organization> orgs = this.findByName(organization);
-       Organization org;
-       if (orgs.isEmpty())      
-          org = new Organization(organization);      
+        
+       Optional<Organization> org=repository.findOneByName(organization);
+       if (org.isEmpty())      
+          return new Organization(organization);      
        else 
-           org=orgs.get(0);
-       return org;
+          return org.get();
     }
     
     /*
@@ -78,21 +78,4 @@ public class OrganizationService implements OrganizationServiceInterface
        return this.getOrSetOrganization(orgdto.getName());
     }
     
-    /*
-    @Override
-    @Transactional
-    public Organization getOrSetOrganization(Organization organization)
-    {
-       List<Organization> orgs = repository.findByName(organization.getName());
-       Organization org;
-       if (orgs.isEmpty())
-       {    
-          org=organization;                    
-       }
-       else org=orgs.get(0);
-       return org;
-    }
-    
-    
-   */
 }

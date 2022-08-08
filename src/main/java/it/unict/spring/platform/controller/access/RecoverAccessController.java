@@ -11,7 +11,6 @@ package it.unict.spring.platform.controller.access;
 import it.unict.spring.platform.dto.user.AccountPasswordDTO;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.UserService;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/public/api/access/recover")
@@ -51,12 +51,12 @@ public class RecoverAccessController
                                             @RequestParam("mail") String mail,
                                             Model model) 
     {
-       List<UserAccount> users = userService.findByMail(mail); 
+       Optional<UserAccount> users = userService.findByMail(mail); 
        model.addAttribute("requestNewPassword", "We sent an email to reset your password");
        response.setStatus(HttpServletResponse.SC_OK);
        if(!users.isEmpty())
        {
-         userService.sendRecoverPasswordMail(users.get(0), request.getRequestURL().toString());
+         userService.sendRecoverPasswordMail(users.get(), request.getRequestURL().toString());
        }
        else
        {  

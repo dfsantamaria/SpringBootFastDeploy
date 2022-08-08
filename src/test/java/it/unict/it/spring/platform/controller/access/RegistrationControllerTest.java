@@ -1,16 +1,11 @@
 package it.unict.it.spring.platform.controller.access;
 
-import static org.junit.Assert.assertSame;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.Test;
@@ -112,9 +107,9 @@ public class RegistrationControllerTest
       mvc.perform(MockMvcRequestBuilders.get("/public/api/access/registration/registerUser/registrationConfirm").param("token", token.getToken()))
                .andExpect(status().isOk());                
 
-      List<UserAccount> usersByName = service.findByUsername(user.getUsername());
-      assertEquals(1, usersByName.size());
-      UserAccount userByName = usersByName.get(0);
+      Optional<UserAccount> usersByName = service.findByUsername(user.getUsername());
+      assertFalse(usersByName.isEmpty());
+      UserAccount userByName = usersByName.get();
       assertTrue(userByName.isEnabled());
       UserAccount userById = service.findById(user.getId());
       assertTrue(userById.isEnabled());
@@ -141,6 +136,6 @@ public class RegistrationControllerTest
                                               
                 )
            .andExpect(status().isOk());                
-      service.deleteUser( (service.findByMail("test3@mail.com")).get(0)); 
+      service.deleteUser( (service.findByMail("test3@mail.com")).get()); 
     }   
 }

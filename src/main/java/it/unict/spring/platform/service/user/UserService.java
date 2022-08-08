@@ -8,27 +8,33 @@ package it.unict.spring.platform.service.user;
  */
 
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+
+
 import it.unict.spring.platform.dto.user.UserAccountDTO;
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
 import it.unict.spring.platform.exception.user.UserAccountAlreadyVerified;
 import it.unict.spring.platform.persistence.model.user.Organization;
 import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.persistence.model.user.SecureToken;
-import it.unict.spring.platform.serviceinterface.user.UserServiceInterface;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.persistence.repository.user.UserRepository;
 import it.unict.spring.platform.service.communication.CustomMailService;
+import it.unict.spring.platform.serviceinterface.user.UserServiceInterface;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
-import javax.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
+import java.util.Optional;
 
 @Service
 public class UserService implements UserServiceInterface
@@ -56,15 +62,15 @@ public class UserService implements UserServiceInterface
     }
     
     @Override
-    public List<UserAccount> findByUsername(String name)
+    public Optional<UserAccount> findByUsername(String name)
     {
-      return repository.findAllByUsername(name);
+      return repository.findOneByUsername(name);
     }
     
     @Override
-    public List<UserAccount> findByMail(String email)
+    public Optional<UserAccount> findByMail(String email)
     {
-      return repository.findAllByMail(email);
+      return repository.findOneByMail(email);
     }
     
     @Override 
@@ -84,9 +90,9 @@ public class UserService implements UserServiceInterface
     public UserRegister findRegisterFromCustomUserDetail(CustomUserDetails userdetails)
     {
         String mail =userdetails.getMail();
-        List<UserAccount> users= this.findByMail(mail);       
+        Optional<UserAccount> users= this.findByMail(mail);       
         if(!(users.isEmpty()))                       
-            return users.get(0).getRegister();          
+            return users.get().getRegister();          
         return null;
     }
     
@@ -95,10 +101,10 @@ public class UserService implements UserServiceInterface
     public Organization findOrganizationFromCustomUserDetails(CustomUserDetails userdetails)
     {
       String mail =userdetails.getMail();
-      List<UserAccount> users= this.findByMail(mail);       
+      Optional<UserAccount> users= this.findByMail(mail);       
         if(!(users.isEmpty()))                       
         {
-            Set<Organization> organizations = users.get(0).getOrganization();
+            Set<Organization> organizations = users.get().getOrganization();
             return organizations.iterator().next();
         }
       return null;
@@ -109,10 +115,11 @@ public class UserService implements UserServiceInterface
     public Set<Privilege> findPrivilegeFromCustomUserDetails(CustomUserDetails userdetails)
     {
       String mail =userdetails.getMail();
-      List<UserAccount> users= this.findByMail(mail);       
+      Optional<UserAccount> users= this.findByMail(mail);       
         if(!(users.isEmpty()))                       
         {
-            Set<Privilege> privileges = users.get(0).getPrivileges();
+        	Set<Privilege> privileges = new HashSet<>();
+        	privileges.addAll(users.get().getPrivileges());
             return privileges;
         }
       return null;     
@@ -130,9 +137,9 @@ public class UserService implements UserServiceInterface
     @Transactional
     public void deleteUser(UserAccount user)
     {
-      List<UserAccount> list = this.findByMail(user.getMail());
+      Optional<UserAccount> list = this.findByMail(user.getMail());
       if(!list.isEmpty())
-          this.delete(list.get(0));   
+          this.delete(list.get());   
     }
     
     @Override   
@@ -286,21 +293,21 @@ public class UserService implements UserServiceInterface
     public boolean verifyRegistrationToken(String token) throws UserAccountAlreadyVerified
     {
         
-      List<SecureToken> sec= secureTokenService.findByToken(token);
+      Optional<SecureToken> sec= secureTokenService.findByToken(token);
       if(sec.isEmpty())
           return false;
-      if(sec.get(0).getExpireAt().after(Timestamp.valueOf(LocalDateTime.now())))
+      if(sec.get().getExpireAt().after(Timestamp.valueOf(LocalDateTime.now())))
       {
-         UserAccount user=this.findById(sec.get(0).getId().getTokenId());
-         if(!user.isEnabled() && !sec.get(0).isConsumed())
+         UserAccount user=this.findById(sec.get().getId().getTokenId());
+         if(!user.isEnabled() && !sec.get().isConsumed())
          {
-             secureTokenService.consumeToken(sec.get(0));
-             secureTokenService.save(sec.get(0));             
+             secureTokenService.consumeToken(sec.get());
+             secureTokenService.save(sec.get());             
              user.setEnabled(true);             
              this.save(user);
              return true;
          }
-         else throw new UserAccountAlreadyVerified(sec.get(0).getToken());
+         else throw new UserAccountAlreadyVerified(sec.get().getToken());
       }
       return false;
     }
@@ -309,14 +316,14 @@ public class UserService implements UserServiceInterface
     @Transactional    
     public boolean verifyPasswordChangedToken(String token, String password)
     {        
-      List<SecureToken> sec= secureTokenService.findByToken(token);
+      Optional<SecureToken> sec= secureTokenService.findByToken(token);
       if(sec.isEmpty())
           return false;
-      if(!sec.get(0).isConsumed() && sec.get(0).getTokenType().equals("RPass") && sec.get(0).getExpireAt().after(Timestamp.valueOf(LocalDateTime.now())))
+      if(!sec.get().isConsumed() && sec.get().getTokenType().equals("RPass") && sec.get().getExpireAt().after(Timestamp.valueOf(LocalDateTime.now())))
       {
-         UserAccount user=this.findById(sec.get(0).getId().getTokenId());
-         secureTokenService.consumeToken(sec.get(0));
-         secureTokenService.save(sec.get(0)); 
+         UserAccount user=this.findById(sec.get().getId().getTokenId());
+         secureTokenService.consumeToken(sec.get());
+         secureTokenService.save(sec.get()); 
          user.setPassword(this.encodePassword(password));
          this.save(user);
          return true;

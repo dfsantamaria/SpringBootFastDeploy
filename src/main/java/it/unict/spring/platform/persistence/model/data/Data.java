@@ -49,6 +49,16 @@ public class Data implements Serializable
         this.name = name;
     }
 
+    public void setUser(UserAccount user)
+    {
+      this.user=user;
+    }
+    
+    public UserAccount getUser()
+    {
+      return this.user;
+    }
+    
     //
 
     

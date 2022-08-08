@@ -98,7 +98,7 @@ public class CustomUserDetailsServiceTest
    @Transactional
    public void loadUserByUsername() throws MultipleUsersFoundException 
    {
-       List<UserAccount> users = userService.findByUsername(username);     
+       //Optional<UserAccount> users = userService.findByUsername(username);     
        CustomUserDetails details = (CustomUserDetails) detailService.loadUserByUsername(username);
        assertEquals(details.getUsername(), username);
        for(GrantedAuthority gr : details.getAuthorities())

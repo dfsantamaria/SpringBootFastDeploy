@@ -66,7 +66,7 @@ public class AuthLanding
           
           if(!passdtoBinding.hasErrors()) 
            {            
-              UserAccount account=userService.findByMail(user.getMail()).get(0);
+              UserAccount account=userService.findByMail(user.getMail()).get();
               account.setPassword(userService.encodePassword(password.getPassword()));
               userService.save(account);     
               model.addAttribute("passwordAccepted", "Password modified");

@@ -16,6 +16,7 @@ import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -47,9 +48,9 @@ public class SecureTokenService implements SecureTokenServiceInterface
        
     
     @Override
-    public List<SecureToken> findByToken(String token)
+    public Optional<SecureToken> findByToken(String token)
     {
-     return repository.findAllByToken(token);
+     return repository.findOneByToken(token);
     }
 
     @Override

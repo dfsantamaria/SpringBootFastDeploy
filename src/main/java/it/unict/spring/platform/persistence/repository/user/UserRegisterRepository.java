@@ -22,7 +22,7 @@ public interface UserRegisterRepository extends JpaRepository<UserRegister, Long
     @Override
     List<UserRegister> findAll();   
     List<UserRegister> findAllById(Long id);
-    List<UserRegister> findAllByUser(UserAccount user);
+    Optional<UserRegister> findOneByUser(UserAccount user);
     @Override 
     UserRegister save(UserRegister register);   
     @Override

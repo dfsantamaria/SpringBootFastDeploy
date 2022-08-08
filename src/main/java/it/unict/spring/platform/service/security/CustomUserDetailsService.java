@@ -1,5 +1,16 @@
 package it.unict.spring.platform.service.security;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
@@ -15,13 +26,6 @@ import it.unict.spring.platform.exception.user.UserNotEnabledException;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.repository.user.UserRepository;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 
 @Service("userDetailsService")
@@ -31,6 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService
     private UserRepository userRepository;
 
     @Override    
+    @Transactional
     public UserDetails loadUserByUsername(String username)
     {
         List<UserAccount> users = new ArrayList<>();

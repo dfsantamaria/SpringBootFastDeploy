@@ -84,7 +84,7 @@ public class LazyInitThrowner
   @Transactional
   public void throwsTokenLazyInitializationError()
   {
-      UserAccount user = userService.findByMail(mail).get(0);
+      UserAccount user = userService.findByMail(mail).get();
       Set<SecureToken> tokens = user.getTokens();
       assertEquals(tokens.iterator().next().getTokenType(), "FReg");      
   }
@@ -94,7 +94,7 @@ public class LazyInitThrowner
   @Transactional
   public void throwsPrivilegeLazyInitializationError()
   {
-      UserAccount user = userService.findByMail(mail).get(0);
+      UserAccount user = userService.findByMail(mail).get();
       Set<Privilege> privileges = user.getPrivileges();
       assertEquals(privileges.iterator().next().getName(), "ROLE_SUPERADMIN");
      
@@ -105,7 +105,7 @@ public class LazyInitThrowner
   @Transactional
   public void throwsOrganizationLazyInitializationError()
   {
-      UserAccount user = userService.findByMail(mail).get(0);
+      UserAccount user = userService.findByMail(mail).get();
       Set<Organization> organization = user.getOrganization();
       assertEquals(organization.iterator().next().getName(), org);
   }
@@ -145,7 +145,7 @@ public class LazyInitThrowner
   @Transactional
   public void throwsUserFromTokenLazyInitializationError()
   {
-      UserAccount user = userService.findByMail(mail).get(0);
+      UserAccount user = userService.findByMail(mail).get();
       List<SecureToken> tokens = tokenService.findByUser(user);
       UserAccount found = tokens.get(0).getId().getUser();
       assertEquals(found.getMail(), mail);

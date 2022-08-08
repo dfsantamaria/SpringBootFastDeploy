@@ -18,13 +18,13 @@ import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.sql.Timestamp;
 import java.util.List;
-
+import java.util.Optional;
 
 public interface UserServiceInterface
 {
     List<UserAccount> findAll();
-    List<UserAccount> findByUsername(String username);
-    List<UserAccount> findByMail(String email);
+    Optional<UserAccount> findByUsername(String username);
+    Optional<UserAccount> findByMail(String email);
     List<UserAccount> findByMailOrUsername(String namemail);
     List<UserAccount> findByMailOrUsername(String namemail, String username);
     UserAccount findById(Long id);

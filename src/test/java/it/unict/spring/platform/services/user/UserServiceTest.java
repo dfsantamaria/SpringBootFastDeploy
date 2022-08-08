@@ -13,24 +13,18 @@ import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
-import java.util.List;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
+import java.util.Optional;
+import static junit.framework.TestCase.assertFalse;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
@@ -50,7 +44,7 @@ public class UserServiceTest
     @BeforeAll    
     public void createUser() throws MultipleUsersFoundException
     {
-       List<UserAccount> users = userServ.findByUsername(username);
+       Optional<UserAccount> users = userServ.findByUsername(username);
        if(users.isEmpty())
        {
           UserAccount user = userServ.getSuperAdminUser(username, "lll@@", mail,
@@ -61,24 +55,24 @@ public class UserServiceTest
           userServ.save(user);
        }
        users = userServ.findByUsername(username);
-       assertTrue(users.get(0).isEnabled());
-       assertEquals(users.get(0).getMail(), mail);
+       assertTrue(users.get().isEnabled());
+       assertEquals(users.get().getMail(), mail);
     }
     
     @AfterAll
     public void clear()
     {
-       List<UserAccount> users = userServ.findByUsername(username);
-       userServ.delete(users.get(0));
+       Optional<UserAccount> users = userServ.findByUsername(username);
+       userServ.delete(users.get());
     }
     
     @Test
     public void testFindByName()
     {
         
-        List<UserAccount> users = userServ.findByUsername(username);
-        assertEquals(1, users.size());
-        assertEquals(users.get(0).getUsername(), username); 
+        Optional<UserAccount> users = userServ.findByUsername(username);
+        assertFalse(users.isEmpty());
+        assertEquals(users.get().getUsername(), username); 
         
     }
 

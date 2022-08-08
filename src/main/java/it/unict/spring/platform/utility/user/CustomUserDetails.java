@@ -1,45 +1,47 @@
 package it.unict.spring.platform.utility.user;
 
-/**
- *
- * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
- * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
- * 
- */
-
-
-import it.unict.spring.platform.persistence.model.user.Privilege;
-import it.unict.spring.platform.persistence.model.user.UserAccount;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import org.hibernate.Hibernate;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import it.unict.spring.platform.persistence.model.user.Privilege;
+import it.unict.spring.platform.persistence.model.user.UserAccount;
+
 
 public class  CustomUserDetails implements UserDetails 
 {
+    private static final long serialVersionUID = 4953362963386345424L;
     private final UserAccount user;
+    private final List<GrantedAuthority> authorities;
+
     public CustomUserDetails(UserAccount user)
     {
         this.user = user;
+        this.authorities=getAuthorities(user);
     }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities()
-    {
+    
+    private List<GrantedAuthority> getAuthorities(UserAccount user) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         Set<Privilege> privileges = user.getPrivileges();
-        Hibernate.initialize(privileges);
+//        Hibernate.initialize(privileges);
         for (Privilege privilege : privileges) {
             authorities.add(new SimpleGrantedAuthority(privilege.getName()));
         }
         return authorities;
     }
 
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
+        return authorities;
+    }
+    
     @Override
     public String getPassword()
     {

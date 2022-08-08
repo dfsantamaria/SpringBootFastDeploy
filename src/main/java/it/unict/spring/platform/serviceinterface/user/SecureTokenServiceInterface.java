@@ -10,6 +10,7 @@ package it.unict.spring.platform.serviceinterface.user;
 import it.unict.spring.platform.persistence.model.user.SecureToken;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface SecureTokenServiceInterface
@@ -20,7 +21,7 @@ public interface SecureTokenServiceInterface
     void delete(SecureToken token);      
     
     List<SecureToken> findByUser(UserAccount user);
-    List<SecureToken> findByToken(String token);
+    Optional<SecureToken> findByToken(String token);
     void consumeToken(SecureToken sec);
     
 }
