@@ -5,7 +5,12 @@
       <meta charset="utf-8">
       <title>Log in with your account</title>
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous" />
+
       <link th:href="@{/public/css/main.css}" rel="stylesheet">
+
+      <script th:src="@{/public/js/togglePassword.js}" type="text/javascript"></script>
   </head>
   <body>
   	<div class="outer">
@@ -14,8 +19,30 @@
         <div class="form-group">    
         <form name="form-signin" th:action="@{/public/api/access/registration/confirmResendRegister}" method="post">                   
                    
-                 <div class="over-label"><input name="username" type="text" class="form-control" placeholder="Username or Email" autofocus="true"/></div>
-                 <div class="over-label"><input name="password" type="password" class="form-control"  placeholder="Password"  minlength="8"/> </div>
+                 <div class="over-label">
+                   <div class="input-group mb-3">  
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                      </div> 
+                  <input name="username" type="text" class="form-control" placeholder="Username or Email" autofocus="true"/>
+                 </div>
+               </div>
+
+
+                 <div class="over-label">
+                  <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                   </div> 
+                  <input name="password" id="password" type="password" class="form-control"  placeholder="Password"  minlength="8"/> 
+                  <div class="input-group-append">
+                     <span class="input-group-text" type="button" onclick="togglePassword('password','show_eye','hide_eye');">
+                     <i class="fas fa-eye" id="show_eye"></i>
+                     <i class="fas fa-eye-slash d-none" id="hide_eye"></i>
+                     </span>
+                   </div>
+                </div>
+               </div>
                  
 
                 <div th:if="${errorCredentials}" th:text="${errorCredentials}" class="has-error">  Error credentials   </div>  

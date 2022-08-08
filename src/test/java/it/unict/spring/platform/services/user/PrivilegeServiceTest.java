@@ -11,10 +11,11 @@ package it.unict.spring.platform.services.user;
 import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.service.user.OrganizationService;
 import it.unict.spring.platform.service.user.PrivilegeService;
-import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
+
 
 //remember to modify the file schema.sql if the name of "user" schema changes
 
@@ -59,17 +61,17 @@ public class PrivilegeServiceTest
     @AfterAll
     public void clear()
     {
-        List<Privilege> orgs = privServ.findByName(privilege);
-        privServ.delete(orgs.get(0));
+        Optional<Privilege> orgs = privServ.findByName(privilege);
+        privServ.delete(orgs.get());
     }
     
     @Test
     public void testFindByName()
     {
         
-        List<Privilege> orgs = privServ.findByName(privilege);
-        assertEquals(1, orgs.size());
-        assertEquals(orgs.get(0).getName(),privilege); 
+        Optional<Privilege> orgs = privServ.findByName(privilege);
+        assertFalse(orgs.isEmpty());
+        assertEquals(orgs.get().getName(),privilege); 
         
     }
 }

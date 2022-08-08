@@ -9,6 +9,7 @@ package it.unict.spring.platform.persistence.repository.user;
 
 import it.unict.spring.platform.persistence.model.user.Privilege;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PrivilegeRepository extends JpaRepository<Privilege, Long> 
 {
-    List<Privilege> findAllByName(String name);
+    Optional<Privilege> findOneByName(String name);
     @Override
     List<Privilege> findAll();
     @Override 

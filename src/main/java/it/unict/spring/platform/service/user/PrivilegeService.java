@@ -11,6 +11,7 @@ import it.unict.spring.platform.serviceinterface.user.PrivilegeServiceInterface;
 import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.persistence.repository.user.PrivilegeRepository;
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,9 @@ public class PrivilegeService implements PrivilegeServiceInterface
     }
     
     @Override
-    public List<Privilege> findByName(String name)
+    public Optional<Privilege> findByName(String name)
     {
-      return repository.findAllByName(name);
+      return repository.findOneByName(name);
     }
     
     @Override
@@ -80,14 +81,14 @@ public class PrivilegeService implements PrivilegeServiceInterface
   @Transactional
   private Privilege getOrSetPrivilege(String privName, String label, String type)
   {
-       List<Privilege> privileges = this.findByName(privName);
+       Optional<Privilege> privileges = this.findByName(privName);
        Privilege priv;
        if (privileges.isEmpty())
        {
             priv = new Privilege(privName, label, type);                       
         }
        else 
-           priv=privileges.get(0);
+           priv=privileges.get();
        return priv;
   }
   
@@ -153,14 +154,14 @@ public class PrivilegeService implements PrivilegeServiceInterface
   @Override
   public Privilege getPrivilege(String privName)
   {
-       List<Privilege> privileges = this.findByName(privName);
+       Optional<Privilege> privileges = this.findByName(privName);
        Privilege priv;
        if (privileges.isEmpty())
        {
             return null;        
         }
        else 
-           priv=privileges.get(0);
+           priv=privileges.get();
        return priv;
   }  
   /*

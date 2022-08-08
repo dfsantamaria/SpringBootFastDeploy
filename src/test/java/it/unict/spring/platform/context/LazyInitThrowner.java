@@ -34,7 +34,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-
+import java.util.Optional;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -126,8 +126,8 @@ public class LazyInitThrowner
   @Transactional
   public void throwsUserFromPrivilegeLazyInitializationError()
   {
-      List<Privilege> privs = privService.findByName("ROLE_SUPERADMIN");
-      Set<UserAccount> users = privs.get(0).getUsers();
+      Optional<Privilege> privs = privService.findByName("ROLE_SUPERADMIN");
+      Set<UserAccount> users = privs.get().getUsers();
       Iterator<UserAccount> iterator = users.iterator();
       while(iterator.hasNext())
       {

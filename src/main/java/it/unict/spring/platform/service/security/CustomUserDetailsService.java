@@ -26,6 +26,7 @@ import it.unict.spring.platform.exception.user.UserNotEnabledException;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.repository.user.UserRepository;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
+import java.util.Optional;
 
 
 @Service("userDetailsService")
@@ -39,8 +40,12 @@ public class CustomUserDetailsService implements UserDetailsService
     public UserDetails loadUserByUsername(String username)
     {
         List<UserAccount> users = new ArrayList<>();
-        users.addAll(userRepository.findAllByUsername(username));
-        users.addAll(userRepository.findAllByMail(username));        
+        Optional<UserAccount> user=userRepository.findOneByUsername(username);
+        if(!user.isEmpty())
+             users.add(user.get());
+        user=userRepository.findOneByMail(username);
+        if(!user.isEmpty())
+            users.add(user.get());
         if (users.isEmpty())       
            throw new UsernameNotFoundException(username);                
         if (!users.get(0).isEnabled())

@@ -9,12 +9,13 @@ package it.unict.spring.platform.serviceinterface.user;
 
 import it.unict.spring.platform.persistence.model.user.Privilege;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface PrivilegeServiceInterface
 {
     List<Privilege> findAll();
-    List<Privilege> findByName(String name);
+    Optional<Privilege> findByName(String name);
     Privilege save(Privilege privilege);
     void startUpPrivileges();//   Persist the default user roles    
     Privilege getPrivilege(String privName); // Retrieve the user role given in input

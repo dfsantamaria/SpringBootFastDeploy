@@ -25,6 +25,7 @@
                       </div> 
                         <input name="username" type="text" class="form-control" placeholder="Username or Email" autofocus="true"/>                 
                  </div>
+               </div>
                 
                  <div class="over-label">  
                   <div class="input-group mb-3">
@@ -38,7 +39,7 @@
                      <i class="fas fa-eye-slash d-none" id="hide_eye"></i>
                      </span>
                    </div>
-                </div>
+                </div> </div>
 
                 <div th:if="${param.error}" class="has-error">    Invalid username and password.       </div>
                 <div th:if="${param.logout}" class="alert-success">     You have been logged out.  </div>
@@ -64,7 +65,7 @@
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
                 <div class="left-align"><td><a th:href="@{/public/api/access/registration/register}"> Register a new account</a></td></div>
                 <div class="right-align"><td ><a th:href="@{/public/api/access/recover/viewRecoverPassword}"> Recover password</a></td> </div>
-            </div>
+            
         </form>
     </div>
    </div>
