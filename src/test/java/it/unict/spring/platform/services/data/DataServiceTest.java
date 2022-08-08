@@ -10,53 +10,84 @@ package it.unict.spring.platform.services.data;
 
 //remember to modify the file schema.sql if the name of "data" schema changes
 
+import it.unict.spring.platform.Application;
+import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
 import it.unict.spring.platform.persistence.model.data.Data;
+import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.data.DataService;
-import it.unict.spring.platform.service.user.OrganizationService;
-import java.util.List;
+import it.unict.spring.platform.service.user.UserService;
+import it.unict.spring.platform.utility.user.UserExpirationInformation;
+import java.util.Optional;
 import javax.transaction.Transactional;
+import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 @ActiveProfiles("test")
-@DataJpaTest
-@AutoConfigureTestDatabase(replace=AutoConfigureTestDatabase.Replace.ANY, connection=EmbeddedDatabaseConnection.H2)
-@ContextConfiguration(classes={OrganizationService.class}, loader = AnnotationConfigContextLoader.class)
-@EntityScan(basePackages =  {"it.unict.spring.platform.persistence.model"})
-@EnableJpaRepositories(basePackages = {"it.unict.spring.platform.persistence.repository"})
+@SpringBootTest(classes=Application.class)
 @Transactional
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DataServiceTest
 {
 
     @SpyBean
-    private  DataService dataServ;    
+    private  DataService dataServ;        
     private String todo="something";
+    @SpyBean
+    private  UserService userServ;    
+    private final String mail="testData@unict.it";
+    private final String username = "testDataatunict";
         
     
-    @BeforeEach    
-    public void createOrganization()
+    @BeforeAll   
+    public void createData() throws MultipleUsersFoundException
     {
-        assertNotNull(dataServ.save(new Data(todo)));
+       
+       Optional<UserAccount> users = userServ.findByUsername(username);
+       UserAccount user;
+       if(users.isEmpty())
+       {
+        user = userServ.getSuperAdminUser(username, "lll@@", mail,
+                                                         UserExpirationInformation.getAccountExpirationDate(),
+                                                                 UserExpirationInformation.getCredentialExpirationDate(),
+                                                         "My nice organization");
+        userServ.save(user);
+       }
+       else 
+           user=users.get();
+       
+       Optional<Data> data = dataServ.findByName(todo);
+       if(data.isEmpty())
+       {
+        Data d=new Data(todo);
+        d.setUser(user);
+        dataServ.save(d);
+       }
        // Organization persist = entityManager.persist(new Organization(organization));
        // assertNotNull(persist);
+    }
+    
+    
+    @AfterAll
+    public void clear()
+    {
+       Optional<Data> data = dataServ.findByName(todo);
+       dataServ.delete(data.get());
+       Optional<UserAccount> users = userServ.findByUsername(username);
+       userServ.delete(users.get());       
     }
     
     @Test
     public void testFindByName()
     {        
-        List<Data> orgs = dataServ.findByName(todo);
-        assertEquals(1, orgs.size());
-        assertEquals(orgs.get(0).getName(),todo);         
+        Optional<Data> orgs = dataServ.findByName(todo);
+        assertFalse(orgs.isEmpty());
+        assertEquals(orgs.get().getName(),todo);         
     }
 }

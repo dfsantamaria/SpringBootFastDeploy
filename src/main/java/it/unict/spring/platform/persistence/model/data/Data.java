@@ -35,7 +35,7 @@ public class Data implements Serializable
     private String name;
   
     
-     @ManyToOne(targetEntity = UserAccount.class,  cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+     @ManyToOne(targetEntity = UserAccount.class,  cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
      @PrimaryKeyJoinColumn
      private UserAccount user;
 

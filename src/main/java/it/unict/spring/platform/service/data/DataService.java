@@ -14,6 +14,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import it.unict.spring.platform.persistence.repository.data.DataRepository;
 import it.unict.spring.platform.serviceinterface.data.DataServiceInterface;
+import java.util.Optional;
 
 
 @Service
@@ -30,7 +31,7 @@ public class DataService implements DataServiceInterface
     }
     
     @Override
-    public List<Data> findByName(String name)
+    public Optional<Data> findByName(String name)
     { 
       return repository.findByName(name);
     }
