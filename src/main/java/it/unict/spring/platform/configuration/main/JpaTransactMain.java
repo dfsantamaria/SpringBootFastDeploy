@@ -1,4 +1,4 @@
-package it.unict.spring.platform.configuration.data;
+package it.unict.spring.platform.configuration.main;
 
 /**
  *
@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         transactionManagerRef = "dataTransactionManager",
         basePackages = {"it.unict.spring.platform.persistence.repository.data", "it.unict.spring.platform.persistence.repository.user"}
         )
-public class JpaTransactData
+public class JpaTransactMain
 {
 
     @Bean(name = "dataEntityManager")
