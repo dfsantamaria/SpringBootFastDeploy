@@ -1,4 +1,4 @@
-package it.unict.spring.platform.configuration.main;
+package it.unict.spring.platform.configuration.persistence.transaction.main;
 
 /**
  *
@@ -27,22 +27,24 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "dataEntityManager",
-        transactionManagerRef = "dataTransactionManager",
-        basePackages = {"it.unict.spring.platform.persistence.repository.data", "it.unict.spring.platform.persistence.repository.user"}
+        entityManagerFactoryRef = "mainDataEntityManager",
+        transactionManagerRef = "mainTransactionManager",
+        basePackages = {"it.unict.spring.platform.persistence.repository.data", 
+                        "it.unict.spring.platform.persistence.repository.user"}
         )
 public class JpaTransactMain
 {
 
-    @Bean(name = "dataEntityManager")
+    @Bean(name = "mainDataEntityManager")
     @Primary
     public LocalContainerEntityManagerFactoryBean getServersEntityManager(
                     EntityManagerFactoryBuilder builder,
-                    @Qualifier("dataSource") DataSource serversDataSource){
+                    @Qualifier("mainDataSource") DataSource serversDataSource){
         return builder
                 .dataSource(serversDataSource)
-                .packages("it.unict.spring.platform.persistence.model.data", "it.unict.spring.platform.persistence.model.user")
-                .persistenceUnit("dataUnit")
+                .packages("it.unict.spring.platform.persistence.model.data", 
+                "it.unict.spring.platform.persistence.model.user")
+                .persistenceUnit("mainUnit")
                 .properties(additionalJpaProperties())
                 .build();
 
@@ -62,25 +64,25 @@ public class JpaTransactMain
     }
 
 
-    @Bean("dataDataSourceProperties")
+    @Bean("mainDataSourceProperties")
     @Primary
-    @ConfigurationProperties("app.datasource.data")
-    public DataSourceProperties dataDataSourceProperties()
+    @ConfigurationProperties("app.datasource.main")
+    public DataSourceProperties mainDataSourceProperties()
     {
         return new DataSourceProperties();
     }
 
 
-    @Bean("dataSource")
+    @Bean("mainDataSource")
     @Primary
-    @ConfigurationProperties("app.datasource.data")
-    public DataSource getDataSource(@Qualifier("dataDataSourceProperties") DataSourceProperties dataDataSourceProperties) {
-        return dataDataSourceProperties().initializeDataSourceBuilder().build();
+    @ConfigurationProperties("app.datasource.main")
+    public DataSource getDataSource(@Qualifier("mainDataSourceProperties") DataSourceProperties dataDataSourceProperties) {
+        return mainDataSourceProperties().initializeDataSourceBuilder().build();
     }
 
-    @Bean(name = "dataTransactionManager")
+    @Bean(name = "mainTransactionManager")
     @Primary
-    public JpaTransactionManager transactionManager(@Qualifier("dataEntityManager") EntityManagerFactory serversEntityManager)
+    public JpaTransactionManager transactionManager(@Qualifier("mainDataEntityManager") EntityManagerFactory serversEntityManager)
     {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(serversEntityManager);

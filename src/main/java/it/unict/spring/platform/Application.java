@@ -44,7 +44,7 @@ public class Application extends SpringBootServletInitializer
   private ApplicationContext appContext;
   
   @Autowired  
-  @Qualifier("dataEntityManager")  
+  @Qualifier("mainDataEntityManager")  
   public LocalContainerEntityManagerFactoryBean dataEntityManagerFactory;
     
  
@@ -77,7 +77,7 @@ public class Application extends SpringBootServletInitializer
       try
       {        
        
-       applogger.info("Connected to DB schema: "+ ((DataSource)appContext.getBean("dataSource")).getConnection().getCatalog());   
+       applogger.info("Connected to DB schema: "+ ((DataSource)appContext.getBean("mainDataSource")).getConnection().getCatalog());   
       }
       catch (SQLException ex)
       {

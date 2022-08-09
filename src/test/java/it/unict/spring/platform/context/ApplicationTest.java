@@ -29,7 +29,7 @@ import org.springframework.test.context.ActiveProfiles;
 public class ApplicationTest
 { 
   @Autowired  
-  @Qualifier("dataEntityManager")  
+  @Qualifier("mainDataEntityManager")  
   public LocalContainerEntityManagerFactoryBean dataEntityManagerFactory;
       
     
@@ -37,6 +37,7 @@ public class ApplicationTest
   void contextLoads(ApplicationContext context) throws SQLException
   {
     assertNotNull(context); //check context ok
-    assertEquals(((DataSource) context.getBean("dataSource")).getConnection().getCatalog(), "data"); 
+    assertEquals(((DataSource) context.getBean("mainDataSource")).getConnection().getCatalog(), "data");
+   
   }    
 }
