@@ -28,7 +28,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
@@ -80,7 +79,10 @@ public class UserAccount implements Serializable
     @OneToMany(mappedBy ="tokenId.user", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
     private Set<SecureToken> tokens = new HashSet<>();
     
-         
+    
+    @OneToOne(mappedBy ="user", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private UserLogin login;   
     //
 
     public UserAccount() {
@@ -251,10 +253,21 @@ public class UserAccount implements Serializable
       return this.register;
     }
     
+    public UserLogin getLogin()
+    {
+      return this.login;
+    }
+    
     public void setRegister(UserRegister register)
     {
       this.register=register;
       register.setUser(this);
+    }
+    
+    public void setLogin(UserLogin login)
+    {
+       this.login=login;
+       login.setUser(this);
     }
     
     @Override

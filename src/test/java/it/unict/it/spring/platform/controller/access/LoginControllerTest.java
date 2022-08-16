@@ -21,6 +21,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import it.unict.spring.platform.service.user.UserLoginService;
+import it.unict.spring.platform.service.user.UserService;
+import it.unict.spring.platform.persistence.model.user.UserLogin;
+import it.unict.spring.platform.persistence.model.user.UserAccount;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
 @AutoConfigureMockMvc
@@ -28,6 +34,15 @@ public class LoginControllerTest
 {       
     @Autowired
     private MockMvc mvc;
+    
+    @Autowired
+    UserService userService;
+    
+    @Autowired
+    UserLoginService loginService;
+    
+    private final String username = "dfsantamaria";
+    private final String password = "lll@@";
     
     @Test
     public void isLoginPubliclyAvailable() throws Exception 
@@ -50,9 +65,20 @@ public class LoginControllerTest
   @Transactional
   public void canLog() throws Exception
   {
-    mvc.perform(formLogin("/public/api/access/login/signin").user("dfsantamaria").password("lll@@"))
+    mvc.perform(formLogin("/public/api/access/login/signin").user(username).password(password))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/auth/api/all/accountView"));    
+    
+    UserAccount account=userService.findByUsername(username).get();
+    Long id = account.getId();
+    UserLogin login = loginService.findById(id).get();
+    assertEquals(login.getFailCount(), 0);
+    
+    login= account.getLogin();
+    assertEquals(login.getFailCount(), 0);
+    
+    
+    
   }
   
   @Test
@@ -60,7 +86,7 @@ public class LoginControllerTest
   {
     mvc.perform(formLogin("/public/api/access/login/signin").user("nonregistered").password("any"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/public/api/access/login/signin?error"));
+                .andExpect(redirectedUrl("/public/api/access/login/signin?errorLogin"));
   }
   
 }

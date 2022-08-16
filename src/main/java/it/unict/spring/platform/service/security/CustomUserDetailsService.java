@@ -21,11 +21,16 @@ import org.springframework.stereotype.Service;
 
 import it.unict.spring.platform.exception.user.UserAccountExpiredException;
 import it.unict.spring.platform.exception.user.UserAccountLockedException;
+import it.unict.spring.platform.exception.user.TooManyLoginAttemptsException;
 import it.unict.spring.platform.exception.user.UserCredentialsExpiredException;
 import it.unict.spring.platform.exception.user.UserNotEnabledException;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
-import it.unict.spring.platform.persistence.repository.user.UserRepository;
+import it.unict.spring.platform.persistence.model.user.UserLogin;
+import it.unict.spring.platform.service.user.UserLoginService;
+import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 
@@ -33,17 +38,19 @@ import java.util.Optional;
 public class CustomUserDetailsService implements UserDetailsService
 {
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
+    @Autowired
+    private UserLoginService loginService;
 
     @Override    
     @Transactional
     public UserDetails loadUserByUsername(String username)
     {
         List<UserAccount> users = new ArrayList<>();
-        Optional<UserAccount> user=userRepository.findOneByUsername(username);
+        Optional<UserAccount> user=userService.findByUsername(username);
         if(!user.isEmpty())
              users.add(user.get());
-        user=userRepository.findOneByMail(username);
+        user=userService.findByMail(username);
         if(!user.isEmpty())
             users.add(user.get());
         if (users.isEmpty())       
@@ -55,7 +62,16 @@ public class CustomUserDetailsService implements UserDetailsService
         if(!users.get(0).isAccountNonLocked())
             throw new UserAccountLockedException(username);
         if(!users.get(0).isCredentialsNonExpired())
-            throw new UserCredentialsExpiredException(username);       
+            throw new UserCredentialsExpiredException(username); 
+        
+        UserLogin login = users.get(0).getLogin();
+        Timestamp logDate = login.getLastFailDate();
+        
+        if(login.getFailCount() > 3 && logDate != null && LocalDateTime.now().isBefore(logDate.toLocalDateTime().plusMinutes(60)))
+          throw new TooManyLoginAttemptsException(username);              
+       
+        if(login.getLastFailDate()!=null)
+            loginService.resetLoginFail(login);
         return new CustomUserDetails(users.get(0));
     }
 }

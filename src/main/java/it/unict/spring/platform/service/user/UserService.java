@@ -29,6 +29,7 @@ import it.unict.spring.platform.persistence.model.user.Organization;
 import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.persistence.model.user.SecureToken;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
+import it.unict.spring.platform.persistence.model.user.UserLogin;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.persistence.repository.user.UserRepository;
 import it.unict.spring.platform.service.communication.CustomMailService;
@@ -50,7 +51,10 @@ public class UserService implements UserServiceInterface
     @Autowired
     UserRegisterService registryService;
     @Autowired
+    UserLoginService loginService;
+    @Autowired
     CustomMailService mailService;
+    
     
     @Autowired
     PasswordEncoder getPasswordEncoder;
@@ -221,6 +225,22 @@ public class UserService implements UserServiceInterface
       account.setRegister(register);      
     }
     
+    
+    @Override
+    @Transactional
+    public void createLoginInfo(UserAccount user)
+    {
+     UserLogin userlogin=new UserLogin();
+     this.addLoginToUser(userlogin,user);
+     loginService.save(userlogin);
+    }
+    
+    @Override
+    @Transactional
+    public void addLoginToUser(UserLogin login, UserAccount account)
+    {
+      account.setLogin(login);
+    }
     
     @Override
     @Transactional

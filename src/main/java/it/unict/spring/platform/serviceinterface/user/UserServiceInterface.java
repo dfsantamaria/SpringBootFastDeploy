@@ -14,6 +14,7 @@ import it.unict.spring.platform.persistence.model.user.Organization;
 import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.persistence.model.user.SecureToken;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
+import it.unict.spring.platform.persistence.model.user.UserLogin;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.sql.Timestamp;
@@ -45,6 +46,8 @@ public interface UserServiceInterface
     UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException;
     
     void addRegisterToUser(UserRegister register, UserAccount account);
+    void addLoginToUser(UserLogin login, UserAccount user);
+    public void createLoginInfo(UserAccount user);
     void setEnabled(UserAccount user, boolean enabled);
    
     

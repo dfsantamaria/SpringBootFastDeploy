@@ -13,6 +13,7 @@ import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.service.user.PrivilegeService;
 import it.unict.spring.platform.service.user.SecureTokenService;
+import it.unict.spring.platform.service.user.UserLoginService;
 import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
@@ -56,6 +57,7 @@ public class Application extends SpringBootServletInitializer
   public SecureTokenService tokenService;
   @Autowired
   public PrivilegeService privService;
+
   
   @Override
   public SpringApplicationBuilder configure(SpringApplicationBuilder application)
@@ -104,6 +106,8 @@ public class Application extends SpringBootServletInitializer
               UserRegister register=new UserRegister("Daniele", "Francesco", "Santamaria");
               userService.addRegisterToUser(register,user);
               registerService.save(register);
+              
+              userService.createLoginInfo(user);            
               
               SecureToken token = tokenService.generateToken(user, "FReg");
               token.setIsConsumed(Timestamp.valueOf(LocalDateTime.now()));

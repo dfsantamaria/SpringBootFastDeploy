@@ -64,6 +64,7 @@ public class CustomUserDetailsServiceTest
   @Autowired
   SecureTokenService tokenService;
   
+  
   private final String username="username";
   private final String mail="mail";
   private final String org = "org";
@@ -84,7 +85,8 @@ public class CustomUserDetailsServiceTest
           userService.save(theuser);
           thesecuretoken = tokenService.generateToken(theuser, "FReg");
           thesecuretoken.setIsConsumed(Timestamp.valueOf(LocalDateTime.now()));
-          tokenService.save(thesecuretoken);        
+          tokenService.save(thesecuretoken);   
+          userService.createLoginInfo(theuser);
   }
   
   @AfterAll

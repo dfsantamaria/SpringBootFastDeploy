@@ -109,7 +109,11 @@ public class UserRegister implements Serializable
         if (!(obj instanceof UserRegister)) 
             return false;
          
-        return this.id != null && id.equals(((UserRegister) obj).getId());
+        return this.id != null && this.id.equals(((UserRegister) obj).getId())
+                               && this.firstname.equals(((UserRegister) obj).getFirstName())
+                               && this.middlename.equals(((UserRegister) obj).getMiddleName())
+                               && this.lastname.equals(((UserRegister) obj).getLastName());
+                
    }
     
 }

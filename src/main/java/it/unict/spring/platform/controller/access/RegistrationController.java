@@ -97,7 +97,7 @@ public class RegistrationController
             UserAccount user=userService.mapFromUserDTO(userdto, UserExpirationInformation.getAccountExpirationDate(),
                                                                  UserExpirationInformation.getCredentialExpirationDate(),
                                                                  userreg, organization);  
-            
+            userService.createLoginInfo(user);
             userService.sendRegistrationMail(user, request.getRequestURL().toString());
             
           } 
