@@ -32,6 +32,6 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         //CustomUserDetails details = (CustomUserDetails) authentication.getPrincipal();
         //UserLogin logInfo=userService.findByMail(details.getMail()).get().getLogin();
         //loginService.resetLoginFail(logInfo);
-        super.onAuthenticationSuccess(request, response, authentication);
+        super.onAuthenticationSuccess(request, response, authentication);        
     } 
 }
