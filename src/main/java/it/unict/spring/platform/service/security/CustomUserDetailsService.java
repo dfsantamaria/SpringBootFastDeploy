@@ -70,8 +70,7 @@ public class CustomUserDetailsService implements UserDetailsService
         if(login.getFailCount() > 3 && logDate != null && LocalDateTime.now().isBefore(logDate.toLocalDateTime().plusMinutes(60)))
           throw new TooManyLoginAttemptsException(username);              
        
-        if(login.getLastFailDate()!=null)
-            loginService.resetLoginFail(login);
+        
         return new CustomUserDetails(users.get(0));
     }
 }
