@@ -15,6 +15,8 @@ import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.UserLoginService;
 import it.unict.spring.platform.service.user.UserService;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -50,21 +52,9 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
            getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorCredentials"); 
         else if(exceptionClass == TooManyLoginAttemptsException.class)
            getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorAttempts"); 
-      
-        else if(exceptionClass == BadCredentialsException.class)
-        {   
-              //String username = request.getParameter("j_username");
-           //List<UserAccount> accounts = userService.findByMailOrUsername(username);
-           /*if(!accounts.isEmpty())
-           {
-            Long id = accounts.get(0).getId();
-            UserLogin userLogin = loginService.findById(id).get();
-            loginService.updateLoginFail(userLogin);
-           }*/
-            getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorLogin");
-        }
+        else if(exceptionClass == BadCredentialsException.class)  
+           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorLogin");
         else
-           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?error");
-        
+           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?error");        
     }
 }

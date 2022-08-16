@@ -49,7 +49,7 @@ public UserAccount getUser()
     public void setUser(UserAccount user)
     {
       this.user = user;
-      this.id =user.getId();    
+      this.id = user.getId();    
     }
 
     public Long getId()
@@ -67,6 +67,7 @@ public UserAccount getUser()
       this.failCount=count;
     }
     
+       
     public Timestamp getLastFailDate()
     {
       return this.lastFailDate;
