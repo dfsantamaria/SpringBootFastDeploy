@@ -20,7 +20,6 @@ public class CustomAuthenticationSuccessListener implements ApplicationListener<
     private UserLoginService loginService;
     
     @Override   
-    @Transactional
     public void onApplicationEvent(AuthenticationSuccessEvent event)
     {
         CustomUserDetails user = (CustomUserDetails) event.getAuthentication().getPrincipal();

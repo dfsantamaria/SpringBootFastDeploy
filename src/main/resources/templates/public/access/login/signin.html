@@ -41,8 +41,8 @@
                    </div>
                 </div> </div>
 
-                <div th:if="${param.errorLogin}" class="has-error">    Invalid username and password.       </div>
-                <div th:if="${param.error}" class="has-error">    IUnmanaged error.       </div>
+                <div th:if="${param.errorLogin}" class="has-error">    Invalid combination of username and password.       </div>
+                <div th:if="${param.error}" class="has-error">   Unmanaged error.       </div>
                 <div th:if="${param.logout}" class="alert-success">     You have been logged out.  </div>
 
                  <div th:if="${param.errorEnabled}" class="has-error">   Registration not completed. Chech your inbox or  <a th:href="@{/public/api/access/registration/resendRegister}">request a new registration email.     </div>

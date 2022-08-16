@@ -6,7 +6,6 @@ import it.unict.spring.platform.persistence.model.user.UserLogin;
 import it.unict.spring.platform.service.user.UserLoginService;
 import it.unict.spring.platform.service.user.UserService;
 import java.util.List;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
@@ -20,8 +19,7 @@ public class CustomAuthenticationFailureListener implements ApplicationListener<
     @Autowired
     private UserLoginService loginService;
     
-    @Override   
-    @Transactional
+    @Override
     public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent event)
     {
         String userName = event.getAuthentication().getPrincipal().toString();
@@ -30,8 +28,7 @@ public class CustomAuthenticationFailureListener implements ApplicationListener<
         if(!accounts.isEmpty())
            {
             Long id = accounts.get(0).getId();
-            UserLogin userLogin = loginService.findById(id).get();
-            //System.out.println(id+"------------"+userLogin.getFailCount());
+            UserLogin userLogin = loginService.findById(id).get();            
             loginService.updateLoginFail(userLogin);
            }
         

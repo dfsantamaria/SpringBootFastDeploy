@@ -15,6 +15,6 @@ public class TooManyLoginAttemptsException extends DataAccessException
 {
     public TooManyLoginAttemptsException(String string)
     {
-        super("Too many login attempts from" + string);
+        super("Too many login attempts from " + string);
     }    
 }

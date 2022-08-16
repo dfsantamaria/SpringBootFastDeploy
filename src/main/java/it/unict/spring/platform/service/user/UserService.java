@@ -175,6 +175,8 @@ public class UserService implements UserServiceInterface
       user.setEnabled(enabled);      
     }
     
+   
+    
     @Override
     @Transactional
     public UserAccount findById(Long id)

@@ -59,8 +59,7 @@ public class UserLoginService implements UserLoginServiceInterface
        this.save(userlogin);
     }
     
-    @Override     
-    @Transactional
+    @Override        
     public void updateLoginFail(UserLogin userlogin)
     {       
        int count=userlogin.getFailCount()+1;
