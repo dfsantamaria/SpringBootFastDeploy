@@ -23,6 +23,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 
 @Configuration
@@ -53,7 +55,7 @@ public class WebSecurityConfig
                 formLogin().
                 loginPage("/public/api/access/login/signin").  
                 loginProcessingUrl("/public/api/access/login/signin").
-                successHandler(new CustomLoginSuccessHandler()).
+                successHandler(authenticationSuccessHandler()).
                 failureHandler(authenticationFailureHandler()).
                 defaultSuccessUrl("/auth/api/all/accountView").
                 permitAll().   
@@ -61,7 +63,7 @@ public class WebSecurityConfig
                 and()
                 .logout()
                 .logoutUrl("/auth/api/access/login/signout")
-                .logoutSuccessHandler(new CustomLogoutSuccessHandler())                
+                .logoutSuccessHandler(logoutSuccessHandler())                
                 .permitAll();       
         return http.build();     
     }
@@ -88,4 +90,15 @@ public class WebSecurityConfig
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return  new CustomLoginFailureHandler();
     }    
+    
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return  new CustomLoginSuccessHandler();
+    } 
+    
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler()
+    {
+        return new CustomLogoutSuccessHandler();
+    }
 }

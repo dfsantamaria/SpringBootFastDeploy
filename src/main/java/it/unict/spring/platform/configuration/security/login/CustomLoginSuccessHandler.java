@@ -17,21 +17,13 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
- 
-    //@Autowired
-    //UserService userService;
-    //@Autowired
-    //UserLoginService loginService;
-        
+public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler
+{
+         
     @Override       
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException 
-    {         
-        
-        //CustomUserDetails details = (CustomUserDetails) authentication.getPrincipal();
-        //UserLogin logInfo=userService.findByMail(details.getMail()).get().getLogin();
-        //loginService.resetLoginFail(logInfo);
-        super.onAuthenticationSuccess(request, response, authentication);        
+    {      
+       super.onAuthenticationSuccess(request, response, authentication);        
     } 
 }
