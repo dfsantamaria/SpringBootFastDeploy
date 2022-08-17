@@ -17,8 +17,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler
-{
+public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
          
     @Override       
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
