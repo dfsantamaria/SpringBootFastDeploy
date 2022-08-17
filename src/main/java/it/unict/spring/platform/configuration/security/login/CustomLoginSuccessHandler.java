@@ -22,7 +22,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     @Override       
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException 
-    {      
-       super.onAuthenticationSuccess(request, response, authentication);        
+    {             
+       getRedirectStrategy().sendRedirect(request, response, "/auth/api/all/accountView");             
     } 
 }

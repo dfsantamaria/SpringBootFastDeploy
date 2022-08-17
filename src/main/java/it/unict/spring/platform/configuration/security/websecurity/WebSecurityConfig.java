@@ -56,8 +56,7 @@ public class WebSecurityConfig
                 loginPage("/public/api/access/login/signin").  
                 loginProcessingUrl("/public/api/access/login/signin").
                 successHandler(authenticationSuccessHandler()).
-                failureHandler(authenticationFailureHandler()).
-                defaultSuccessUrl("/auth/api/all/accountView").
+                failureHandler(authenticationFailureHandler()).                
                 permitAll().   
                 
                 and()
