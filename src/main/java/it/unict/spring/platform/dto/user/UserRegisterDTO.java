@@ -8,8 +8,9 @@ package it.unict.spring.platform.dto.user;
  */
 
 import com.sun.istack.NotNull;
+import lombok.Data;
 
-
+@Data
 public class UserRegisterDTO
 {
     @NotNull
@@ -23,35 +24,5 @@ public class UserRegisterDTO
       this.firstName=fname;
       this.middleName=mname;
       this.lastName=lname;
-    }
-    
-    public String getFirstName()
-    {
-        return this.firstName;
-    }
-    
-    public String getMiddleName()
-    {
-        return this.middleName;
-    }
-    
-    public String getLastName()
-    {
-        return this.lastName;
-    }
-    
-    public void setFirstName(String name)
-    {
-        this.firstName=name;
-    }
-    
-    public void setMiddleName(String name)
-    {
-        this.middleName=name;
-    }
-    
-    public void setLastName(String name)
-    {
-        this.lastName=name;
-    }
+    }  
 }

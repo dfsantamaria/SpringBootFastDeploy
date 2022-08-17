@@ -10,9 +10,10 @@ package it.unict.spring.platform.dto.user;
 
 import com.sun.istack.NotNull;
 import javax.validation.Valid;
-
+import lombok.Data;
 
 //@PasswordMatches
+@Data
 public class UserAccountDTO
 {    
     @NotNull    
@@ -28,36 +29,6 @@ public class UserAccountDTO
       this.username=username;
       this.mail = mail;
       this.password=new AccountPasswordDTO(password, confirmPassword);      
-    }
+    }      
     
-       
-    public String getMail()
-    {
-      return this.mail;
-    }
-    
-    public String getUsername()
-    {
-        return this.username;
-    }
-    
-    public void setUsername(String username)
-    {
-      this.username = username;
-    }
-    
-    public void setMail(String mail)
-    {
-      this.mail = mail;
-    }
-    
-    public AccountPasswordDTO getPassword()
-    {
-      return this.password;
-    }
-    
-    public void setPassword(AccountPasswordDTO password)
-    {
-      this.password = password;
-    }    
 }

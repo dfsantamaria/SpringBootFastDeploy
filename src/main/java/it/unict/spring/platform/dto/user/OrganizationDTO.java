@@ -8,7 +8,9 @@ package it.unict.spring.platform.dto.user;
  */
 
 import com.sun.istack.NotNull;
+import lombok.Data;
 
+@Data
 public class OrganizationDTO
 {
     @NotNull    
@@ -17,15 +19,5 @@ public class OrganizationDTO
     public OrganizationDTO(String name)
     {
      this.name = name;
-    }
-            
-    public String getName()
-    {
-      return this.name;
-    }
-    
-    public void setName(String name)
-    {
-      this.name = name;
-    }
+    }    
 }
