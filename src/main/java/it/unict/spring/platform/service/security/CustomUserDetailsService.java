@@ -64,7 +64,7 @@ public class CustomUserDetailsService implements UserDetailsService
         if(!users.get(0).isCredentialsNonExpired())
             throw new UserCredentialsExpiredException(username); 
         UserLogin login = users.get(0).getLogin();
-        if(login.getFailCount() > 3 && LocalDateTime.now().isBefore(login.getLastFailDate().toLocalDateTime().plusMinutes(60)) )
+        if(login.getFailCount() + 1 > 3 && LocalDateTime.now().isBefore(login.getLastFailDate().toLocalDateTime().plusMinutes(60)) )
             throw new TooManyLoginAttemptsException(username);  
         return new CustomUserDetails(users.get(0));
     }

@@ -7,10 +7,6 @@ package it.unict.spring.platform.configuration.security.login;
  * 
  */
 
-import it.unict.spring.platform.exception.user.TooManyLoginAttemptsException;
-import it.unict.spring.platform.exception.user.UserAccountExpiredException;
-import it.unict.spring.platform.exception.user.UserAccountLockedException;
-import it.unict.spring.platform.exception.user.UserNotEnabledException;
 import it.unict.spring.platform.service.user.UserLoginService;
 import it.unict.spring.platform.service.user.UserService;
 import java.io.IOException;
@@ -18,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
