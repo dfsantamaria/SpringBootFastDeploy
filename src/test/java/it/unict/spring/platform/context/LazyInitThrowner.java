@@ -86,7 +86,7 @@ public class LazyInitThrowner
   {
       UserAccount user = userService.findByMail(mail).get();
       Set<SecureToken> tokens = user.getTokens();
-      assertEquals(tokens.iterator().next().getTokenType(), "FReg");      
+      assertEquals(tokens.iterator().next().getTokenId().getTokenType(), "FReg");      
   }
   
   
@@ -106,7 +106,7 @@ public class LazyInitThrowner
   public void throwsOrganizationLazyInitializationError()
   {
       UserAccount user = userService.findByMail(mail).get();
-      Set<Organization> organization = user.getOrganization();
+      Set<Organization> organization = user.getOrganizations();
       assertEquals(organization.iterator().next().getName(), org);
   }
   
@@ -147,7 +147,7 @@ public class LazyInitThrowner
   {
       UserAccount user = userService.findByMail(mail).get();
       List<SecureToken> tokens = tokenService.findByUser(user);
-      UserAccount found = tokens.get(0).getId().getUser();
+      UserAccount found = tokens.get(0).getTokenId().getUser();
       assertEquals(found.getMail(), mail);
   }
   

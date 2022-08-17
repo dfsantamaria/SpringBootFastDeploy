@@ -18,12 +18,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import lombok.Data;
 
 @Entity(name="Privilege")
 @Table(name = "privilege", catalog = "useraccount")
+@Data
 public class Privilege implements Serializable
 {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -62,51 +63,7 @@ public class Privilege implements Serializable
       this.users.remove(user);
     }
     
-    public String getDescription()
-    {
-      return this.description;
-    }
     
-    public void setDescription(String description)
-    {
-      this.description = description;
-    }
-    
-    public String getType()
-    {
-     return this.type;
-    }
-    
-    public void setType(String type)
-    {
-      this.type=type;
-    }
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set <UserAccount> getUsers() {
-        return users;
-    }
-
-    public void setUsers(final Set<UserAccount> users) {
-        this.users = users;
-    }
-    //
-
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();

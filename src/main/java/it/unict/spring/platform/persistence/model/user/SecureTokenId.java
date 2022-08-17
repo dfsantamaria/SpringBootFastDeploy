@@ -15,9 +15,10 @@ import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
+import lombok.Data;
 
 @Embeddable
+@Data
 public class SecureTokenId implements Serializable
 {
     @Column(name="tokenType")
@@ -54,27 +55,7 @@ public class SecureTokenId implements Serializable
         return Objects.hash(tokenType, this.user.getId());
     }
     
-    public void setTokenType(String tokenType)
-    {
-      this.tokenType=tokenType;
-    }
-    
-    public String getTokenType()
-    {
-      return this.tokenType;
-    }
-    
-   
-    public void setUser(UserAccount user)
-    {
-     this.user=user;
-    }
-            
-    public UserAccount getUser()
-    {
-      return this.user;
-    }
-    
+       
     public Long getTokenId()
     {
       return this.user.getId();

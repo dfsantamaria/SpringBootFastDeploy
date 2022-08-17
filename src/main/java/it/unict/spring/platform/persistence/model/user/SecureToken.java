@@ -21,9 +21,11 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.hibernate.annotations.CreationTimestamp;
+import lombok.Data;
 
 @Entity(name="SecureToken")
 @Table(name = "secureToken", catalog = "useraccount")
+@Data
 public class SecureToken implements Serializable
 {
     @EmbeddedId
@@ -71,36 +73,7 @@ public class SecureToken implements Serializable
         return getExpireAt().before(Timestamp.valueOf(LocalDateTime.now())); // this is generic implementation, you can always make it timezone specific
     }
    
-    public SecureTokenId getId()
-    {
-      return this.tokenId;
-    }
-    
-    public Timestamp getTimestamp()
-    {
-     return this.timestamp;
-    }
-    
-    public String getTokenType()
-    {
-        return this.tokenId.getTokenType();
-    }
         
-    public void setTokenType(String tokenType)
-    {
-       this.token=tokenType;
-    }
-    
-    public Timestamp getExpireAt()
-    {
-      return this.expireAt;
-    }
-    
-    public String getToken()
-    {
-     return this.token;
-    }
-    
     public void addUser(UserAccount user)
     {
       this.user=user;      
@@ -111,10 +84,6 @@ public class SecureToken implements Serializable
       return this.isConsumed!=null;
     }
     
-    public void setIsConsumed(Timestamp consumed)
-    {
-      this.isConsumed=consumed;
-    }
    
     public void removeUser()
     {
@@ -136,8 +105,8 @@ public class SecureToken implements Serializable
         if (!(obj instanceof SecureToken)) 
             return false;
          
-        return this.getId().getTokenId() != null && this.getId().getTokenType()!=null &&
-                this.getId().getTokenId().equals(((SecureToken) obj).getId().getTokenId()) &&
-                this.getId().getTokenType().equals(((SecureToken) obj).getId().getTokenType());
+        return this.getTokenId().getTokenId() != null && this.getTokenId().getTokenType()!=null &&
+                this.getTokenId().getTokenId().equals(((SecureToken) obj).getTokenId().getTokenId()) &&
+                this.getTokenId().getTokenType().equals(((SecureToken) obj).getTokenId().getTokenType());
    }
 }

@@ -37,14 +37,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>Application</start-class>
 	</properties>
-	<dependencies>
-            
-            
-            
+	<dependencies>       
             <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
+                
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -55,6 +53,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>			
 		</dependency>
+                
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -87,8 +86,7 @@
                     <groupId>org.springframework.boot</groupId>
                    <artifactId>spring-boot-starter-mail</artifactId>
                 </dependency>
-                
-                
+                                
                 <dependency> 
                 <groupId>org.springframework.boot</groupId> 
              <artifactId>spring-boot-starter-validation</artifactId> 
@@ -140,6 +138,13 @@
   <artifactId>maven-model</artifactId>
   <version>3.3.9</version>
 </dependency>
+          
+          <dependency>
+		<groupId>org.projectlombok</groupId>
+		<artifactId>lombok</artifactId>		
+		<scope>provided</scope>
+	</dependency>
+          
           
 	</dependencies>
 

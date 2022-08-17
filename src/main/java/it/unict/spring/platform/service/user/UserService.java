@@ -108,7 +108,7 @@ public class UserService implements UserServiceInterface
       Optional<UserAccount> users= this.findByMail(mail);       
         if(!(users.isEmpty()))                       
         {
-            Set<Organization> organizations = users.get().getOrganization();
+            Set<Organization> organizations = users.get().getOrganizations();
             return organizations.iterator().next();
         }
       return null;
@@ -324,7 +324,7 @@ public class UserService implements UserServiceInterface
           return false;
       if(sec.get().getExpireAt().after(Timestamp.valueOf(LocalDateTime.now())))
       {
-         UserAccount user=this.findById(sec.get().getId().getTokenId());
+         UserAccount user=this.findById(sec.get().getTokenId().getTokenId());
          if(!user.isEnabled() && !sec.get().isConsumed())
          {
              secureTokenService.consumeToken(sec.get());
@@ -345,9 +345,9 @@ public class UserService implements UserServiceInterface
       Optional<SecureToken> sec= secureTokenService.findByToken(token);
       if(sec.isEmpty())
           return false;
-      if(!sec.get().isConsumed() && sec.get().getTokenType().equals("RPass") && sec.get().getExpireAt().after(Timestamp.valueOf(LocalDateTime.now())))
+      if(!sec.get().isConsumed() && sec.get().getTokenId().getTokenType().equals("RPass") && sec.get().getExpireAt().after(Timestamp.valueOf(LocalDateTime.now())))
       {
-         UserAccount user=this.findById(sec.get().getId().getTokenId());
+         UserAccount user=this.findById(sec.get().getTokenId().getTokenId());
          secureTokenService.consumeToken(sec.get());
          secureTokenService.save(sec.get()); 
          user.setPassword(this.encodePassword(password));

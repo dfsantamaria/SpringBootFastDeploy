@@ -89,7 +89,7 @@ public class SecureTokenService implements SecureTokenServiceInterface
     public void consumeToken(SecureToken sec)
     {
       sec.setIsConsumed(Timestamp.valueOf(LocalDateTime.now()));
-      applogger.info("Token consumed: "+ sec.getToken() + "user id:"+ sec.getId().getTokenId());
+      applogger.info("Token consumed: "+ sec.getToken() + "user id:"+ sec.getTokenId().getTokenId());
     }
            
     

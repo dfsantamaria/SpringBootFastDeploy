@@ -17,9 +17,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import lombok.Data;
+
 
 @Entity(name="Organization")
 @Table(name = "organization", catalog = "useraccount")
+@Data
 public class Organization implements Serializable
 {
 
@@ -53,34 +56,6 @@ public class Organization implements Serializable
       this.users.remove(user);
     }
 
-    public Set<UserAccount> getUsers()
-    {
-        return users;
-    }
-
-    public void setUsers(final Set<UserAccount> users)
-    {
-        this.users = users;
-    }
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    //
-
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
@@ -103,6 +78,7 @@ public class Organization implements Serializable
         if (!(obj instanceof Organization)) 
             return false;
          
-        return this.id != null && id.equals(((Organization) obj).getId());
+        return this.id != null && id.equals(((Organization) obj).getId())
+                               && name.equals(((Organization) obj).getName());
    }
 }

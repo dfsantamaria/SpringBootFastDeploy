@@ -27,6 +27,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import lombok.Data;
+import lombok.Setter;
+import lombok.AccessLevel;
 
 /**
  *
@@ -35,6 +38,7 @@ import javax.persistence.Table;
 
 @Entity(name="UserAccount")
 @Table(name = "useraccount", catalog = "useraccount")
+@Data
 public class UserAccount implements Serializable
 {
 
@@ -74,6 +78,7 @@ public class UserAccount implements Serializable
     
     @OneToOne(mappedBy ="user", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
     @PrimaryKeyJoinColumn
+    @Setter(AccessLevel.NONE)
     private UserRegister register;   
     
     @OneToMany(mappedBy ="tokenId.user", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
@@ -101,19 +106,7 @@ public class UserAccount implements Serializable
         this.isAccountNonLocked=true;
         this.accountExpire = accountExpire;
     }
-    //
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
+   
      public void addPrivileges(Privilege priv)
      {     
       this.privileges.add(priv);
@@ -131,12 +124,7 @@ public class UserAccount implements Serializable
       this.tokens.add(token);
       token.addUser(this);
     }
-    
-    public Set<SecureToken> getTokens()
-    {
-      return this.tokens;
-    }
-    
+        
     public void removePrivileges(Privilege priv)
     {     
       this.privileges.remove(priv);
@@ -152,54 +140,7 @@ public class UserAccount implements Serializable
       this.tokens.remove(token);
       token.removeUser();
     }    
-        
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-     public String getMail() {
-        return mail;
-    }
-
-    public boolean isEnabled(){
-        return isEnabled;
-    } 
-    
-    public void setEnabled(boolean enabled)
-    {
-      this.isEnabled = enabled;
-    }
      
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-    
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Set<Privilege> getPrivileges() {
-        return privileges;
-    }
-
-    public void setPrivileges(Set<Privilege> privileges) {
-        this.privileges = privileges;
-    }
-
-    public Set<Organization> getOrganization()
-    {
-        return organizations;
-    }
-
-    public void setOrganization(Set<Organization> organization)
-    {
-        this.organizations = organization;
-    }
-
     //
 
     @Override
@@ -214,15 +155,6 @@ public class UserAccount implements Serializable
          return this.credentialExpire.after(Timestamp.valueOf(LocalDateTime.now()));
     }
     
-    public Timestamp getCredentialsExpire()
-    {
-         return this.credentialExpire;
-    }
-    
-    public Timestamp getUserAccountExpire()
-    {
-         return this.accountExpire;
-    }
     public boolean isAccountNonLocked()
     {
        return this.isAccountNonLocked;    
@@ -233,31 +165,7 @@ public class UserAccount implements Serializable
       return this.accountExpire.after(Timestamp.valueOf(LocalDateTime.now()));
     }
     
-    public void setCredentialsExpire(Timestamp val)
-    {
-      this.credentialExpire=val;
-    }
-
-    public void setAccountNonLocked(boolean val)
-    {
-       this.isAccountNonLocked=val;    
-    }
-
-    public void setAccountExpire(Timestamp val)
-    {
-      this.accountExpire=val;
-    }    
-    
-    public UserRegister getRegister()
-    {
-      return this.register;
-    }
-    
-    public UserLogin getLogin()
-    {
-      return this.login;
-    }
-    
+          
     public void setRegister(UserRegister register)
     {
       this.register=register;
