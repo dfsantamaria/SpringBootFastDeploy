@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.Data;
+import lombok.Setter;
+import lombok.AccessLevel;
 
 /**
  *
@@ -21,6 +24,7 @@ import javax.persistence.Table;
 
 @Entity(name="UserLogin")
 @Table(name = "userlogin", catalog = "useraccount")
+@Data
 public class UserLogin implements Serializable
 {
     @Id
@@ -39,43 +43,13 @@ public class UserLogin implements Serializable
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @Setter(AccessLevel.NONE)
     private UserAccount user;
-
-public UserAccount getUser()
-    {
-     return user;
-    }
     
     public void setUser(UserAccount user)
     {
       this.user = user;
       this.id = user.getId();    
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-    
-    public int getFailCount()
-    {
-      return this.failCount;
-    }
-    
-    public void setFailCount(int count)
-    {
-      this.failCount=count;
-    }
-    
-       
-    public Timestamp getLastFailDate()
-    {
-      return this.lastFailDate;
-    }
-    
-    public void setLastFailDate(Timestamp fail)
-    {
-      this.lastFailDate=fail;
     }
     
     @Override

@@ -111,10 +111,10 @@ public class AuthLanding
           }
           model.addAttribute("viewPrivilege", privs);
           
-          model.addAttribute("viewName", reg.getFirstName());
-          if(!reg.getMiddleName().isBlank())
-                 model.addAttribute("viewMiddleName", reg.getMiddleName());
-          model.addAttribute("viewLastName", reg.getLastName());
+          model.addAttribute("viewName", reg.getFirstname());
+          if(!reg.getMiddlename().isBlank())
+                 model.addAttribute("viewMiddleName", reg.getMiddlename());
+          model.addAttribute("viewLastName", reg.getLastname());
           model.addAttribute("viewUsername", user.getUsername() );  
           model.addAttribute("viewMail",  user.getMail());
           model.addAttribute("viewOrgName", org.getName());

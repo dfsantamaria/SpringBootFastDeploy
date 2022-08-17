@@ -16,9 +16,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Setter;
 
 @Entity(name="UserRegister")
 @Table(name = "userregistry", catalog = "useraccount")
+@Data
 public class UserRegister implements Serializable
 {
 
@@ -33,6 +37,7 @@ public class UserRegister implements Serializable
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @Setter(AccessLevel.NONE)
     private UserAccount user;
     
     public UserRegister()
@@ -48,51 +53,14 @@ public class UserRegister implements Serializable
        this.lastname=lastname;
        user=null;
     }
-    
-    public UserAccount getUser()
-    {
-     return user;
-    }
-    
+   
     public void setUser(UserAccount user)
     {
       this.user = user;
       this.id =user.getId();    
     }
-
-    public Long getId() {
-        return id;
-    }
-        
-    public String getFirstName()
-    {
-      return this.firstname;
-    }
-    
-    public void setFirstName(String name)
-    {
-      this.firstname=name;
-    }
-    
-    public String getMiddleName()
-    {
-      return this.middlename;
-    }
-    
-    public void setMiddleName(String name)
-    {
-      this.middlename=name;
-    }
-    
-    public String getLastName()
-    {
-      return this.lastname;
-    }
-    
-    public void setLastName(String name)
-    {
-      this.lastname=name;
-    }
+  
+ 
     
     @Override
     public int hashCode() 
@@ -110,9 +78,9 @@ public class UserRegister implements Serializable
             return false;
          
         return this.id != null && this.id.equals(((UserRegister) obj).getId())
-                               && this.firstname.equals(((UserRegister) obj).getFirstName())
-                               && this.middlename.equals(((UserRegister) obj).getMiddleName())
-                               && this.lastname.equals(((UserRegister) obj).getLastName());
+                               && this.firstname.equals(((UserRegister) obj).getFirstname())
+                               && this.middlename.equals(((UserRegister) obj).getMiddlename())
+                               && this.lastname.equals(((UserRegister) obj).getLastname());
                 
    }
     
