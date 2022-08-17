@@ -175,7 +175,11 @@ public class UserService implements UserServiceInterface
       user.setEnabled(enabled);      
     }
     
-   
+    @Transactional
+    public void setAccountNonLocked(UserAccount user, boolean enabled)
+    {
+      user.setAccountNonLocked(enabled);
+    }
     
     @Override
     @Transactional

@@ -22,6 +22,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 
 @Configuration
@@ -53,7 +54,7 @@ public class WebSecurityConfig
                 loginPage("/public/api/access/login/signin").  
                 loginProcessingUrl("/public/api/access/login/signin").
                 successHandler(new CustomLoginSuccessHandler()).
-                failureHandler(new CustomLoginFailureHandler()).
+                failureHandler(authenticationFailureHandler()).
                 defaultSuccessUrl("/auth/api/all/accountView").
                 permitAll().   
                 
@@ -83,5 +84,8 @@ public class WebSecurityConfig
     return roleHierarchy;
     }        
     
-        
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return  new CustomLoginFailureHandler();
+    }    
 }

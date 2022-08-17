@@ -7,9 +7,13 @@ package it.unict.spring.platform.configuration.security.login;
  * 
  */
 
+import it.unict.spring.platform.persistence.model.user.UserAccount;
+import it.unict.spring.platform.persistence.model.user.UserLogin;
 import it.unict.spring.platform.service.user.UserLoginService;
 import it.unict.spring.platform.service.user.UserService;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,9 +35,10 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
             throws IOException, ServletException
-    {        
-        if(exception.getMessage().startsWith("Too many login attempts"))           
-           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorAttempts"); 
+    {      
+        super.setDefaultFailureUrl("/public/api/access/login/signin?error");
+        if(exception.getMessage().startsWith("Too many login attempts"))
+           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorAttempts");                 
         else if(exception.getMessage().startsWith("Registration not completed"))
            getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorEnabled"); 
         else if(exception.getMessage().startsWith("User account is expired"))
@@ -42,7 +47,24 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
            getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorLocked"); 
         else if(exception.getMessage().startsWith("User credentials are expired"))
            getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorCredentials"); 
-        else
-           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorLogin");
+        else  if(exception.getMessage().startsWith("Bad credentials"))
+        {            
+            String username=request.getParameter("username");            
+            List<UserAccount> accounts = userService.findByMailOrUsername(username);
+            if(!accounts.isEmpty())
+             {
+             Long id = accounts.get(0).getId();
+             UserLogin userLogin = loginService.findById(id).get();            
+             loginService.updateLoginFail(userLogin);             
+             if(userLogin.getFailCount()  > 3 && LocalDateTime.now().isBefore(userLogin.getLastFailDate().toLocalDateTime().plusMinutes(60)) )
+                 getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorAttempts");       
+             else
+                 getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorLogin");      
+             }
+            else 
+                getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorLogin");
+      
+        }  
+       
     }
 }

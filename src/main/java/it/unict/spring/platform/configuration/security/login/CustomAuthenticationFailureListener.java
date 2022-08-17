@@ -28,15 +28,7 @@ public class CustomAuthenticationFailureListener implements ApplicationListener<
     @Override
     public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent event)
     {
-        String userName = event.getAuthentication().getPrincipal().toString();
-        //Object credentials = event.getAuthentication().getCredentials();
-        List<UserAccount> accounts = userService.findByMailOrUsername(userName);
-        if(!accounts.isEmpty())
-           {
-            Long id = accounts.get(0).getId();
-            UserLogin userLogin = loginService.findById(id).get();            
-            loginService.updateLoginFail(userLogin);
-           }
+       //logic here
         
     }
 }
