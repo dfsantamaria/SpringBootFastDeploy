@@ -257,7 +257,14 @@ public class UserService implements UserServiceInterface
       return this.getUser(username, password, mail, accountExpire,  credentialExpire, organization, priv);       
     }
     
-      
+    
+    @Override
+    @Transactional
+    public void setSuspended(UserAccount user, boolean suspended)
+    {
+       user.setSuspended(suspended);
+       repository.save(user);
+    }
 
     @Override
     @Transactional

@@ -30,6 +30,8 @@ public interface UserServiceInterface
     List<UserAccount> findByMailOrUsername(String namemail, String username);
     UserAccount findById(Long id);
     
+    void setSuspended(UserAccount user, boolean suspended);
+    
     UserAccount save (UserAccount g);  
     void delete(UserAccount user);
     void deleteUser(UserAccount user);

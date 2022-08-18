@@ -27,10 +27,6 @@ public class CustomAuthenticationSuccessListener implements ApplicationListener<
     @Override   
     public void onApplicationEvent(AuthenticationSuccessEvent event)
     {
-        CustomUserDetails user = (CustomUserDetails) event.getAuthentication().getPrincipal();
-        UserLogin login = userService.findByMail(user.getMail()).get().getLogin();        
-        if(login.getLastFailDate()!=null)
-            loginService.resetLoginFail(login);
-        
+      //logic here        
     }
 }

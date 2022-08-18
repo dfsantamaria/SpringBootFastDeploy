@@ -60,6 +60,8 @@ public class UserAccount implements Serializable
     
     private boolean isAccountNonLocked;
     
+    private boolean isSuspended;
+    
     private Timestamp accountExpire;
         
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
@@ -93,7 +95,8 @@ public class UserAccount implements Serializable
     public UserAccount() {
          super();
          this.isEnabled=false;        
-         this.isAccountNonLocked=true;        
+         this.isAccountNonLocked=true; 
+         this.isSuspended=false;
     }
     
     public UserAccount(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire) {
@@ -105,6 +108,7 @@ public class UserAccount implements Serializable
         this.credentialExpire=credentialExpire;
         this.isAccountNonLocked=true;
         this.accountExpire = accountExpire;
+        this.isSuspended = false;
     }
    
      public void addPrivileges(Privilege priv)
@@ -165,6 +169,10 @@ public class UserAccount implements Serializable
       return this.accountExpire.after(Timestamp.valueOf(LocalDateTime.now()));
     }
     
+    public boolean isAccountSuspended()
+    {
+      return this.isSuspended;
+    }
           
     public void setRegister(UserRegister register)
     {

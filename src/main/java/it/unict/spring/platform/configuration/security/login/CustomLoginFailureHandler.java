@@ -57,7 +57,10 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
              UserLogin userLogin = loginService.findById(id).get();            
              loginService.updateLoginFail(userLogin);             
              if(userLogin.getFailCount()  > 3 && LocalDateTime.now().isBefore(userLogin.getLastFailDate().toLocalDateTime().plusMinutes(60)) )
-                 getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorAttempts");       
+             {
+                 userService.setSuspended(accounts.get(0), true);
+                 getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorAttempts");
+             }       
              else
                  getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorLogin");      
              }
