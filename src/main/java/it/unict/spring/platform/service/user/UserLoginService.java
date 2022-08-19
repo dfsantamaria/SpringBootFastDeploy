@@ -32,12 +32,14 @@ public class UserLoginService implements UserLoginServiceInterface
     }
     
     @Override
+    @Transactional
     public List<UserLogin> findAll()
     {
         return (List<UserLogin>) repository.findAll();
     }
         
     @Override
+    @Transactional
     public Optional<UserLogin> findById(Long id)
     {
       return repository.findById(id);
@@ -51,7 +53,7 @@ public class UserLoginService implements UserLoginServiceInterface
     }
     
     @Override
-    
+    @Transactional
     public void resetLoginFail(UserLogin userlogin)
     {
        userlogin.setFailCount(0);
@@ -60,7 +62,7 @@ public class UserLoginService implements UserLoginServiceInterface
     }
     
     @Override       
-    
+    @Transactional
     public void updateLoginFail(UserLogin userlogin)
     {       
        int count=userlogin.getFailCount()+1;

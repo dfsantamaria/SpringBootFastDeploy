@@ -60,26 +60,6 @@ public interface UserServiceInterface
     boolean verifyRegistrationToken(String token) throws UserAccountAlreadyVerified;
     boolean verifyPasswordChangedToken(String token, String password);
     
-  //  boolean hasUserPrivilege(String privilege);
-  //  String getUserByEmail(String mail) throws UserNotFoundException;
- //   
-
- //   void addTokenToUser(SecureToken token, UserAccount user);
- //   void addOrganizationToUser(Organization org, UserAccount user);
- //   void addPrivilegeToUser(Privilege privilege, UserAccount user);
-
-    
- //   UserAccount getAdminUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException;
-    
-  //  UserAccount getStaffUser(String username, String password, String mail, Timestamp accountExpire, Timestamp credentialExpire, String organization) throws MultipleUsersFoundException;
+    void setAccountNonLocked(UserAccount user, boolean enabled);
    
- //  //   UserAccount getStandardUser(UserAccount user);
-   
- //   
-//   
-        
- //   
- //   
-    
-//    
 }

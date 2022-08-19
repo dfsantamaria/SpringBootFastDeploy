@@ -60,30 +60,35 @@ public class UserService implements UserServiceInterface
     PasswordEncoder getPasswordEncoder;
            
     @Override
+    @Transactional
     public List<UserAccount> findAll()
     {
         return (List<UserAccount>) repository.findAll();
     }
     
     @Override
+    @Transactional
     public Optional<UserAccount> findByUsername(String name)
     {
       return repository.findOneByUsername(name);
     }
     
     @Override
+    @Transactional
     public Optional<UserAccount> findByMail(String email)
     {
       return repository.findOneByMail(email);
     }
     
     @Override 
+    @Transactional
     public List<UserAccount> findByMailOrUsername(String namemail)
     {
        return repository.findAllByMailOrUsername(namemail, namemail);
     }
   
     @Override 
+    @Transactional
     public List<UserAccount> findByMailOrUsername(String namemail, String username)
     {
        return repository.findAllByMailOrUsername(namemail, username);
@@ -176,6 +181,7 @@ public class UserService implements UserServiceInterface
     }
     
     @Transactional
+    @Override
     public void setAccountNonLocked(UserAccount user, boolean enabled)
     {
       user.setAccountNonLocked(enabled);
@@ -259,6 +265,7 @@ public class UserService implements UserServiceInterface
     
     
     @Override
+    @Transactional
     public void setSuspended(UserAccount user, boolean suspended)
     {
        user.setSuspended(suspended);
