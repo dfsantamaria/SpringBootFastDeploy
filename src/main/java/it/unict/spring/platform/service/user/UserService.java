@@ -259,7 +259,6 @@ public class UserService implements UserServiceInterface
     
     
     @Override
-    @Transactional
     public void setSuspended(UserAccount user, boolean suspended)
     {
        user.setSuspended(suspended);

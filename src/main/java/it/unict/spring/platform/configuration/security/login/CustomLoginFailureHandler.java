@@ -37,9 +37,10 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
             throws IOException, ServletException
     {      
         super.setDefaultFailureUrl("/public/api/access/login/signin?error");
-        if(exception.getMessage().startsWith("Too many login attempts"))
-           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorAttempts");                 
-        else if(exception.getMessage().startsWith("Registration not completed"))
+        //if(exception.getMessage().startsWith("Too many login attempts"))
+        //   getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorAttempts");                 
+        //else
+        if(exception.getMessage().startsWith("Registration not completed"))
            getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorEnabled"); 
         else if(exception.getMessage().startsWith("User account is expired"))
            getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorExpired"); 
@@ -47,15 +48,18 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
            getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorLocked"); 
         else if(exception.getMessage().startsWith("User credentials are expired"))
            getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorCredentials"); 
-        else  if(exception.getMessage().startsWith("Bad credentials"))
+        else  if(exception.getMessage().startsWith("Bad credentials") || 
+                exception.getMessage().startsWith("Too many login attempts"))
         {            
-            String username=request.getParameter("username");            
+            String username=request.getParameter("username");    
+            
             List<UserAccount> accounts = userService.findByMailOrUsername(username);
             if(!accounts.isEmpty())
              {
              Long id = accounts.get(0).getId();
              UserLogin userLogin = loginService.findById(id).get();            
-             loginService.updateLoginFail(userLogin);             
+             loginService.updateLoginFail(userLogin);           
+             //System.out.println(username + " "+userLogin.getFailCount()+ " "+LocalDateTime.now().isBefore(userLogin.getLastFailDate().toLocalDateTime().plusMinutes(60)));
              if(userLogin.getFailCount()  > 3 && LocalDateTime.now().isBefore(userLogin.getLastFailDate().toLocalDateTime().plusMinutes(60)) )
              {
                  userService.setSuspended(accounts.get(0), true);

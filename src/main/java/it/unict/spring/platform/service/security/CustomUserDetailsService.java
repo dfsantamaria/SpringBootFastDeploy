@@ -69,7 +69,7 @@ public class CustomUserDetailsService implements UserDetailsService
             if(LocalDateTime.now().isAfter(login.getLastFailDate().toLocalDateTime().plusMinutes(60)))
              {
                 userService.setSuspended(users.get(0), false);
-                loginService.resetLoginFail(login);
+                //loginService.resetLoginFail(login);
              }      
             else
               throw new TooManyLoginAttemptsException(username); 

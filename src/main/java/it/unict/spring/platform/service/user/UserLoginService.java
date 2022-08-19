@@ -51,7 +51,7 @@ public class UserLoginService implements UserLoginServiceInterface
     }
     
     @Override
-    @Transactional
+    
     public void resetLoginFail(UserLogin userlogin)
     {
        userlogin.setFailCount(0);
@@ -59,7 +59,8 @@ public class UserLoginService implements UserLoginServiceInterface
        this.save(userlogin);
     }
     
-    @Override        
+    @Override       
+    
     public void updateLoginFail(UserLogin userlogin)
     {       
        int count=userlogin.getFailCount()+1;
