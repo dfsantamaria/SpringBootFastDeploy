@@ -35,12 +35,14 @@ public class SecureTokenService implements SecureTokenServiceInterface
     SecureTokenRepository repository;
     
     @Override    
+    @Transactional
     public List<SecureToken> findAll()
     {
       return repository.findAll();
     }
     
     @Override   
+    @Transactional
     public List<SecureToken> findByUser(UserAccount user)
     {
       return repository.findAllByUser(user);
@@ -48,6 +50,7 @@ public class SecureTokenService implements SecureTokenServiceInterface
        
     
     @Override
+    @Transactional
     public Optional<SecureToken> findByToken(String token)
     {
      return repository.findOneByToken(token);

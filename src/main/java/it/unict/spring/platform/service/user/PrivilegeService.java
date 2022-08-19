@@ -24,6 +24,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
 
            
     @Override
+    @Transactional
     public List<Privilege> findAll()
     {
 
@@ -31,6 +32,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
     }
     
     @Override
+    @Transactional
     public Optional<Privilege> findByName(String name)
     {
       return repository.findOneByName(name);
@@ -152,6 +154,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
     *
    */
   @Override
+  @Transactional
   public Privilege getPrivilege(String privName)
   {
        Optional<Privilege> privileges = this.findByName(privName);
@@ -164,35 +167,4 @@ public class PrivilegeService implements PrivilegeServiceInterface
            priv=privileges.get();
        return priv;
   }  
-  /*
-  
- 
-  
-  
-    
-
-      
-  
-
- 
-  
-  @Override 
-  @Transactional
-  public  Privilege getAdminPrivilege()
-  {
-    return getPrivilege("ROLE_ADMIN");
-  }
-  
-  
-  
-  
-   
-  @Override
-  @Transactional
-  public  Privilege getStaffPrivilege()
-  {
-    return getPrivilege("ROLE_STAFF");
-  }
-  
-  */
 }

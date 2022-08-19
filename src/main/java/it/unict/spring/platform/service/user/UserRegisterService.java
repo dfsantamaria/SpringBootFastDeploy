@@ -26,18 +26,21 @@ public class UserRegisterService implements UserRegisterServiceInterface
     UserRegisterRepository repository;
       
     @Override
+    @Transactional
     public List<UserRegister> findAll()
     {
         return (List<UserRegister>) repository.findAll();
     }
     
     @Override
+    @Transactional
     public Optional<UserRegister> findByUser(UserAccount user)
     {
       return repository.findById(user.getId());
     }
     
     @Override
+    @Transactional
     public Optional<UserRegister> findById(Long id)
     {
       return repository.findById(id);
@@ -63,11 +66,14 @@ public class UserRegisterService implements UserRegisterServiceInterface
     * Map from the give DTO to UserRegister
     */
     @Override
+    @Transactional
     public UserRegister mapFromUserRegister(UserRegisterDTO dto)
     {
       return new UserRegister(dto.getFirstName(), dto.getMiddleName(), dto.getLastName());
     }
 
+    @Override
+    @Transactional
     public void setUser(UserRegister reg, UserAccount user)
     {
       reg.setUser(user);

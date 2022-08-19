@@ -22,4 +22,5 @@ public interface UserRegisterServiceInterface
     UserRegister save (UserRegister g);    
     void delete(UserRegister register);     
     UserRegister mapFromUserRegister(UserRegisterDTO dto);
+    void setUser(UserRegister reg, UserAccount user);
 }

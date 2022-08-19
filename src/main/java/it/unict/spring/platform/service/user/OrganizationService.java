@@ -27,12 +27,14 @@ public class OrganizationService implements OrganizationServiceInterface
 
            
     @Override
+    @Transactional
     public List<Organization> findAll()
     {
         return (List<Organization>) repository.findAll();
     }
     
     @Override
+    @Transactional
     public List<Organization> findByName(String name)
     { 
       return repository.findAllByName(name);
