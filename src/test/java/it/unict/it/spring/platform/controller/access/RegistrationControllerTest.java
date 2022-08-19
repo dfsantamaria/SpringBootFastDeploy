@@ -88,7 +88,7 @@ public class RegistrationControllerTest
     
     
     @Test
-    //@Transactional
+    @Transactional
     public void isVerifyingToken() throws Exception
     {
       UserAccount user= new UserAccount("testName2", "PlainPassword", "test2@mail.com", UserExpirationInformation.getAccountExpirationDate(),
