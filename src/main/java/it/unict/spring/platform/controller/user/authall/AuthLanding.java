@@ -85,13 +85,7 @@ public class AuthLanding
         * Set the model page 
         */
         private void setModel(Model model, CustomUserDetails user)
-        {
-          Date date = new Date();
-	  DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, Locale.ENGLISH); 
-	  String formattedDate = dateFormat.format(date);    
-          
-	  model.addAttribute("serverTime", formattedDate ); 
-          
+        {                    
           UserRegister reg = userService.findRegisterFromCustomUserDetail(user);          
           Organization org = userService.findOrganizationFromCustomUserDetails(user);
           Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);
