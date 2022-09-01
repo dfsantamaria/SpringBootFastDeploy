@@ -119,7 +119,7 @@ public class UserService implements UserServiceInterface
       return null;
     }
     
-    //@Override    
+    @Override    
     @Transactional
     public Set<Privilege> findPrivilegeFromCustomUserDetails(CustomUserDetails userdetails)
     {

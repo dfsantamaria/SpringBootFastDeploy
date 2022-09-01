@@ -19,6 +19,7 @@ import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 import java.util.Optional;
 
 public interface UserServiceInterface
@@ -44,6 +45,7 @@ public interface UserServiceInterface
     
     UserRegister findRegisterFromCustomUserDetail(CustomUserDetails userdetails);
     Organization findOrganizationFromCustomUserDetails(CustomUserDetails userdetails);
+    Set<Privilege> findPrivilegeFromCustomUserDetails(CustomUserDetails userdetails);
     
     UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException;
     
