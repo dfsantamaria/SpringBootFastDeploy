@@ -34,11 +34,7 @@ public class  CustomUserDetails implements UserDetails
         }
         return authorities;
     }
-
-    public UserAccount getUser()
-    {
-      return user;
-    }
+   
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities()
@@ -61,6 +57,11 @@ public class  CustomUserDetails implements UserDetails
     public String getMail()
     {
       return user.getMail();
+    }
+    
+    public Long getId()
+    {
+      return user.getId();
     }
 
     @Override

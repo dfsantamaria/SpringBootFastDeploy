@@ -98,40 +98,27 @@ public class UserService implements UserServiceInterface
     @Transactional
     public UserRegister findRegisterFromCustomUserDetail(CustomUserDetails userdetails)
     {
-        String mail =userdetails.getMail();
-        Optional<UserAccount> users= this.findByMail(mail);       
-        if(!(users.isEmpty()))                       
-            return users.get().getRegister();          
-        return null;
+        UserAccount users= this.findById(userdetails.getId());                    
+        return users.getRegister();        
     }
     
     @Override    
     @Transactional
     public Organization findOrganizationFromCustomUserDetails(CustomUserDetails userdetails)
-    {
-      String mail =userdetails.getMail();
-      Optional<UserAccount> users= this.findByMail(mail);       
-        if(!(users.isEmpty()))                       
-        {
-            Set<Organization> organizations = users.get().getOrganizations();
-            return organizations.iterator().next();
-        }
-      return null;
+    {      
+      UserAccount users= this.findById(userdetails.getId());  
+      Set<Organization> organizations = users.getOrganizations();
+      return organizations.iterator().next();      
     }
     
     @Override    
     @Transactional
     public Set<Privilege> findPrivilegeFromCustomUserDetails(CustomUserDetails userdetails)
     {
-      String mail =userdetails.getMail();
-      Optional<UserAccount> users= this.findByMail(mail);       
-        if(!(users.isEmpty()))                       
-        {
-        	Set<Privilege> privileges = new HashSet<>();
-        	privileges.addAll(users.get().getPrivileges());
-            return privileges;
-        }
-      return null;     
+      UserAccount users= this.findById(userdetails.getId());
+      Set<Privilege> privileges = new HashSet<>();
+      privileges.addAll(users.getPrivileges());
+      return privileges;         
     }
     
     
