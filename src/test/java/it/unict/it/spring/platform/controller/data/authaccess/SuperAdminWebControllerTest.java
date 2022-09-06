@@ -30,7 +30,7 @@ public class SuperAdminWebControllerTest
 {       
     @Autowired
     private MockMvc mvc;
-    private String name="name";
+    private final String name="name";
     
     @Test
     @WithMockUser(username = "admin", roles = { "SUPERADMIN" })
@@ -38,7 +38,7 @@ public class SuperAdminWebControllerTest
     {        
         ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/auth/api/superadmin/hello").param("myName", name));
         perform.andExpect(status().isOk());
-        assertEquals(perform.andReturn().getResponse().getContentAsString(),"Hello "+name+"!");
+        assertEquals(perform.andReturn().getResponse().getContentAsString(),"Hello "+name+"!"); 
     }
     
     @Test
@@ -46,8 +46,7 @@ public class SuperAdminWebControllerTest
     public void sayHelloNonAuthTest() throws Exception
     {        
         ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/auth/api/superadmin/hello").param("myName", name));
-        perform.andExpect(status().isForbidden());
-        
+        perform.andExpect(status().isForbidden());        
     }
     
     @Test

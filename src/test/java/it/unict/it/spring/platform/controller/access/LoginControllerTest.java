@@ -86,7 +86,7 @@ public class LoginControllerTest
   {
     mvc.perform(formLogin("/public/api/access/login/signin").user("nonregistered").password("any"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/public/api/access/login/signin?errorLogin"));
+                .andExpect(redirectedUrl("/public/api/access/login/signin?errorLogin"));    
   }
   
 }

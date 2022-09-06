@@ -76,7 +76,7 @@ public class Application extends SpringBootServletInitializer
       applogger.info("Post-construct message: Application started");
       System.out.println("Console -- Application started"); 
       try
-      {        
+      {   
        
        applogger.info("Connected to DB schema: "+ ((DataSource)appContext.getBean("mainDataSource")).getConnection().getCatalog());   
       }
@@ -92,7 +92,7 @@ public class Application extends SpringBootServletInitializer
        public void afterStartupListener()
        {
         try
-        {
+        {  
            privService.startUpPrivileges();            
            if(userService.findByMail("daniele.santamaria@unict.it").isEmpty())
            {
@@ -117,7 +117,7 @@ public class Application extends SpringBootServletInitializer
         } 
         catch (MultipleUsersFoundException ex) 
         {
-          applogger.error( ex.toString());          
+          applogger.error( ex.toString());            
         }   
        }  
      
