@@ -21,6 +21,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UserServiceInterface
 {
@@ -30,6 +32,8 @@ public interface UserServiceInterface
     List<UserAccount> findByMailOrUsername(String namemail);
     List<UserAccount> findByMailOrUsername(String namemail, String username);
     UserAccount findById(Long id);
+    
+    Page<UserAccount> findByMailOrUsername(String pattern, Pageable pageable);    
     
     void setSuspended(UserAccount user, boolean suspended);
     

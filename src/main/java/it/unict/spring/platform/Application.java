@@ -13,7 +13,6 @@ import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.service.user.PrivilegeService;
 import it.unict.spring.platform.service.user.SecureTokenService;
-import it.unict.spring.platform.service.user.UserLoginService;
 import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;

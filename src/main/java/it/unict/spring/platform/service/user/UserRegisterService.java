@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -30,6 +32,13 @@ public class UserRegisterService implements UserRegisterServiceInterface
     public List<UserRegister> findAll()
     {
         return (List<UserRegister>) repository.findAll();
+    }
+    
+    @Override
+    @Transactional
+    public Page<UserRegister> findByFirstnameOrMiddlenameOrLastname(String first, String middle, String last, Pageable pageable)
+    {
+      return repository.findByFirstnameOrMiddlenameOrLastname(first, middle, last, pageable);  
     }
     
     @Override

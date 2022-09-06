@@ -36,6 +36,8 @@ import it.unict.spring.platform.service.communication.CustomMailService;
 import it.unict.spring.platform.serviceinterface.user.UserServiceInterface;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class UserService implements UserServiceInterface
@@ -87,6 +89,13 @@ public class UserService implements UserServiceInterface
        return repository.findAllByMailOrUsername(namemail, namemail);
     }
   
+    @Override 
+    @Transactional
+    public Page<UserAccount> findByMailOrUsername(String pattern, Pageable pageable)
+    {
+       return repository.findAllByMailOrUsername(pattern, pattern, pageable);
+    }
+    
     @Override 
     @Transactional
     public List<UserAccount> findByMailOrUsername(String namemail, String username)
