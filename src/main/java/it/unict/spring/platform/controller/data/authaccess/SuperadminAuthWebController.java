@@ -21,7 +21,6 @@ public class SuperadminAuthWebController
     @GetMapping("/hello")
     public String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name)
     {
-        System.out.print("hello");
         return String.format("Hello %s!", name);
     }
 }

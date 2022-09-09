@@ -35,8 +35,6 @@ import it.unict.spring.platform.service.user.SecureTokenService;
 import it.unict.spring.platform.service.user.UserLoginService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
-import java.util.Optional;
-import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;

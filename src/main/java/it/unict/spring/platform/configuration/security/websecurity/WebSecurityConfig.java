@@ -11,6 +11,7 @@ package it.unict.spring.platform.configuration.security.websecurity;
 import it.unict.spring.platform.configuration.security.logout.CustomLogoutSuccessHandler;
 import it.unict.spring.platform.configuration.security.login.CustomLoginFailureHandler;
 import it.unict.spring.platform.configuration.security.login.CustomLoginSuccessHandler;
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 
 @Configuration
@@ -33,8 +36,10 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 public class WebSecurityConfig 
 {
  @Autowired
- DaoAuthenticationProvider authProvider;      
-   
+ private DaoAuthenticationProvider authProvider;      
+ @Autowired
+ private DataSource dataSource;  
+ 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
     {
@@ -51,13 +56,15 @@ public class WebSecurityConfig
                 
                 anyRequest().authenticated().and().httpBasic();
                         
-        http.
+        http.               
                 formLogin().
                 loginPage("/public/api/access/login/signin").  
                 loginProcessingUrl("/public/api/access/login/signin").
                 successHandler(authenticationSuccessHandler()).
                 failureHandler(authenticationFailureHandler()).                
-                permitAll().   
+                permitAll(). 
+                and().rememberMe().tokenRepository(persistentTokenRepository()).
+                tokenValiditySeconds(20 * 24 * 60 * 60).
                 
                 and()
                 .logout()
@@ -99,5 +106,13 @@ public class WebSecurityConfig
     public LogoutSuccessHandler logoutSuccessHandler()
     {
         return new CustomLogoutSuccessHandler();
+    }
+    
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository()
+    {
+        JdbcTokenRepositoryImpl tokenRepo = new JdbcTokenRepositoryImpl();
+        tokenRepo.setDataSource(dataSource);
+        return tokenRepo;
     }
 }
