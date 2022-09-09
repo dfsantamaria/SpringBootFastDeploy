@@ -8,6 +8,7 @@ package it.unict.spring.platform.configuration.security.websecurity;
  */
 
 
+import it.unict.spring.platform.configuration.security.login.JdbcTokenRepositoryImpl;
 import it.unict.spring.platform.configuration.security.logout.CustomLogoutSuccessHandler;
 import it.unict.spring.platform.configuration.security.login.CustomLoginFailureHandler;
 import it.unict.spring.platform.configuration.security.login.CustomLoginSuccessHandler;

@@ -1,4 +1,4 @@
-package it.unict.spring.platform.configuration.security.websecurity;
+package it.unict.spring.platform.configuration.security.login;
 
 /*
  * Copyright 2002-2012 the original author or authors.
@@ -16,7 +16,12 @@ package it.unict.spring.platform.configuration.security.websecurity;
  * limitations under the License.
  */
 
-//OVERRIDING CLASS
+/*
+*OVERRIDING CLASS
+*Override is necessary to move the "persistent_logins" table form "data" catalog to "useraccount" 
+* @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+* -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+*/
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,22 +43,22 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
  */
 public class JdbcTokenRepositoryImpl extends JdbcDaoSupport implements PersistentTokenRepository {
 
-        
+        public static final String CATALOG = "useraccount";
 	/** Default SQL for creating the database table to store the tokens */
-	public static final String CREATE_TABLE_SQL = "create table useraccount.persistent_logins (username varchar(64) not null, series varchar(64) primary key, "
+	public static final String CREATE_TABLE_SQL = "create table " + CATALOG +".persistent_logins (username varchar(64) not null, series varchar(64) primary key, "
 			+ "token varchar(64) not null, last_used timestamp not null)";
 
 	/** The default SQL used by the <tt>getTokenBySeries</tt> query */
-	public static final String DEF_TOKEN_BY_SERIES_SQL = "select username,series,token,last_used from useraccount.persistent_logins where series = ?";
+	public static final String DEF_TOKEN_BY_SERIES_SQL = "select username, series, token, last_used from "+"CATALOG"+".persistent_logins where series = ?";
 
 	/** The default SQL used by <tt>createNewToken</tt> */
-	public static final String DEF_INSERT_TOKEN_SQL = "insert into useraccount.persistent_logins (username, series, token, last_used) values(?,?,?,?)";
+	public static final String DEF_INSERT_TOKEN_SQL = "insert into "+CATALOG+".persistent_logins (username, series, token, last_used) values(?,?,?,?)";
 
 	/** The default SQL used by <tt>updateToken</tt> */
-	public static final String DEF_UPDATE_TOKEN_SQL = "update useraccount.persistent_logins set token = ?, last_used = ? where series = ?";
+	public static final String DEF_UPDATE_TOKEN_SQL = "update "+CATALOG+".persistent_logins set token = ?, last_used = ? where series = ?";
 
 	/** The default SQL used by <tt>removeUserTokens</tt> */
-	public static final String DEF_REMOVE_USER_TOKENS_SQL = "delete from useraccount.persistent_logins where username = ?";
+	public static final String DEF_REMOVE_USER_TOKENS_SQL = "delete from "+CATALOG+".persistent_logins where username = ?";
 
 	private String tokensBySeriesSql = DEF_TOKEN_BY_SERIES_SQL;
 
