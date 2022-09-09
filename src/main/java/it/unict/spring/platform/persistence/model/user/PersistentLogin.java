@@ -15,11 +15,10 @@ import lombok.Data;
  */
 
 @Entity(name="PersistentLogin")
-@Table(name = "persistent_logins", catalog = "data")
+@Table(name = "persistent_logins", catalog = "useraccount")
 @Data
 public class PersistentLogin implements Serializable
-{
-  
+{  
     @Id
     private String series;
     private String username;
