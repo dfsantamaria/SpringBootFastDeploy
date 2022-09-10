@@ -11,6 +11,7 @@ package it.unict.spring.platform.controller.user.home;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
+import org.springframework.security.core.Authentication;
  
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,12 +25,14 @@ public class HomeController
 {
  
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView home(Locale locale, Model model)
+	public ModelAndView home(Locale locale, Model model, Authentication authentication)
         {
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, Locale.ENGLISH); 
-		String formattedDate = dateFormat.format(date); 
-		model.addAttribute("serverTime", formattedDate ); 
-		return new ModelAndView("public/home");
+         if(authentication!=null) 
+            return new ModelAndView("redirect:/auth/api/all/accountView");
+	 Date date = new Date();
+	 DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, Locale.ENGLISH); 
+	 String formattedDate = dateFormat.format(date); 
+	 model.addAttribute("serverTime", formattedDate ); 
+	 return new ModelAndView("public/home");
 	}
 }

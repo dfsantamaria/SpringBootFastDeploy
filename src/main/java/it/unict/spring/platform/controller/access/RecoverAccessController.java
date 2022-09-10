@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Optional;
+import org.springframework.security.core.Authentication;
 
 @Controller
 @RequestMapping("/public/api/access/recover")
@@ -40,11 +41,16 @@ public class RecoverAccessController
     
     @RequestMapping("viewRecoverPassword")
     public ModelAndView recoverPasswordView(HttpServletRequest request,
-                                            HttpServletResponse response,                                          
+                                            HttpServletResponse response, 
+                                            Authentication authentication,
                                             Model model)
-    {      
+    { 
+       if(authentication!=null) 
+            return new ModelAndView("redirect:/auth/api/all/accountView");
        return  new ModelAndView("public/access/recover/recoverPassword");        
     }
+    
+    
     @RequestMapping("sendRecoverPassword")
     public ModelAndView sendRecoverPasswordView(HttpServletRequest request,
                                             HttpServletResponse response,  

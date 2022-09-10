@@ -8,6 +8,7 @@ package it.unict.spring.platform.controller.access;
  */
 
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class SigninController
 {         
      @RequestMapping("signin")
-     public ModelAndView viewlogin(HttpServletRequest request, Model model)
-     {              
+     public ModelAndView viewlogin(HttpServletRequest request, Model model, Authentication authentication)
+     {  
+        if(authentication!=null) 
+            return new ModelAndView("redirect:/auth/api/all/accountView");
         return new ModelAndView("public/access/login/signin");
      }      
 }

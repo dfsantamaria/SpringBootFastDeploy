@@ -15,8 +15,6 @@ import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
