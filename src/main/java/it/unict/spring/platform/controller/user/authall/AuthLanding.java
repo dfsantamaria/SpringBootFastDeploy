@@ -63,11 +63,18 @@ public class AuthLanding
           this.setModel(model, user);
           
           if(!passdtoBinding.hasErrors()) 
-           {            
+           {                 
               UserAccount account=userService.findByMail(user.getMail()).get();
-              account.setPassword(userService.encodePassword(password.getPassword()));
-              userService.save(account);     
-              model.addAttribute("passwordAccepted", "Password modified");
+              if(userService.comparePassword(account.getPassword(), password.getOldpassword()))
+              {
+                account.setPassword(userService.encodePassword(password.getPassword()));
+                userService.save(account);     
+                model.addAttribute("passwordAccepted", "Password modified");
+              }
+              else
+              {
+                model.addAttribute("passwordError", "Your old password does not match");
+              }
               return new ModelAndView("auth/all/home/accountview");
             }
             else

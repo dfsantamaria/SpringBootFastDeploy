@@ -23,10 +23,22 @@ public class AccountPasswordDTO
     private String password;
     @NotNull
     private String confirmPassword;    
+    private String oldpassword;
+    
+    public AccountPasswordDTO()
+    {}
+    
+    public AccountPasswordDTO(String password, String confirmPassword, String oldpassword)
+    {     
+      this.password = password;
+      this.confirmPassword = confirmPassword;
+      this.oldpassword = oldpassword;
+    }   
     
     public AccountPasswordDTO(String password, String confirmPassword)
     {     
       this.password = password;
       this.confirmPassword = confirmPassword;
-    }    
+      this.oldpassword = null;
+    }   
 }

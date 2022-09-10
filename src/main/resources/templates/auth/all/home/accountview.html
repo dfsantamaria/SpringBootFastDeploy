@@ -75,6 +75,22 @@
           <legend>  Change password </legend>          
           <div th:object="${passdto}">
           <div class="field-inside">
+              
+                        <div class="input-group mb-3">
+                       <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock"></i></span>
+                       </div>
+
+                     <input name="oldpassword" type="password" class="form-control" placeholder="Old Password" id="oldpassword"/> 
+                        <div class="input-group-append">
+                     <span class="input-group-text" type="button" onclick="togglePassword('oldpassword','oldshow_eye','oldhide_eye');">
+                     <i class="fas fa-eye" id="oldshow_eye"></i>
+                     <i class="fas fa-eye-slash d-none" id="oldhide_eye"></i>
+                     </span>
+                   </div>
+                  </div>     
+              
+              
                     <div class="input-group mb-3">
                        <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock"></i></span>
