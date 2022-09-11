@@ -63,7 +63,10 @@ public class WebSecurityConfig
                 successHandler(authenticationSuccessHandler()).
                 failureHandler(authenticationFailureHandler()).                
                 permitAll(). 
-                and().rememberMe().tokenRepository(persistentTokenRepository()).
+                and()
+                .rememberMe()
+                .tokenRepository(persistentTokenRepository())
+                .rememberMeCookieName("remember-me").rememberMeParameter("remember-me").
                 tokenValiditySeconds(20 * 24 * 60 * 60).
                 
                 and()
