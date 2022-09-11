@@ -49,16 +49,16 @@ public class JdbcTokenRepositoryImpl extends JdbcDaoSupport implements Persisten
 			+ "token varchar(64) not null, last_used timestamp not null)";
 
 	/** The default SQL used by the <tt>getTokenBySeries</tt> query */
-	public static final String DEF_TOKEN_BY_SERIES_SQL = "select username, series, token, last_used from "+CATALOG+".persistent_logins where series = ?";
+	public static final String DEF_TOKEN_BY_SERIES_SQL = "select username, series, token, last_used from " + CATALOG + ".persistent_logins where series = ?";
 
 	/** The default SQL used by <tt>createNewToken</tt> */
-	public static final String DEF_INSERT_TOKEN_SQL = "insert into "+CATALOG+".persistent_logins (username, series, token, last_used) values(?,?,?,?)";
+	public static final String DEF_INSERT_TOKEN_SQL = "insert into " + CATALOG + ".persistent_logins (username, series, token, last_used) values(?,?,?,?)";
 
 	/** The default SQL used by <tt>updateToken</tt> */
-	public static final String DEF_UPDATE_TOKEN_SQL = "update "+CATALOG+".persistent_logins set token = ?, last_used = ? where series = ?";
+	public static final String DEF_UPDATE_TOKEN_SQL = "update " + CATALOG + ".persistent_logins set token = ?, last_used = ? where series = ?";
 
 	/** The default SQL used by <tt>removeUserTokens</tt> */
-	public static final String DEF_REMOVE_USER_TOKENS_SQL = "delete from "+CATALOG+".persistent_logins where username = ?";
+	public static final String DEF_REMOVE_USER_TOKENS_SQL = "delete from " + CATALOG + ".persistent_logins where username = ?";
 
 	private String tokensBySeriesSql = DEF_TOKEN_BY_SERIES_SQL;
 
