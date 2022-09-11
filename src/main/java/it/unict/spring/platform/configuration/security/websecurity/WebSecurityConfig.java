@@ -14,6 +14,7 @@ import it.unict.spring.platform.configuration.security.login.CustomLoginFailureH
 import it.unict.spring.platform.configuration.security.login.CustomLoginSuccessHandler;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -40,6 +41,9 @@ public class WebSecurityConfig
  @Autowired
  private DataSource dataSource;  
  
+ @Value("${rememberme.key}")
+ private String rememberkey;
+ 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
     {
@@ -63,16 +67,20 @@ public class WebSecurityConfig
                 successHandler(authenticationSuccessHandler()).
                 failureHandler(authenticationFailureHandler()).                
                 permitAll(). 
+                
                 and()
                 .rememberMe()
                 .tokenRepository(persistentTokenRepository())
                 .rememberMeCookieName("remember-me").rememberMeParameter("remember-me").
+                key(rememberkey).
                 tokenValiditySeconds(20 * 24 * 60 * 60).
                 
                 and()
                 .logout()
                 .logoutUrl("/auth/api/access/login/signout")
-                .logoutSuccessHandler(logoutSuccessHandler())                
+                .logoutSuccessHandler(logoutSuccessHandler())
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")                
                 .permitAll();       
         return http.build();     
     }
