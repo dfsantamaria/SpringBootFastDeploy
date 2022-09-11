@@ -12,6 +12,7 @@ import it.unict.spring.platform.configuration.security.login.JdbcTokenRepository
 import it.unict.spring.platform.configuration.security.logout.CustomLogoutSuccessHandler;
 import it.unict.spring.platform.configuration.security.login.CustomLoginFailureHandler;
 import it.unict.spring.platform.configuration.security.login.CustomLoginSuccessHandler;
+import it.unict.spring.platform.service.security.CustomUserDetailsService;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +41,8 @@ public class WebSecurityConfig
  private DaoAuthenticationProvider authProvider;      
  @Autowired
  private DataSource dataSource;  
+ @Autowired
+ private CustomUserDetailsService customUserDetailsService;
  
  @Value("${rememberme.key}")
  private String rememberkey;
@@ -70,7 +73,7 @@ public class WebSecurityConfig
                 
                 and()
                 .rememberMe()
-                .tokenRepository(persistentTokenRepository())
+                .tokenRepository(persistentTokenRepository()).userDetailsService(customUserDetailsService)
                 .rememberMeCookieName("remember-me").rememberMeParameter("remember-me").
                 key(rememberkey).
                 tokenValiditySeconds(20 * 24 * 60 * 60).

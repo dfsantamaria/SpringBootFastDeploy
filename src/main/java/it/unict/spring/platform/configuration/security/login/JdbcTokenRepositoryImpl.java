@@ -49,7 +49,7 @@ public class JdbcTokenRepositoryImpl extends JdbcDaoSupport implements Persisten
 			+ "token varchar(64) not null, last_used timestamp not null)";
 
 	/** The default SQL used by the <tt>getTokenBySeries</tt> query */
-	public static final String DEF_TOKEN_BY_SERIES_SQL = "select username, series, token, last_used from "+"CATALOG"+".persistent_logins where series = ?";
+	public static final String DEF_TOKEN_BY_SERIES_SQL = "select username, series, token, last_used from "+CATALOG+".persistent_logins where series = ?";
 
 	/** The default SQL used by <tt>createNewToken</tt> */
 	public static final String DEF_INSERT_TOKEN_SQL = "insert into "+CATALOG+".persistent_logins (username, series, token, last_used) values(?,?,?,?)";
