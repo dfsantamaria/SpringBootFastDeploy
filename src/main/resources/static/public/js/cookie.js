@@ -1,9 +1,9 @@
 $(document).ready(function()
 {
     // Check if the user already accepted 
-    if (window.localStorage.getItem('accept_cookies'))
+    if (!window.localStorage.getItem('accept_cookies'))
     {
-        $('#cookie-consent').css('display','none');
+     $('#cookie-consent').css('display','block');
     }
 
     $("#cookie-ok-button").click(function()
