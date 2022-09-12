@@ -8,9 +8,9 @@ $(document).ready(function()
 
     $("#cookie-ok-button").click(function(){
         // Save on LocalStorage
-        window.localStorage.setItem('accept_cookies', true);
         $('#cookie-consent').css('display','none');
         $('#cookie-consent').fadeOut();
+        window.localStorage.setItem('accept_cookies', true);        
     }); 
 });
 
