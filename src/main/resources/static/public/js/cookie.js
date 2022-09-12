@@ -6,11 +6,12 @@ $(document).ready(function()
         $('#cookie-consent').css('display','none');
     }
 
-    $("#cookie-ok-button").click(function(){
-        // Save on LocalStorage
-        $('#cookie-consent').css('display','none');
+    $("#cookie-ok-button").click(function()
+    {
+        // Save on LocalStorage        
         $('#cookie-consent').fadeOut();
-        window.localStorage.setItem('accept_cookies', true);        
+        $('#cookie-consent').css('display','none');
+        window.localStorage.setItem('accept_cookies', true);              
     }); 
 });
 
