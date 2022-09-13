@@ -1,12 +1,7 @@
-<html xmlns:th="http://www.thymeleaf.org">
+
  <!-- @author Daniele Francesco Santamaria daniele.santamaria@unict.it 
- -- https://github.com/dfsantamaria/SpringBootFastDeploy.git -- -->
- <head>
-      <meta charset="utf-8">      
-      <title> Navigation Bar </title>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
- </head>
-<body>
+ -- https://github.com/dfsantamaria/SpringBootFastDeploy.git -- --> 
+ <th:block>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary"> 
   <div class="container-fluid">    
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,8 +18,7 @@
             <li><a class="dropdown-item" th:href="@{/auth/api/access/login/signout}">Signout</a></li>
           </ul>
         </li>
-      </ul>
-        
+      </ul>        
        <ul th:if="${userPage}"  class="navbar-nav">
         <li class="nav-item dropdown">
           <a class="navbar-brand dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink-user" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -34,11 +28,8 @@
             <li><a class="dropdown-item" th:href="@{/auth/api/admin/usersView}"  th:text="${userPage}"> Users</a> </li>            
           </ul>
         </li>
-      </ul>  
-        
-    </div>
-          
-      
+      </ul>          
+    </div>     
   </div>
 </nav>
-</body>
+</th:block>
