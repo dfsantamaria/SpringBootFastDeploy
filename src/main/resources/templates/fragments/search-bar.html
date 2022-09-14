@@ -1,9 +1,9 @@
- <select class="select2-multiple-choices select2-choice"  multiple="multiple">
-   <option value="id"> Id</option>  
-   <option value="First Name"> First Name</option>
-   <option value="Middle Name"> Middle Name</option>
-   <option value="Last Name"> Last Name</option>
-   <option value="Mail"> E-Mail </option>
+ <select class="select2-multiple-choices select2-choice"  multiple="multiple" th:field="*{parameters}">
+   <option th:value="'id'" > Id</option>  
+   <option th:value="'First Name'" > First Name</option>
+   <option th:value="'Middle Name'"> Middle Name</option>
+   <option th:value="'Last Name'"> Last Name</option>
+   <option th:value="'mail'"> E-Mail </option>
  </select>
 
 

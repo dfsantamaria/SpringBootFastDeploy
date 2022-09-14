@@ -39,16 +39,17 @@
 	  <h2> This page is not ready yet </h2>   
       </div>
        
-      <form id="searchform" action="@{/search}">
+      <form id="searchform" th:action="@{/auth/api/admin/searchuser}" method="post">
+       <div th:object="${searchInput}">
        <div class="input-group mb-3">
-         <input type="text" class="form-control form-control-lg" placeholder="Search Here">
+         <input type="text" th:field="*{key}" class="form-control form-control-lg" placeholder="Search Here">
          <div class="input-group-prepend">
            <span class="input-group-text" type="button" onclick="document.forms['searchform'].submit();"><i class="fas fa-search"></i></span>
          </div>                
        </div>  
-       <div th:insert="fragments/search-bar.html"> </div>               
-      </form> 
-      
+         <div th:insert="fragments/search-bar.html"> </div>
+       </div>
+      </form>      
       <div th:insert="fragments/cookie.html"> </div>
   </div>
 
