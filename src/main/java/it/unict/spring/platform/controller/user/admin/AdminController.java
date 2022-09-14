@@ -22,6 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 import it.unict.spring.platform.utility.user.ModelTemplate;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import it.unict.spring.platform.dto.user.SearchUserDTO;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.validation.BindingResult;
@@ -41,6 +43,8 @@ public class AdminController
    {   
      Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);
      ModelTemplate.setNavBar(setPriv.iterator(), model);  
+     populateSearchOptions(model, "searchoptions");
+     
      return new ModelAndView("auth/admin/home/users");
    } 
 
@@ -51,9 +55,19 @@ public class AdminController
                                    BindingResult searchBindResult, @AuthenticationPrincipal CustomUserDetails user, 
                                    Model model) 
    {
-      System.out.println(searchdto.getKey()+" "+searchdto.getParameters().toString());
+      populateSearchOptions(model, "searchoptions"); 
+      System.out.println(searchdto.getKey()+" "+searchdto.getParameters().toString());     
       return new ModelAndView("auth/admin/home/users");
    }
+
+    private void populateSearchOptions(Model model, String tag)
+    {
+     List<String> options = new ArrayList<String>();
+     options.add("option 1");
+     options.add("option 2");
+     options.add("option 3");
+     model.addAttribute(tag, options); 
+    }
 }
 
                                       
