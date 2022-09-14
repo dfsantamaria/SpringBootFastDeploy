@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.validation.BindingResult;
 
 @Controller
@@ -61,12 +62,15 @@ public class AdminController
    }
 
     private void populateSearchOptions(Model model, String tag)
-    {
-     List<String> options = new ArrayList<String>();
-     options.add("option 1");
-     options.add("option 2");
-     options.add("option 3");
-     model.addAttribute(tag, options); 
+    {        
+     List<Pair<String,String>> options = new ArrayList<>();
+     options.add(Pair.of("firstname","First Name"));
+     options.add(Pair.of("middlename", "Middle Name"));
+     options.add(Pair.of("lastname","Last Name"));
+     options.add(Pair.of("username","Username"));
+     options.add(Pair.of("mail","E-Mail"));
+     options.add(Pair.of("organization","Organization"));     
+     model.addAttribute(tag, options);
     }
 }
 
