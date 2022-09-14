@@ -1,9 +1,5 @@
  <select class="select2-multiple-choices select2-choice"  multiple="multiple" th:field="*{parameters}">
-   <option th:value="'id'" > Id</option>  
-   <option th:value="'First Name'" > First Name</option>
-   <option th:value="'Middle Name'"> Middle Name</option>
-   <option th:value="'Last Name'"> Last Name</option>
-   <option th:value="'mail'"> E-Mail </option>
+    <option th:each="option : ${searchoptions}" th:value="${option}" th:text="${option}"></option>
  </select>
 
 
