@@ -36,7 +36,8 @@
 	<h1 class="form-heading">Welcome!</h1> 
 	  <h2> This page is not ready yet </h2>   
       </div>
-       
+     <div class="container">      
+     <div class="form-group">
       <form id="searchform" th:action="@{/auth/api/admin/searchuser}" method="post">
        <div th:object="${searchInput}">
        <div class="input-group mb-3">
@@ -47,8 +48,10 @@
        </div>  
          <div th:insert="fragments/search-bar.html"> </div>
        </div>
-      </form>      
-      <div th:insert="fragments/cookie.html"> </div>
+      </form> 
+     </div>
+     </div>
+     <div th:insert="fragments/cookie.html"> </div>
   </div>
 
   
