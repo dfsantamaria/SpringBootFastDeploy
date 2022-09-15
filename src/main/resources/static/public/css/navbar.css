@@ -1,0 +1,19 @@
+nav .navbar-nav li a
+{
+ color: white !important;
+}
+ 
+nav .navbar-nav li:hover
+{
+ background-color: #0d6efd !important;
+}
+
+nav .navbar-nav li div a
+{
+ color: black !important;
+}
+  
+nav .navbar-nav li div a:hover 
+{
+ background-color: #0d6efd !important;
+}
