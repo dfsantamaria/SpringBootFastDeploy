@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/auth/api/admin")
@@ -54,11 +55,11 @@ public class AdminController
                                    HttpServletResponse response,
                                    @ModelAttribute("searchInput") SearchUserDTO searchdto, 
                                    BindingResult searchBindResult, @AuthenticationPrincipal CustomUserDetails user, 
-                                   Model model) 
+                                   Model model, RedirectAttributes attributes) 
    {
-      populateSearchOptions(model, "searchoptions"); 
+      attributes.addFlashAttribute("searchInput", model.getAttribute("searchInput"));
       System.out.println(searchdto.getKey()+" "+searchdto.getParameters().toString());     
-      return new ModelAndView("auth/admin/home/users");
+      return new ModelAndView("redirect:/auth/api/admin/usersView");
    }
 
     private void populateSearchOptions(Model model, String tag)
