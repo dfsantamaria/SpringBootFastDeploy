@@ -14,6 +14,10 @@ body
     background-color: #eee;
 }
 
+html, body {
+  overflow-x: hidden;
+}
+
 .container-in {
   max-width: 700px;
   min-width: 400px;
