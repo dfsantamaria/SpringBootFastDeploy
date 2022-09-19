@@ -7,6 +7,7 @@ package it.unict.spring.platform.controller.user.admin;
  * 
  */
 
+import it.unict.spring.platform.dto.user.UserSearchDTO;
 import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
@@ -20,11 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import it.unict.spring.platform.utility.user.ModelTemplate;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import it.unict.spring.platform.dto.user.SearchUserDTO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -35,36 +35,28 @@ public class AdminController
    UserService userService; 
    
    @RequestMapping(value = "/usersView", method = RequestMethod.GET)
-   public ModelAndView usersView(Locale locale, 
-                                   @ModelAttribute("searchInput") SearchUserDTO searchdto, 
-                                   BindingResult searchBindResult,
-                                   @AuthenticationPrincipal CustomUserDetails user, Model model)
+   public ModelAndView usersView(Locale locale,
+                                 @ModelAttribute("usersearchdto") UserSearchDTO usersearchdto,
+                                 BindingResult searchBindResult,
+                                 @AuthenticationPrincipal CustomUserDetails user, Model model)
    {   
      Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);
-     ModelTemplate.setNavBar(setPriv.iterator(), model);  
-     populateSearchOptions(model, "searchoptions");
-     
+     ModelTemplate.setNavBar(setPriv.iterator(), model);     
      return new ModelAndView("auth/admin/home/users");
    } 
 
    @RequestMapping(value = "searchuser", method = RequestMethod.POST)
    public ModelAndView searchUser( HttpServletRequest request,
                                    HttpServletResponse response,
-                                   @ModelAttribute("searchInput") SearchUserDTO searchdto, 
-                                   BindingResult searchBindResult, @AuthenticationPrincipal CustomUserDetails user, 
+                                   @ModelAttribute("usersearchdto") UserSearchDTO usersearchdto,
+                                   BindingResult searchBindResult,
+                                   @AuthenticationPrincipal CustomUserDetails user, 
                                    Model model, RedirectAttributes attributes) 
-   {
-      attributes.addFlashAttribute("searchInput", model.getAttribute("searchInput"));
-      userService.searchUserFromSearchUserDTO(searchdto);     
+   {  
+      attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto")); 
       return new ModelAndView("redirect:/auth/api/admin/usersView");
    }
 
-   
-   
-   private void populateSearchOptions(Model model, String tag)
-    {     
-     model.addAttribute(tag, SearchUserDTO.getOptionPairs());
-    }
 }
 
                                       

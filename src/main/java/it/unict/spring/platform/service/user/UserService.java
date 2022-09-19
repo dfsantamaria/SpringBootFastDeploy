@@ -7,8 +7,6 @@ package it.unict.spring.platform.service.user;
  * 
  */
 
-
-import it.unict.spring.platform.dto.user.SearchUserDTO;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -366,27 +364,6 @@ public class UserService implements UserServiceInterface
          return true;
        }      
       return false;
-    }    
-    
-    
-    public void searchUserFromSearchUserDTO (SearchUserDTO dto)
-    {    
-       //TODO       
-       if(!Collections.disjoint(dto.getParameters(), SearchUserDTO.getOptions()))
-       {
-         if(dto.getParameters().stream().anyMatch(element -> SearchUserDTO.getUserRegOptions().contains(element)))  
-            System.out.println("User Register: "+ dto.getKey()+" "+dto.getParameters().toString()); 
-         
-         if(dto.getParameters().stream().anyMatch(element -> SearchUserDTO.getUserAccountOptions().contains(element)))  
-            System.out.println("User Account: "+ dto.getKey()+" "+dto.getParameters().toString());  
-         
-         if(dto.getParameters().stream().anyMatch(element -> SearchUserDTO.getOrgOptions().contains(element)))  
-            System.out.println("User Organization: "+ dto.getKey()+" "+dto.getParameters().toString());  
-       }
-    }    
+    }      
+      
 }
-
-
-/*
-
-*/
