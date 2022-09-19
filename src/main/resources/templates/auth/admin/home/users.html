@@ -25,12 +25,10 @@
 <body>
  <div th:insert="fragments/topNav.html"> </div> 
 
-  <div class="outer">
-      <div class="container-in" style="margin-top: 10px">
-	<h1 class="form-heading">Welcome!</h1> 
-	<h2> This page is not ready yet </h2>         
-           
-     <div class="form-group">
+  <div class="outer-big">
+      <div style="margin-top: 10px;">
+	<h1 class="form-heading">Page under construction!</h1>           
+     <div class="form-group" style="margin-top: 10px">
       <form id="searchform" th:action="@{/auth/api/admin/searchuser}" method="post">
        <div th:object="${searchInput}">
        <div class="input-group mb-3">
@@ -39,7 +37,26 @@
            <span class="input-group-text" type="button" onclick="document.forms['searchform'].submit();"><i class="fas fa-search"></i></span>
          </div>                
        </div>  
-         <div th:insert="fragments/search-bar.html"> </div>
+         <div th:insert="fragments/search-bar.html"> </div>         
+         <!-- table -->
+         <div style="margin-top: 20px;">
+         <table class="table table-striped">
+         <thead>
+           <tr class="p-3 mb-2 bg-primary text-white">
+             <th scope="col">#id</th>
+             <th scope="col">Username</th>
+             <th scope="col">E-Mail</th>
+             <th scope="col">First Name</th>
+             <th scope="col">Middle Name</th>
+             <th scope="col">Last Name</th>
+             <th scope="col">Organization</th>
+           </tr>
+         </thead>
+         <tbody>              
+       </tbody>
+       </table>
+       </div><!-- end table -->
+         
        </div>
       </form> 
      </div>
