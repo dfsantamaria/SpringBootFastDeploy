@@ -383,8 +383,7 @@ public class UserService implements UserServiceInterface
          if(dto.getParameters().stream().anyMatch(element -> SearchUserDTO.getOrgOptions().contains(element)))  
             System.out.println("User Organization: "+ dto.getKey()+" "+dto.getParameters().toString());  
        }
-    }
-    
+    }    
 }
 
 
