@@ -22,11 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 import it.unict.spring.platform.utility.user.ModelTemplate;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import it.unict.spring.platform.dto.user.SearchUserDTO;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -58,20 +55,15 @@ public class AdminController
                                    Model model, RedirectAttributes attributes) 
    {
       attributes.addFlashAttribute("searchInput", model.getAttribute("searchInput"));
-      System.out.println(searchdto.getKey()+" "+searchdto.getParameters().toString());     
+      userService.searchUserFromSearchUserDTO(searchdto);     
       return new ModelAndView("redirect:/auth/api/admin/usersView");
    }
 
-    private void populateSearchOptions(Model model, String tag)
-    {        
-     List<Pair<String,String>> options = new ArrayList<>();
-     options.add(Pair.of("firstname","First Name"));
-     options.add(Pair.of("middlename", "Middle Name"));
-     options.add(Pair.of("lastname","Last Name"));
-     options.add(Pair.of("username","Username"));
-     options.add(Pair.of("mail","E-Mail"));
-     options.add(Pair.of("organization","Organization"));     
-     model.addAttribute(tag, options);
+   
+   
+   private void populateSearchOptions(Model model, String tag)
+    {     
+     model.addAttribute(tag, SearchUserDTO.getOptionPairs());
     }
 }
 

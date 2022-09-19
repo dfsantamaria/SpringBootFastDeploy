@@ -41,6 +41,7 @@ public class SuperAdminWebControllerTest
         assertEquals(perform.andReturn().getResponse().getContentAsString(),"Hello "+name+"!"); 
     }
     
+    
     @Test
     @WithMockUser(username = "admin", roles = { "STAFF" })
     public void sayHelloNonAuthTest() throws Exception
@@ -49,7 +50,7 @@ public class SuperAdminWebControllerTest
         perform.andExpect(status().isForbidden());        
     }
     
-    @Test
+   @Test
     @WithAnonymousUser
     void sayHelloUnauthorizedTest() throws Exception 
     {

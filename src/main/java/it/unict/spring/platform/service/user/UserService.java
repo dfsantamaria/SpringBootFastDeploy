@@ -8,6 +8,7 @@ package it.unict.spring.platform.service.user;
  */
 
 
+import it.unict.spring.platform.dto.user.SearchUserDTO;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -35,6 +36,7 @@ import it.unict.spring.platform.persistence.repository.user.UserRepository;
 import it.unict.spring.platform.service.communication.CustomMailService;
 import it.unict.spring.platform.serviceinterface.user.UserServiceInterface;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
+import java.util.Collections;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -365,4 +367,27 @@ public class UserService implements UserServiceInterface
        }      
       return false;
     }    
+    
+    
+    public void searchUserFromSearchUserDTO (SearchUserDTO dto)
+    {    
+       //TODO       
+       if(!Collections.disjoint(dto.getParameters(), SearchUserDTO.getOptions()))
+       {
+         if(dto.getParameters().stream().anyMatch(element -> SearchUserDTO.getUserRegOptions().contains(element)))  
+            System.out.println("User Register: "+ dto.getKey()+" "+dto.getParameters().toString()); 
+         
+         if(dto.getParameters().stream().anyMatch(element -> SearchUserDTO.getUserAccountOptions().contains(element)))  
+            System.out.println("User Account: "+ dto.getKey()+" "+dto.getParameters().toString());  
+         
+         if(dto.getParameters().stream().anyMatch(element -> SearchUserDTO.getOrgOptions().contains(element)))  
+            System.out.println("User Organization: "+ dto.getKey()+" "+dto.getParameters().toString());  
+       }
+    }
+    
 }
+
+
+/*
+
+*/
