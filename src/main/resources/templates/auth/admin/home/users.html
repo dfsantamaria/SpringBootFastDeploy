@@ -23,7 +23,10 @@
      <div class="outer">
       <div style="margin-top: 10px;">
 	<h1 class="form-heading">Page under construction!</h1>           
-          <div class="form-group" style="margin-top: 10px">
+          
+        <fieldset>
+      	<legend> Search parameters </legend> 
+        <div class="form-group" style="margin-top: 10px">
       
       <div th:object="${usersearchdto}">   
       <form id="searchform" th:action="@{/auth/api/admin/searchuser}" method="post">      
@@ -59,8 +62,9 @@
          </div>  
          <button type="submit" class="btn btn-lg btn-primary btn-block">Search</button> 
          </form> 
+      </div>        
          </div>
-         </div>
+        </fieldset>
       </div>
      </div>
         
@@ -87,8 +91,7 @@
               
       
      </div>
-        </div>  
-     </div>
+      
      <div th:insert="fragments/cookie.html"> </div>
 </body>
 </html>
