@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 
 import it.unict.spring.platform.dto.user.UserAccountDTO;
+import it.unict.spring.platform.dto.user.UserSearchDTO;
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
 import it.unict.spring.platform.exception.user.UserAccountAlreadyVerified;
 import it.unict.spring.platform.persistence.model.user.Organization;
@@ -34,8 +35,9 @@ import it.unict.spring.platform.persistence.repository.user.UserRepository;
 import it.unict.spring.platform.service.communication.CustomMailService;
 import it.unict.spring.platform.serviceinterface.user.UserServiceInterface;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
-import java.util.Collections;
 import java.util.Optional;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -365,5 +367,59 @@ public class UserService implements UserServiceInterface
        }      
       return false;
     }      
+
+    @Transactional
+    public void searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable)
+    {
+       UserAccount account=new UserAccount();
+       if(usersearchdto.getUsername()!=null)
+           account.setUsername(usersearchdto.getUsername());
+       if(usersearchdto.getMail()!=null)
+           account.setMail(usersearchdto.getMail());
+       
+       ExampleMatcher matcher = ExampleMatcher.matchingAll()
+                                               .withIgnoreCase()                                                
+                                               .withIgnoreNullValues()
+                                               .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+       
+       Example<UserAccount> userExample = Example.of(account, matcher);
+       
+       List<UserAccount> out =  repository.findAll(userExample);
+       for(UserAccount reg : out)
+       {
+        System.out.println(reg.toString());
+       }
+       System.out.println("account: "+account.getUsername()+" "+account.getMail());
+       System.out.println("DTO: "+usersearchdto.toString());
+    }
       
+    /*
+    public void searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable)
+    {
+       UserRegister register=new UserRegister();
+       if(usersearchdto.getFirstName()!= null)       
+           register.setFirstname(usersearchdto.getFirstName());      
+       
+       
+       if(usersearchdto.getMiddleName()!= null)
+          register.setMiddlename(usersearchdto.getMiddleName());
+       
+       if(usersearchdto.getLastName()!= null)
+          register.setLastname(usersearchdto.getMiddleName());
+       
+       ExampleMatcher matcher = ExampleMatcher.matchingAny()
+                                               .withIgnoreCase()                                               
+                                               .withNullHandler(ExampleMatcher.NullHandler.INCLUDE)
+                                               .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+       
+       Example<UserRegister> regExample = Example.of(register, matcher);
+       
+       List<UserRegister> out =  registryService.findAll(regExample);
+       for(UserRegister reg : out)
+       {
+        System.out.println(reg.toString());
+       }
+       System.out.println(usersearchdto.toString());
+    }
+    */
 }

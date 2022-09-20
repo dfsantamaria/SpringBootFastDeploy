@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import it.unict.spring.platform.utility.user.ModelTemplate;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -53,6 +54,7 @@ public class AdminController
                                    @AuthenticationPrincipal CustomUserDetails user, 
                                    Model model, RedirectAttributes attributes) 
    {  
+      userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(0, 10)); 
       attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto")); 
       return new ModelAndView("redirect:/auth/api/admin/usersView");
    }

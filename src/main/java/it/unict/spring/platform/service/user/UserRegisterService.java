@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,20 @@ public class UserRegisterService implements UserRegisterServiceInterface
     public List<UserRegister> findAll()
     {
         return (List<UserRegister>) repository.findAll();
+    }
+    
+    @Override
+    @Transactional
+    public Page<UserRegister> findAll(Example<UserRegister> example, Pageable pageable)
+    {
+        return repository.findAll(example, pageable);
+    }
+    
+    @Override
+    @Transactional
+    public List<UserRegister> findAll(Example<UserRegister> example)
+    {
+        return repository.findAll(example);
     }
     
     @Override
@@ -87,5 +102,7 @@ public class UserRegisterService implements UserRegisterServiceInterface
     {
       reg.setUser(user);
     }
+    
+    
 
 }
