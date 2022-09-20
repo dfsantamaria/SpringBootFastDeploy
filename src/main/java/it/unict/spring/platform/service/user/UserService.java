@@ -35,6 +35,7 @@ import it.unict.spring.platform.persistence.repository.user.UserRepository;
 import it.unict.spring.platform.service.communication.CustomMailService;
 import it.unict.spring.platform.serviceinterface.user.UserServiceInterface;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
+import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -384,8 +385,9 @@ public class UserService implements UserServiceInterface
       return false;
     }      
 
+    @Override
     @Transactional
-    public void searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable)
+    public Page<UserAccount> searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable)
     {
         
        ExampleMatcher matcher = ExampleMatcher
@@ -422,13 +424,33 @@ public class UserService implements UserServiceInterface
        
        Example<UserAccount> userExample = Example.of(account, matcher);
        
-       List<UserAccount> out =  this.findAll(userExample);
-       for(UserAccount reg : out)
-       {
-        System.out.println(reg.toString());
-       }
-       System.out.println("account: "+account.getUsername()+" "+account.getMail());
-       System.out.println("DTO: "+usersearchdto.toString());
+       Page<UserAccount> out =  this.findAll(userExample, pageable);
+       return out;
     }    
+
+    @Transactional
+    public List<UserSearchDTO> createUserSearchDTOFromPage(Page<UserAccount> pages)
+    {
+       List<UserSearchDTO> result = new ArrayList();
+       for(UserAccount element : pages )
+       {
+        UserSearchDTO value = new UserSearchDTO();
+        UserRegister reg = registryService.findById(element.getId()).get();
+        
+        value.setFirstName(reg.getFirstname());
+        value.setMiddleName(reg.getMiddlename());
+        value.setLastName(reg.getLastname());
+        
+        Organization org = this.findById(element.getId()).getOrganizations().iterator().next();
+        value.setOrgname(org.getName());
+        
+        value.setId(element.getId().toString());
+        value.setMail(element.getMail());
+        value.setUsername(element.getUsername());
+        
+        result.add(value);
+       }
+       return result;
+    }
 
 }

@@ -14,6 +14,7 @@ import lombok.Data;
 @Data
 public class UserSearchDTO
 {
+  String id;  
   String firstName;
   String middleName;
   String lastName;

@@ -8,6 +8,7 @@ package it.unict.spring.platform.serviceinterface.user;
  */
 
 import it.unict.spring.platform.dto.user.UserAccountDTO;
+import it.unict.spring.platform.dto.user.UserSearchDTO;
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
 import it.unict.spring.platform.exception.user.UserAccountAlreadyVerified;
 import it.unict.spring.platform.persistence.model.user.Organization;
@@ -55,6 +56,7 @@ public interface UserServiceInterface
     Set<Privilege> findPrivilegeFromCustomUserDetails(CustomUserDetails userdetails);
     
     UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException;
+    Page<UserAccount> searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable);
     
     void addRegisterToUser(UserRegister register, UserAccount account);
     void addLoginToUser(UserLogin login, UserAccount user);

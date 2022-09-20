@@ -9,6 +9,7 @@ package it.unict.spring.platform.controller.user.admin;
 
 import it.unict.spring.platform.dto.user.UserSearchDTO;
 import it.unict.spring.platform.persistence.model.user.Privilege;
+import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.util.Locale;
@@ -21,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import it.unict.spring.platform.utility.user.ModelTemplate;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -54,7 +57,10 @@ public class AdminController
                                    @AuthenticationPrincipal CustomUserDetails user, 
                                    Model model, RedirectAttributes attributes) 
    {  
-      userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(0, 10)); 
+      Page<UserAccount> pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(0, 10)); 
+      List<UserSearchDTO> results = userService.createUserSearchDTOFromPage(pages);
+      for(UserSearchDTO val : results)
+          System.out.println(val.toString());
       attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto")); 
       return new ModelAndView("redirect:/auth/api/admin/usersView");
    }
