@@ -385,17 +385,40 @@ public class UserService implements UserServiceInterface
     }      
 
     @Transactional
-    public void __searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable)
+    public void searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable)
     {
-       UserAccount account=new UserAccount();       
+        
+       ExampleMatcher matcher = ExampleMatcher
+                                  .matching()
+                                  .withIgnoreCase()
+                                  .withIgnorePaths("register.user", "isAccountNonLocked","isEnabled","isSuspended", "password")
+                                  .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+                
+       UserAccount account=new UserAccount(); 
+       UserRegister register=new UserRegister();
+       Organization organization=new Organization();
+       
+       //The user account data
        if(usersearchdto.getUsername()!=null)
            account.setUsername(usersearchdto.getUsername());
        if(usersearchdto.getMail()!=null)
            account.setMail(usersearchdto.getMail());
+      
+       //The register data
+       if(usersearchdto.getFirstName()!= null)       
+           register.setFirstname(usersearchdto.getFirstName());         
        
-       ExampleMatcher matcher = ExampleMatcher.matching()
-                                               .withIgnoreCase()
-                                               .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+       if(usersearchdto.getMiddleName()!= null)
+          register.setMiddlename(usersearchdto.getMiddleName());
+       
+       if(usersearchdto.getLastName()!= null)
+          register.setLastname(usersearchdto.getLastName());
+       
+       if(usersearchdto.getOrgname()!=null)
+          organization.setName(usersearchdto.getOrgname());
+       
+       account.setRegister(register);
+       account.setOrganizations(Set.of(organization));
        
        Example<UserAccount> userExample = Example.of(account, matcher);
        
@@ -406,34 +429,6 @@ public class UserService implements UserServiceInterface
        }
        System.out.println("account: "+account.getUsername()+" "+account.getMail());
        System.out.println("DTO: "+usersearchdto.toString());
-    }
-      
-   
-   @Transactional 
-   public void searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable)
-    {
-       UserRegister register=new UserRegister();
-       if(usersearchdto.getFirstName()!= null)       
-           register.setFirstname(usersearchdto.getFirstName());      
-       
-       
-       if(usersearchdto.getMiddleName()!= null)
-          register.setMiddlename(usersearchdto.getMiddleName());
-       
-       if(usersearchdto.getLastName()!= null)
-          register.setLastname(usersearchdto.getLastName());
-       
-       ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase()    
-                                                         .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-       
-       Example<UserRegister> regExample = Example.of(register, matcher);
-       
-       List<UserRegister> out =  registryService.findAll(regExample);
-       for(UserRegister reg : out)
-       {
-        System.out.println(reg.toString());
-       }
-       System.out.println(usersearchdto.toString());
-    }
-    
+    }    
+
 }
