@@ -70,6 +70,22 @@ public class UserService implements UserServiceInterface
         return (List<UserAccount>) repository.findAll();
     }
     
+    
+    
+    @Override
+    @Transactional
+    public Page<UserAccount> findAll(Example<UserAccount> example, Pageable pageable)
+    {
+        return repository.findAll(example, pageable);
+    }
+    
+    @Override
+    @Transactional
+    public List<UserAccount> findAll(Example<UserAccount> example)
+    {
+        return repository.findAll(example);
+    }
+    
     @Override
     @Transactional
     public Optional<UserAccount> findByUsername(String name)
@@ -369,22 +385,21 @@ public class UserService implements UserServiceInterface
     }      
 
     @Transactional
-    public void searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable)
+    public void __searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable)
     {
-       UserAccount account=new UserAccount();
+       UserAccount account=new UserAccount();       
        if(usersearchdto.getUsername()!=null)
            account.setUsername(usersearchdto.getUsername());
        if(usersearchdto.getMail()!=null)
            account.setMail(usersearchdto.getMail());
        
-       ExampleMatcher matcher = ExampleMatcher.matchingAll()
-                                               .withIgnoreCase()                                                
-                                               .withIgnoreNullValues()
+       ExampleMatcher matcher = ExampleMatcher.matching()
+                                               .withIgnoreCase()
                                                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
        
        Example<UserAccount> userExample = Example.of(account, matcher);
        
-       List<UserAccount> out =  repository.findAll(userExample);
+       List<UserAccount> out =  this.findAll(userExample);
        for(UserAccount reg : out)
        {
         System.out.println(reg.toString());
@@ -393,8 +408,9 @@ public class UserService implements UserServiceInterface
        System.out.println("DTO: "+usersearchdto.toString());
     }
       
-    /*
-    public void searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable)
+   
+   @Transactional 
+   public void searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable)
     {
        UserRegister register=new UserRegister();
        if(usersearchdto.getFirstName()!= null)       
@@ -405,12 +421,10 @@ public class UserService implements UserServiceInterface
           register.setMiddlename(usersearchdto.getMiddleName());
        
        if(usersearchdto.getLastName()!= null)
-          register.setLastname(usersearchdto.getMiddleName());
+          register.setLastname(usersearchdto.getLastName());
        
-       ExampleMatcher matcher = ExampleMatcher.matchingAny()
-                                               .withIgnoreCase()                                               
-                                               .withNullHandler(ExampleMatcher.NullHandler.INCLUDE)
-                                               .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+       ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase()    
+                                                         .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
        
        Example<UserRegister> regExample = Example.of(register, matcher);
        
@@ -421,5 +435,5 @@ public class UserService implements UserServiceInterface
        }
        System.out.println(usersearchdto.toString());
     }
-    */
+    
 }
