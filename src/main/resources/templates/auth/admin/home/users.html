@@ -84,9 +84,20 @@
            </tr>           
          </thead>
          <tbody class="text-center"> 
-           <tr>
-              <td th:if="${result == null}" colspan="7">No results</td>
+           <tr th:if="${result == null}">
+               <td colspan="7">No results</td>              
            </tr>            
+           <th:block th:each="item : ${result}">
+            <tr>
+              <td th:text="${item.getId()}">ID</td>
+              <td th:text="${item.getUsername()}">Username</td>
+              <td th:text="${item.getMail()}">E-Mail</td>
+              <td th:text="${item.getFirstName()}">First name</td>
+              <td th:text="${item.getMiddleName()}">Middle name</td>
+              <td th:text="${item.getLastName()}">Last name</td>
+              <td th:text="${item.getOrgname()}">Organization</td>
+            </tr>
+           </th:block>        
        </tbody>
        </table>
        </div>

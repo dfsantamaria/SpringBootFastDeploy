@@ -58,10 +58,16 @@ public class AdminController
                                    Model model, RedirectAttributes attributes) 
    {  
       Page<UserAccount> pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(0, 10)); 
-      List<UserSearchDTO> results = userService.createUserSearchDTOFromPage(pages);
-      for(UserSearchDTO val : results)
-          System.out.println(val.toString());
-      attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto")); 
+      if(pages != null)
+      {
+        List<UserSearchDTO> results = userService.createUserSearchDTOFromPage(pages);
+        if(!results.isEmpty())
+          attributes.addFlashAttribute("result", results); 
+         else 
+          attributes.addFlashAttribute("result", null); 
+      }
+      attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto"));
+      
       return new ModelAndView("redirect:/auth/api/admin/usersView");
    }  
    

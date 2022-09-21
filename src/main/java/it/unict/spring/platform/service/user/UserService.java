@@ -388,14 +388,17 @@ public class UserService implements UserServiceInterface
     @Override
     @Transactional
     public Page<UserAccount> searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable)
-    {
-        
+    {       
+       if(usersearchdto.allNullFields())
+           return null;
+       
        ExampleMatcher matcher = ExampleMatcher
                                   .matching()
                                   .withIgnoreCase()
                                   .withIgnorePaths("register.user", "isAccountNonLocked","isEnabled","isSuspended", "password")
                                   .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-                
+              
+              
        UserAccount account=new UserAccount(); 
        UserRegister register=new UserRegister();
        Organization organization=new Organization();

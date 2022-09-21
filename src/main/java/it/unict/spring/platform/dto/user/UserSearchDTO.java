@@ -24,4 +24,10 @@ public class UserSearchDTO
   public UserSearchDTO()
   {
   }
+  
+  public boolean allNullFields()
+  {
+    return id==null || firstName==null || middleName==null ||
+           lastName==null || mail==null || username==null || orgname == null;
+  }
 }
