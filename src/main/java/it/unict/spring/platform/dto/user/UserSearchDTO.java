@@ -21,13 +21,14 @@ public class UserSearchDTO
   String mail;
   String username;
   String orgname;
+  
   public UserSearchDTO()
   {
   }
   
   public boolean allNullFields()
   {
-    return id==null || firstName==null || middleName==null ||
-           lastName==null || mail==null || username==null || orgname == null;
+    return (firstName.isBlank() && middleName.isBlank() &&
+           lastName.isBlank() && mail.isBlank() && username.isBlank() && orgname.isBlank());
   }
 }
