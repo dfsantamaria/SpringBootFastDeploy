@@ -85,16 +85,14 @@
          </thead>
          <tbody class="text-center"> 
            <tr>
-              <td colspan="7" style="">No results</td>
-           </tr>             
+              <td th:if="${result == null}" colspan="7">No results</td>
+           </tr>            
        </tbody>
        </table>
        </div>
          <!-- end table -->
-              
-      
-     </div>
-      
+         <div th:insert="fragments/page-bar.html"> </div>
+     </div>      
      <div th:insert="fragments/cookie.html"> </div>
 </body>
 </html>

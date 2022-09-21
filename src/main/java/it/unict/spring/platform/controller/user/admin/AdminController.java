@@ -63,7 +63,8 @@ public class AdminController
           System.out.println(val.toString());
       attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto")); 
       return new ModelAndView("redirect:/auth/api/admin/usersView");
-   }
+   }  
+   
 
 }
 
