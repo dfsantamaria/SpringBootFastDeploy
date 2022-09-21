@@ -7,6 +7,7 @@ package it.unict.spring.platform.controller.user.admin;
  * 
  */
 
+import it.unict.spring.platform.dto.user.PageDTO;
 import it.unict.spring.platform.dto.user.UserSearchDTO;
 import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
@@ -22,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import it.unict.spring.platform.utility.user.ModelTemplate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,10 +46,15 @@ public class AdminController
    public ModelAndView usersView(Locale locale,
                                  @ModelAttribute("usersearchdto") UserSearchDTO usersearchdto,
                                  BindingResult searchBindResult,
+                                 @ModelAttribute("pageSearch") PageDTO pageSearch,
+                                 BindingResult pageSearchBind,
                                  @AuthenticationPrincipal CustomUserDetails user, Model model)
    {   
      Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);
-     ModelTemplate.setNavBar(setPriv.iterator(), model);     
+     ModelTemplate.setNavBar(setPriv.iterator(), model);
+     PageDTO page=new PageDTO();       
+     page.setItemsSet(new ArrayList<>(Arrays.asList(5,50,100)));
+     model.addAttribute("paging", page);
      return new ModelAndView("auth/admin/home/users");
    } 
 
@@ -54,9 +63,11 @@ public class AdminController
                                    HttpServletResponse response,
                                    @ModelAttribute("usersearchdto") UserSearchDTO usersearchdto,
                                    BindingResult searchBindResult,
+                                   @ModelAttribute("paging") PageDTO pageSearch,
+                                   BindingResult pageSearchBind,
                                    @AuthenticationPrincipal CustomUserDetails user, 
                                    Model model, RedirectAttributes attributes) 
-   {  
+   {         
       Page<UserAccount> pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(0, 10)); 
       if(pages != null)
       {
@@ -67,7 +78,6 @@ public class AdminController
           attributes.addFlashAttribute("result", null); 
       }
       attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto"));
-      
       return new ModelAndView("redirect:/auth/api/admin/usersView");
    }  
    

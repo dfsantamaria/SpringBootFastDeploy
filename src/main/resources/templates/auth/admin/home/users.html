@@ -24,7 +24,7 @@
       <div style="margin-top: 10px;">
 	<h1 class="form-heading">Page under construction!</h1>           
           
-        <fieldset>
+        
       	<legend> Search parameters </legend> 
         <div class="form-group" style="margin-top: 10px">
       
@@ -63,8 +63,7 @@
          </div>  
          <button type="submit" class="btn btn-lg btn-primary btn-block">Search</button>         
          </form>              
-         </div>
-        </fieldset>
+         </div>        
       </div>
      </div>
         
@@ -72,7 +71,7 @@
          <!-- table -->
          <div style="margin-top: 20px;">
          <table class="table table-striped">
-         <thead>
+         <thead class="text-center">
            <tr class="p-3 mb-2 bg-primary text-white">
              <th scope="col">#id</th>
              <th scope="col">Username</th>
@@ -102,7 +101,7 @@
        </table>
        </div>
          <!-- end table -->
-         <div th:insert="fragments/page-bar.html"> </div>
+         <div form="searchform" th:insert="fragments/page-bar.html"> </div>
      </div>      
      <div th:insert="fragments/cookie.html"> </div>
 </body>

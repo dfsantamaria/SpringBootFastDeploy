@@ -388,15 +388,7 @@ public class UserService implements UserServiceInterface
     @Override
     @Transactional
     public Page<UserAccount> searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable)
-    {
-       System.out.println("string:"+usersearchdto.allNullFields()); 
-       System.out.println(usersearchdto.getUsername());
-                System.out.println(usersearchdto.getMail());
-                 System.out.println(usersearchdto.getFirstName());
-                  System.out.println(usersearchdto.getMiddleName());
-                   System.out.println(usersearchdto.getLastName());
-                    System.out.println(usersearchdto.getOrgname());
-       
+    {      
        if(usersearchdto.allNullFields())
            return null;
        
@@ -404,8 +396,7 @@ public class UserService implements UserServiceInterface
                                   .matching()
                                   .withIgnoreCase()
                                   .withIgnorePaths("register.user", "isAccountNonLocked","isEnabled","isSuspended", "password")
-                                  .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-              
+                                  .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);              
               
        UserAccount account=new UserAccount(); 
        UserRegister register=new UserRegister();
