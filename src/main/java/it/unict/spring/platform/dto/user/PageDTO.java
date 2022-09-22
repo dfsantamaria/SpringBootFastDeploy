@@ -16,7 +16,8 @@ public class PageDTO
    private int totalPages;
    private String itemsNumber;
    private int firstPage;   
-   private int pageSpan;   
+   private int pageSpan; 
+   private int currentPage;
    
    public boolean isNextEnabled()
    {

@@ -67,16 +67,16 @@ public class AdminController
    {         
       Page<UserAccount> pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(0, Integer.parseInt(pageSearch.getItemsNumber()))); 
       if(pages != null)
-      {
+      {          
         List<UserSearchDTO> results = userService.createUserSearchDTOFromPage(pages);
         if(!results.isEmpty())
           attributes.addFlashAttribute("result", results); 
          else 
-          attributes.addFlashAttribute("result", null); 
+          attributes.addFlashAttribute("result", null);  
+        
       }
       attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto"));
-      attributes.addFlashAttribute("paging", pageSearch);      
-      System.out.println("----------"+pageSearch.getItemsNumber());
+      attributes.addFlashAttribute("paging", pageSearch);       
       return new ModelAndView("redirect:/auth/api/admin/usersView");
    }  
    
