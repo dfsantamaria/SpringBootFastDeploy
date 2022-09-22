@@ -1,9 +1,8 @@
-<th:block>
-      <!-- Page number -->                            
-         <nav style="display: inline-flex; float: right;"  th:with="itemVals=${ {5, 50, 100} }">             
-             <select class="form-control form-control-sm" style="height: 38px " id="pageSelect" th:field="*{paging.itemsNumber}">                        
-                  <option  th:each="val: ${itemVals}"  th:value="${val}" th:text="${val}"> 
-                  </option>             
+<th:block th:fragment="pagebar(formname)">     
+      <!-- Page number -->                  
+             <select th:attr="form=${formname}" class="form-control form-control-sm" style="height: 38px " id="pageSelect" th:field="*{paging.itemsNumber}">                        
+              <option  th:each="val: ${itemVals}"  th:value="${val}" th:text="${val}"> 
+              </option>             
              </select>              
              <ul class="pagination justify-content-end">
                 <li class="page-item disabled">
@@ -13,7 +12,6 @@
                <li class="page-item page-item disabled">               
                  <a class="page-link" href="#">Next</a>
                </li>           
-             </ul>               
-         </nav>        
-         <!-- End page number -->         
+             </ul>              
+         <!-- End page number -->      
 </th:block>

@@ -46,15 +46,12 @@ public class AdminController
    public ModelAndView usersView(Locale locale,
                                  @ModelAttribute("usersearchdto") UserSearchDTO usersearchdto,
                                  BindingResult searchBindResult,
-                                 @ModelAttribute("pageSearch") PageDTO pageSearch,
+                                 @ModelAttribute("paging") PageDTO pageSearch,
                                  BindingResult pageSearchBind,
                                  @AuthenticationPrincipal CustomUserDetails user, Model model)
    {   
      Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);
-     ModelTemplate.setNavBar(setPriv.iterator(), model);
-     PageDTO page=new PageDTO();
-     page.setItemsNumber("5");
-     model.addAttribute("paging", page);
+     ModelTemplate.setNavBar(setPriv.iterator(), model);     
      return new ModelAndView("auth/admin/home/users");
    } 
 
@@ -63,12 +60,12 @@ public class AdminController
                                    HttpServletResponse response,
                                    @ModelAttribute("usersearchdto") UserSearchDTO usersearchdto,
                                    BindingResult searchBindResult,
-                                   @ModelAttribute("paging") PageDTO pageSearch,
+                                   @ModelAttribute ("paging") PageDTO pageSearch,
                                    BindingResult pageSearchBind,
                                    @AuthenticationPrincipal CustomUserDetails user, 
                                    Model model, RedirectAttributes attributes) 
    {         
-      Page<UserAccount> pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(0, 10)); 
+      Page<UserAccount> pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(0, Integer.parseInt(pageSearch.getItemsNumber()))); 
       if(pages != null)
       {
         List<UserSearchDTO> results = userService.createUserSearchDTOFromPage(pages);
@@ -78,6 +75,7 @@ public class AdminController
           attributes.addFlashAttribute("result", null); 
       }
       attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto"));
+      attributes.addFlashAttribute("paging", pageSearch);      
       System.out.println("----------"+pageSearch.getItemsNumber());
       return new ModelAndView("redirect:/auth/api/admin/usersView");
    }  

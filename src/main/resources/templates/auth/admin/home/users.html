@@ -100,8 +100,11 @@
        </tbody>
        </table>
        </div>
-         <!-- end table -->
-         <div form="searchform" th:insert="fragments/page-bar.html"> </div>
+         <!-- end table -->           
+         <nav style="display: inline-flex; float: right;"  
+              th:with="itemVals=${ {5, 50, 100} }"       
+              th:insert="fragments/page-bar.html :: pagebar('searchform')">
+         </nav>         
      </div>      
      <div th:insert="fragments/cookie.html"> </div>
 </body>
