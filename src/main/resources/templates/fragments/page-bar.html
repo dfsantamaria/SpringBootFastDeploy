@@ -1,9 +1,9 @@
 <th:block>
       <!-- Page number -->                            
-         <nav style="display: inline-flex; float: right; " th:field="paging">             
-             <select class="form-control form-control-sm" style="height: 38px " id="pageSelect">                        
-                  <option th:each="val: ${paging.getItemsSet()}"  th:value="${val}" th:text="${val}"> 
-               </option>             
+         <nav style="display: inline-flex; float: right;"  th:with="itemVals=${ {5, 50, 100} }">             
+             <select class="form-control form-control-sm" style="height: 38px " id="pageSelect" th:field="*{paging.itemsNumber}">                        
+                  <option  th:each="val: ${itemVals}"  th:value="${val}" th:text="${val}"> 
+                  </option>             
              </select>              
              <ul class="pagination justify-content-end">
                 <li class="page-item disabled">

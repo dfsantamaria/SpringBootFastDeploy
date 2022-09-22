@@ -52,8 +52,8 @@ public class AdminController
    {   
      Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);
      ModelTemplate.setNavBar(setPriv.iterator(), model);
-     PageDTO page=new PageDTO();       
-     page.setItemsSet(new ArrayList<>(Arrays.asList(5,50,100)));
+     PageDTO page=new PageDTO();
+     page.setItemsNumber("5");
      model.addAttribute("paging", page);
      return new ModelAndView("auth/admin/home/users");
    } 
@@ -78,6 +78,7 @@ public class AdminController
           attributes.addFlashAttribute("result", null); 
       }
       attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto"));
+      System.out.println("----------"+pageSearch.getItemsNumber());
       return new ModelAndView("redirect:/auth/api/admin/usersView");
    }  
    

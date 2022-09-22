@@ -6,19 +6,17 @@ package it.unict.spring.platform.dto.user;
  * 
  */
 
-import java.util.ArrayList;
 import lombok.Data;
 
 
 @Data
 public class PageDTO 
 {
-   int pagesNumber;
-   int totalPages;
-   int itemsNumber;
-   int firstPage;   
-   int pageSpan;
-   ArrayList itemsSet;
+   private int pagesNumber;
+   private int totalPages;
+   private String itemsNumber;
+   private int firstPage;   
+   private int pageSpan;   
    
    public boolean isNextEnabled()
    {
