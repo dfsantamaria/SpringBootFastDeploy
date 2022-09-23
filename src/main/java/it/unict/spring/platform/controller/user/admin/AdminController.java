@@ -33,6 +33,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -62,7 +63,7 @@ public class AdminController
                                    BindingResult searchBindResult,
                                    @ModelAttribute ("paging") PageDTO pageSearch,
                                    BindingResult pageSearchBind,
-                                   @AuthenticationPrincipal CustomUserDetails user, 
+                                   @AuthenticationPrincipal CustomUserDetails user,                                   
                                    Model model, RedirectAttributes attributes) 
    {         
       Page<UserAccount> pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(0, Integer.parseInt(pageSearch.getItemsNumber()))); 
@@ -73,7 +74,7 @@ public class AdminController
           attributes.addFlashAttribute("result", results); 
          else 
           attributes.addFlashAttribute("result", null);  
-        
+        System.out.println("------------"+pageSearch.getCurrentPage());
       }
       attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto"));
       attributes.addFlashAttribute("paging", pageSearch);       
