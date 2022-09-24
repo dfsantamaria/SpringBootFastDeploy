@@ -19,13 +19,13 @@ public class PageDTO
    private int pageSpan; 
    private int currentPage;
    
-   public boolean isNextEnabled()
+   public boolean isNextDisabled()
    {
-     return firstPage+pageSpan <= totalPages;
+     return firstPage+pageSpan >= totalPages;
    }
    
-   public boolean isPreviousEnabled()
+   public boolean isPreviousDisabled()
    {
-     return firstPage > pageSpan;
+     return firstPage <= pageSpan;
    }   
 }

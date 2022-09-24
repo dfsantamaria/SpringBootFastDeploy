@@ -8,14 +8,16 @@
              </select>              
              <ul class="pagination justify-content-end">
                  <!-- Previous -->
-                 <li class="page-item page-item disabled"> 
+                 <li class="page-item" th:classappend="${paging.isPreviousDisabled()} ? 'disabled'">         
+                     
+                    
                 <a class="page-link"                        
                         href="javascript:;"                        
                         th:onclick="submitPage([[${formname}]], [[${inputname}]], -1);">
                         Previous
                 </a> 
                 </li>   
-                <li class="page-item page-item">
+                <li class="page-item">
                     <a class="page-link"                        
                         href="javascript:;" 
                         tabindex="1"
@@ -24,7 +26,7 @@
                     </a>                    
                 </li>
                 <!-- Next -->
-                <li class="page-item page-item disabled"> 
+                <li class="page-item" th:classappend="${paging.isNextDisabled()} ? 'disabled'"> 
                 <a class="page-link"                        
                         href="javascript:;"                        
                         th:onclick="submitPage([[${formname}]], [[${inputname}]], -2);">

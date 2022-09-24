@@ -52,7 +52,7 @@ public class AdminController
                                  @AuthenticationPrincipal CustomUserDetails user, Model model)
    {   
      Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);
-     ModelTemplate.setNavBar(setPriv.iterator(), model);     
+     ModelTemplate.setNavBar(setPriv.iterator(), model);      
      return new ModelAndView("auth/admin/home/users");
    } 
 
@@ -65,16 +65,22 @@ public class AdminController
                                    BindingResult pageSearchBind,
                                    @AuthenticationPrincipal CustomUserDetails user,                                   
                                    Model model, RedirectAttributes attributes) 
-   {         
-      Page<UserAccount> pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(0, Integer.parseInt(pageSearch.getItemsNumber()))); 
+   {   
+      //check value of pageSearch.getCurrentPage() : -1 or -2 
+      int currentPage = pageSearch.getCurrentPage()==0 ? 0 : pageSearch.getCurrentPage()-1;
+      int itemsNumb = Integer.parseInt(pageSearch.getItemsNumber());           
+      
+      Page<UserAccount> pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(currentPage, itemsNumb )); 
       if(pages != null)
-      {          
+      {        
+          
+          
         List<UserSearchDTO> results = userService.createUserSearchDTOFromPage(pages);
         if(!results.isEmpty())
           attributes.addFlashAttribute("result", results); 
          else 
           attributes.addFlashAttribute("result", null);  
-        System.out.println("------------"+pageSearch.getCurrentPage());
+        System.out.println("------------"+pageSearch.getCurrentPage()+"----");
       }
       attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto"));
       attributes.addFlashAttribute("paging", pageSearch);       
