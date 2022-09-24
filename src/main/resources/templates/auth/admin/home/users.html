@@ -103,7 +103,7 @@
          <!-- end table -->           
          <nav style="display: inline-flex; float: right;"  
               th:with="itemVals=${ {5, 50, 100} }"       
-              th:insert="fragments/page-bar.html :: pagebar('searchform')">
+              th:insert="fragments/page-bar.html :: pagebar('searchform', 'inputpage')">
          </nav>         
      </div>      
      <div th:insert="fragments/cookie.html"> </div>

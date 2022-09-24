@@ -1,6 +1,6 @@
-function submitPage(formname, pageNum)
+function submitPage(formname, inputname, pageNum)
  {
-  document.getElementById("selectedpage").value=pageNum;   
+  document.getElementById(inputname).value=pageNum;   
   document.getElementById(formname).submit();
  }          
     
