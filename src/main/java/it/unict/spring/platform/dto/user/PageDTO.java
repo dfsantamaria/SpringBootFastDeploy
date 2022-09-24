@@ -11,13 +11,12 @@ import lombok.Data;
 
 @Data
 public class PageDTO 
-{
-   private int pagesNumber;
-   private int totalPages;
-   private String itemsNumber;
-   private int firstPage;   
-   private int pageSpan; 
-   private int currentPage;
+{   
+   private int totalPages; //number of Page get from the Search
+   private String itemsNumber; //number of results to be shown for each page
+   private int firstPage;   //the first page of the current page span
+   private int pageSpan; //number of page button to be shown
+   private int currentPage; //the current page
    
    public boolean isNextDisabled()
    {
@@ -27,5 +26,6 @@ public class PageDTO
    public boolean isPreviousDisabled()
    {
      return firstPage <= pageSpan;
-   }   
+   }  
+   
 }

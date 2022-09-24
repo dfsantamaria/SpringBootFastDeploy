@@ -52,7 +52,12 @@ public class AdminController
                                  @AuthenticationPrincipal CustomUserDetails user, Model model)
    {   
      Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);
-     ModelTemplate.setNavBar(setPriv.iterator(), model);      
+     ModelTemplate.setNavBar(setPriv.iterator(), model);
+     pageSearch.setPageSpan(10);
+     pageSearch.setCurrentPage(1);
+     pageSearch.setFirstPage(1);
+     pageSearch.setTotalPages(1);
+     model.addAttribute("paging", pageSearch);    
      return new ModelAndView("auth/admin/home/users");
    } 
 
@@ -67,20 +72,42 @@ public class AdminController
                                    Model model, RedirectAttributes attributes) 
    {   
       //check value of pageSearch.getCurrentPage() : -1 or -2 
-      int currentPage = pageSearch.getCurrentPage()==0 ? 0 : pageSearch.getCurrentPage()-1;
-      int itemsNumb = Integer.parseInt(pageSearch.getItemsNumber());           
-      
-      Page<UserAccount> pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(currentPage, itemsNumb )); 
-      if(pages != null)
-      {        
           
+      int itemsNumb = Integer.parseInt(pageSearch.getItemsNumber());           
+      System.out.println(pageSearch.getPageSpan());
+      if(pageSearch.getCurrentPage()<0)
+      {
+         int currentPage;
+         if(pageSearch.getCurrentPage() == -1)          
+           currentPage= pageSearch.getFirstPage()- pageSearch.getPageSpan(); 
+         else  
+           currentPage = pageSearch.getFirstPage()+pageSearch.getPageSpan();
+         pageSearch.setFirstPage(currentPage);
+         pageSearch.setCurrentPage(currentPage);       
+      } 
+      
+      System.out.println(pageSearch.toString());
+      Page<UserAccount> pages = null;
+      try
+      {
+       pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(pageSearch.getCurrentPage()-1, itemsNumb));        
+      }
+      catch(UnsupportedOperationException  exception)
+      {
+       pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(0, itemsNumb));
+       pageSearch.setFirstPage(0);
+       pageSearch.setCurrentPage(0);
+      }
+      
+      if(pages != null)
+      {                 
+        pageSearch.setTotalPages(pages.getTotalPages());
           
         List<UserSearchDTO> results = userService.createUserSearchDTOFromPage(pages);
         if(!results.isEmpty())
           attributes.addFlashAttribute("result", results); 
          else 
-          attributes.addFlashAttribute("result", null);  
-        System.out.println("------------"+pageSearch.getCurrentPage()+"----");
+          attributes.addFlashAttribute("result", null);        
       }
       attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto"));
       attributes.addFlashAttribute("paging", pageSearch);       
