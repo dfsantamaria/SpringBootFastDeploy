@@ -56,8 +56,7 @@ public interface UserServiceInterface
     Set<Privilege> findPrivilegeFromCustomUserDetails(CustomUserDetails userdetails);
     
     UserAccount mapFromUserDTO(UserAccountDTO userdto, Timestamp accountExpire, Timestamp credentialExpire, UserRegister register, Organization organization) throws MultipleUsersFoundException;
-    Page<UserAccount> searchFromDTO(UserSearchDTO usersearchdto, Pageable pageable);
-    
+        
     void addRegisterToUser(UserRegister register, UserAccount account);
     void addLoginToUser(UserLogin login, UserAccount user);
     public void createLoginInfo(UserAccount user);

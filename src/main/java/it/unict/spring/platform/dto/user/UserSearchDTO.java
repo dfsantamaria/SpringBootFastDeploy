@@ -9,10 +9,11 @@ package it.unict.spring.platform.dto.user;
 
 
 import lombok.Data;
+import it.unict.spring.platform.utility.inferface.SearchDTOInterface;
 
 
 @Data
-public class UserSearchDTO
+public class UserSearchDTO implements SearchDTOInterface
 {
   String id;  
   String firstName;

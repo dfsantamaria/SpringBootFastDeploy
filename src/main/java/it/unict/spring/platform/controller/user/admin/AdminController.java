@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import it.unict.spring.platform.utility.user.ModelTemplate;
+import it.unict.spring.platform.service.user.SearchManagerService;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -38,6 +38,8 @@ public class AdminController
 {
    @Autowired
    UserService userService; 
+   @Autowired
+   SearchManagerService searchManager;
    
    @RequestMapping(value = "/usersView", method = RequestMethod.GET)
    public ModelAndView usersView(Locale locale,
@@ -67,32 +69,7 @@ public class AdminController
    {   
       //check value of pageSearch.getCurrentPage() : -1 or -2 
           
-      int itemsNumb = Integer.parseInt(pageSearch.getItemsNumber());           
-      System.out.println(pageSearch.getPageSpan());
-      if(pageSearch.getCurrentPage()<0)
-      {
-         int currentPage;
-         if(pageSearch.getCurrentPage() == -1)          
-           currentPage= pageSearch.getFirstPage()- pageSearch.getPageSpan(); 
-         else  
-           currentPage = pageSearch.getFirstPage()+pageSearch.getPageSpan();         
-         pageSearch.setCurrentPage(currentPage);       
-      } 
-      
-      System.out.println(pageSearch.toString());
-      Page<UserAccount> pages = null;
-      try
-      {
-       pages = userService.searchFromDTO(usersearchdto, PageRequest.of(pageSearch.getCurrentPage()-1, itemsNumb));        
-      }
-      catch(UnsupportedOperationException  exception)
-      {
-       pages = userService.searchFromDTO(usersearchdto, PageRequest.of(0, itemsNumb));      
-       pageSearch.setCurrentPage(0);
-      }      
-      
-      pageSearch.setTotalPages(pages.getTotalPages());    
-      
+      Page<UserAccount> pages = searchManager.search(userService, pageSearch, usersearchdto);
       List<UserSearchDTO> results = userService.createUserSearchDTOFromPage(pages);
        if(!results.isEmpty())
          attributes.addFlashAttribute("result", results); 
