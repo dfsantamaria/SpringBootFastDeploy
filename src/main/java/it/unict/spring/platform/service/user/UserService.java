@@ -387,10 +387,10 @@ public class UserService implements UserServiceInterface
 
     @Override
     @Transactional
-    public Page<UserAccount> searchUserFromUserDTO(UserSearchDTO usersearchdto, Pageable pageable)
+    public Page<UserAccount> searchFromDTO(UserSearchDTO usersearchdto, Pageable pageable)
     {      
        if(usersearchdto.allNullFields())
-           return null;
+           return Page.empty();
        
        ExampleMatcher matcher = ExampleMatcher
                                   .matching()

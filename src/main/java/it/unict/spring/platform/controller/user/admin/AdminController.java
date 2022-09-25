@@ -51,7 +51,6 @@ public class AdminController
      ModelTemplate.setNavBar(setPriv.iterator(), model);
      pageSearch.setPageSpan(10);
      pageSearch.setCurrentPage(1);     
-     pageSearch.setTotalPages(1);
      model.addAttribute("paging", pageSearch);    
      return new ModelAndView("auth/admin/home/users");
    } 
@@ -84,25 +83,22 @@ public class AdminController
       Page<UserAccount> pages = null;
       try
       {
-       pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(pageSearch.getCurrentPage()-1, itemsNumb));        
+       pages = userService.searchFromDTO(usersearchdto, PageRequest.of(pageSearch.getCurrentPage()-1, itemsNumb));        
       }
       catch(UnsupportedOperationException  exception)
       {
-       pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(0, itemsNumb));
-       pageSearch.setTotalPages(pages.getTotalPages());
+       pages = userService.searchFromDTO(usersearchdto, PageRequest.of(0, itemsNumb));      
        pageSearch.setCurrentPage(0);
-      }
+      }      
       
-      if(pages != null)
-      {                 
-        pageSearch.setTotalPages(pages.getTotalPages());
-          
-        List<UserSearchDTO> results = userService.createUserSearchDTOFromPage(pages);
-        if(!results.isEmpty())
-          attributes.addFlashAttribute("result", results); 
-         else 
-          attributes.addFlashAttribute("result", null);        
-      }
+      pageSearch.setTotalPages(pages.getTotalPages());    
+      
+      List<UserSearchDTO> results = userService.createUserSearchDTOFromPage(pages);
+       if(!results.isEmpty())
+         attributes.addFlashAttribute("result", results); 
+       else 
+       attributes.addFlashAttribute("result", null);        
+      
       attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto"));
       attributes.addFlashAttribute("paging", pageSearch);      
       return new ModelAndView("redirect:/auth/api/admin/usersView");
