@@ -23,9 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import it.unict.spring.platform.utility.user.ModelTemplate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +30,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -54,8 +50,7 @@ public class AdminController
      Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);
      ModelTemplate.setNavBar(setPriv.iterator(), model);
      pageSearch.setPageSpan(10);
-     pageSearch.setCurrentPage(1);
-     pageSearch.setFirstPage(1);
+     pageSearch.setCurrentPage(1);     
      pageSearch.setTotalPages(1);
      model.addAttribute("paging", pageSearch);    
      return new ModelAndView("auth/admin/home/users");
@@ -81,8 +76,7 @@ public class AdminController
          if(pageSearch.getCurrentPage() == -1)          
            currentPage= pageSearch.getFirstPage()- pageSearch.getPageSpan(); 
          else  
-           currentPage = pageSearch.getFirstPage()+pageSearch.getPageSpan();
-         pageSearch.setFirstPage(currentPage);
+           currentPage = pageSearch.getFirstPage()+pageSearch.getPageSpan();         
          pageSearch.setCurrentPage(currentPage);       
       } 
       
@@ -95,7 +89,7 @@ public class AdminController
       catch(UnsupportedOperationException  exception)
       {
        pages = userService.searchUserFromUserDTO(usersearchdto, PageRequest.of(0, itemsNumb));
-       pageSearch.setFirstPage(0);
+       pageSearch.setTotalPages(pages.getTotalPages());
        pageSearch.setCurrentPage(0);
       }
       
@@ -110,7 +104,7 @@ public class AdminController
           attributes.addFlashAttribute("result", null);        
       }
       attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto"));
-      attributes.addFlashAttribute("paging", pageSearch);       
+      attributes.addFlashAttribute("paging", pageSearch);      
       return new ModelAndView("redirect:/auth/api/admin/usersView");
    }  
    
