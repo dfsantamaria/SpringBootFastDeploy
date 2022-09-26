@@ -22,13 +22,14 @@
                         Previous
                 </a> 
                 </li>   
-                <li class="page-item">
+                <li th:each="page : ${paging.getCurrentSpan()}" 
+                    class="page-item" th:classappend="${page == paging.getCurrentPage()} ? 'disabled'">                    
+                 
                     <a class="page-link"                        
-                        href="javascript:;" 
-                        tabindex="1"
-                        th:onclick="submitPage([[${formname}]], [[${inputname}]], 1);">
-                        1
-                    </a>                    
+                       href="javascript:;"
+                       th:onclick="submitPage([[${formname}]], [[${inputname}]], ${page});"
+                       th:text="${page}">
+                    </a>                                            
                 </li>
                 <!-- Next -->
                 <li class="page-item" th:classappend="${paging.isNextDisabled()} ? 'disabled'"> 

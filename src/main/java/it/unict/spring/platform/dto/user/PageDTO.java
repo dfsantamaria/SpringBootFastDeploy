@@ -30,7 +30,9 @@ public class PageDTO
    
    public int getCurrentSpan()
    {
-     return (this.getPageSpan() <= this.getTotalPages()? this.getPageSpan() : this.getTotalPages());
+     if(this.getTotalPages()==0)
+         return 1;
+     return (this.getPageSpan() <= this.getTotalPages()? this.getPageSpan() : this.getTotalPages());     
    }
    
    public int getFirstPage()
