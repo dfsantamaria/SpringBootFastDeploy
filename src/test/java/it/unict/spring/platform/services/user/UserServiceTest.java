@@ -1,6 +1,8 @@
 package it.unict.spring.platform.services.user;
 
 import it.unict.spring.platform.Application;
+import it.unict.spring.platform.dto.user.PageDTO;
+import it.unict.spring.platform.dto.user.UserSearchDTO;
 
 /**
  *
@@ -12,9 +14,11 @@ import it.unict.spring.platform.Application;
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
+import it.unict.spring.platform.service.user.SearchManagerService;
 import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,6 +53,8 @@ public class UserServiceTest
     private final String name = "myName";
     private final String middleName = "middleName";
     private final String lastName = "lastName";
+    @SpyBean
+    SearchManagerService searchManager;
    
     @BeforeAll    
     public void createUser() throws MultipleUsersFoundException
@@ -109,6 +115,25 @@ public class UserServiceTest
      assertTrue(pages.getTotalPages()> 0);
      UserRegister reg = pages.getContent().get(0);
      assertEquals(reg.getLastname(), lastName);
+    }
+    
+    @Test 
+    public void testSearchManager()
+    {
+       UserSearchDTO testUser=new UserSearchDTO();
+       testUser.setMail(mail);
+       testUser.setFirstName("");
+       testUser.setMiddleName("");
+       testUser.setLastName("");
+       testUser.setOrgname("");
+       
+       PageDTO pageSearch=new PageDTO();
+       pageSearch.setCurrentPage(1);
+       pageSearch.setPageSpan(10);
+       pageSearch.setItemsNumber("10");
+       Page<UserAccount> pages = searchManager.search(userServ, pageSearch, testUser);
+       List<UserSearchDTO> results = userServ.createUserSearchDTOFromPage(pages);
+       assertFalse(results.isEmpty());
     }
 }
 
