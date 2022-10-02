@@ -7,7 +7,7 @@ package it.unict.spring.platform.services.utility;
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
  */
 
-import it.unict.spring.platform.services.common.InitData;
+import it.unict.spring.platform.common.InitData;
 import it.unict.spring.platform.Application;
 import it.unict.spring.platform.dto.user.PageDTO;
 import it.unict.spring.platform.dto.user.UserSearchDTO;

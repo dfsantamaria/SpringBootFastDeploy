@@ -17,7 +17,7 @@ import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.service.utility.SearchManagerService;
 import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
-import it.unict.spring.platform.services.common.InitData;
+import it.unict.spring.platform.common.InitData;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterAll;
