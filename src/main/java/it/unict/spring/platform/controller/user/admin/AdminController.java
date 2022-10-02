@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import it.unict.spring.platform.utility.user.ModelTemplate;
-import it.unict.spring.platform.service.user.SearchManagerService;
+import it.unict.spring.platform.service.utility.SearchManagerService;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package it.unict.spring.platform.service.user;
+package it.unict.spring.platform.service.utility;
 
 /**
  *
