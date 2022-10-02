@@ -17,8 +17,8 @@ import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.service.utility.SearchManagerService;
 import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
+import it.unict.spring.platform.services.common.InitData;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
-import java.util.List;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,8 +48,7 @@ public class UserServiceTest
     @SpyBean 
     private UserRegisterService regService;
     private final String mail="test@unict.it";
-    private final String username = "testatunict";
-    private Optional<UserAccount> users;    
+    private final String username = "testatunict";        
     private final String name = "myName";
     private final String middleName = "middleName";
     private final String lastName = "lastName";
@@ -59,22 +58,8 @@ public class UserServiceTest
     @BeforeAll    
     public void createUser() throws MultipleUsersFoundException
     {
-       users = userServ.findByUsername(username);
-       if(users.isEmpty())
-       {
-          UserAccount user = userServ.getSuperAdminUser(username, "lll@@", mail,
-                                                         UserExpirationInformation.getAccountExpirationDate(),
-                                                                 UserExpirationInformation.getCredentialExpirationDate(),
-                                                         "My nice organization");
-          userServ.setEnabled(user, true);  
-          userServ.save(user);
-          
-          UserRegister register=new UserRegister(name, middleName, lastName);
-          userServ.addRegisterToUser(register, user);
-          regService.save(register);
-       }
-                  
-       users = userServ.findByUsername(username);
+       InitData.initUser(userServ, regService, username, "plainpassword", mail, "myorg", name, middleName,lastName);
+       Optional<UserAccount> users = userServ.findByUsername(username);
        assertTrue(users.get().isEnabled());
        assertEquals(users.get().getMail(), mail);
        
@@ -86,8 +71,7 @@ public class UserServiceTest
     @AfterAll
     public void clear()
     {
-       Optional<UserAccount> findusers = userServ.findByUsername(username);
-       userServ.delete(findusers.get());
+       InitData.clearUser(userServ,username);
     }
     
     @Test

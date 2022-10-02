@@ -7,6 +7,7 @@ package it.unict.spring.platform.services.utility;
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
  */
 
+import it.unict.spring.platform.services.common.InitData;
 import it.unict.spring.platform.Application;
 import it.unict.spring.platform.dto.user.PageDTO;
 import it.unict.spring.platform.dto.user.UserSearchDTO;
@@ -44,7 +45,7 @@ public class SearchManagerServiceTest
     private UserRegisterService regService;
     private final String mail="test@unict.it";
     private final String username = "testatunict";
-    private Optional<UserAccount> users;    
+        
     private final String name = "myName";
     private final String middleName = "middleName";
     private final String lastName = "lastName";
@@ -56,23 +57,8 @@ public class SearchManagerServiceTest
     @BeforeAll    
     public void createUser() throws MultipleUsersFoundException
     {
-       users = userServ.findByUsername(username);
-       if(users.isEmpty())
-       {
-          UserAccount user = userServ.getSuperAdminUser(username, password, mail,
-                                                         UserExpirationInformation.getAccountExpirationDate(),
-                                                                 UserExpirationInformation.getCredentialExpirationDate(),
-                                                                 organization
-                                                         );
-          userServ.setEnabled(user, true);  
-          userServ.save(user);
-          
-          UserRegister register=new UserRegister(name, middleName, lastName);
-          userServ.addRegisterToUser(register, user);
-          regService.save(register);
-       }
-                  
-       users = userServ.findByUsername(username);
+       InitData.initUser(userServ, regService, username, password, mail, organization, name, middleName,lastName);                  
+       Optional<UserAccount> users = userServ.findByUsername(username);
        assertTrue(users.get().isEnabled());
        assertEquals(users.get().getMail(), mail);
        
@@ -84,8 +70,7 @@ public class SearchManagerServiceTest
     @AfterAll
     public void clear()
     {
-       Optional<UserAccount> findusers = userServ.findByUsername(username);
-       userServ.delete(findusers.get());
+       InitData.clearUser(userServ, username);
     }
     
      
@@ -107,5 +92,6 @@ public class SearchManagerServiceTest
        List<UserSearchDTO> results = userServ.createUserSearchDTOFromPage(pages);
        assertFalse(results.isEmpty());
     }
+    
 }
 
