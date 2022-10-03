@@ -1,8 +1,6 @@
 package it.unict.spring.platform.services.user;
 
 import it.unict.spring.platform.Application;
-import it.unict.spring.platform.dto.user.PageDTO;
-import it.unict.spring.platform.dto.user.UserSearchDTO;
 
 /**
  *
@@ -18,7 +16,6 @@ import it.unict.spring.platform.service.utility.SearchManagerService;
 import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.common.InitData;
-import it.unict.spring.platform.utility.user.UserExpirationInformation;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -20,9 +20,6 @@ import javax.persistence.Table;
  * 
  */
 
-
-import it.unict.spring.platform.persistence.model.user.UserAccount;
-
 @Entity
 @Table(name = "data", catalog = "data")
 public class Data implements Serializable
@@ -35,9 +32,8 @@ public class Data implements Serializable
     private String name;
   
     
-     @ManyToOne(targetEntity = UserAccount.class,  cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
-     @PrimaryKeyJoinColumn
-     private UserAccount user;
+   
+    private Long user_id;
 
     public Data()
     {
@@ -49,14 +45,14 @@ public class Data implements Serializable
         this.name = name;
     }
 
-    public void setUser(UserAccount user)
+    public void setUser(Long user)
     {
-      this.user=user;
+      this.user_id=user;
     }
     
-    public UserAccount getUser()
+    public Long getUser()
     {
-      return this.user;
+      return this.user_id;
     }
     
     //

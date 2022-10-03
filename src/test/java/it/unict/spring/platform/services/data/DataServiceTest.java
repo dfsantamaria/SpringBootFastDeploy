@@ -11,10 +11,12 @@ package it.unict.spring.platform.services.data;
 //remember to modify the file schema.sql if the name of "data" schema changes
 
 import it.unict.spring.platform.Application;
+import it.unict.spring.platform.common.InitData;
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
 import it.unict.spring.platform.persistence.model.data.Data;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.data.DataService;
+import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
 import java.util.Optional;
@@ -40,37 +42,28 @@ public class DataServiceTest
     private  DataService dataServ;        
     private String todo="something";
     @SpyBean
-    private  UserService userServ;    
+    private  UserService userServ; 
+    @SpyBean 
+    private UserRegisterService regService;
     private final String mail="testData@unict.it";
     private final String username = "testDataatunict";
-        
+     private final String name = "myName";
+    private final String middleName = "middleName";
+    private final String lastName = "lastName";    
     
     @BeforeAll   
     public void createData() throws MultipleUsersFoundException
     {
        
-       Optional<UserAccount> users = userServ.findByUsername(username);
-       UserAccount user;
-       if(users.isEmpty())
-       {
-        user = userServ.getSuperAdminUser(username, "lll@@", mail,
-                                                         UserExpirationInformation.getAccountExpirationDate(),
-                                                                 UserExpirationInformation.getCredentialExpirationDate(),
-                                                         "My nice organization");
-        userServ.save(user);
-       }
-       else 
-           user=users.get();
-       
+       InitData.initUser(userServ, regService, username, "plainpassword", mail, "myorg", name, middleName,lastName);
+       Optional<UserAccount> user = userServ.findByUsername(username);       
        Optional<Data> data = dataServ.findByName(todo);
        if(data.isEmpty())
        {
         Data d=new Data(todo);
-        d.setUser(user);
+        d.setUser(user.get().getId());
         dataServ.save(d);
        }
-       // Organization persist = entityManager.persist(new Organization(organization));
-       // assertNotNull(persist);
     }
     
     
@@ -79,8 +72,7 @@ public class DataServiceTest
     {
        Optional<Data> data = dataServ.findByName(todo);
        dataServ.delete(data.get());
-       Optional<UserAccount> users = userServ.findByUsername(username);
-       userServ.delete(users.get());       
+       InitData.clearUser(userServ,username);    
     }
     
     @Test
