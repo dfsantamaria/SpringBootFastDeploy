@@ -29,6 +29,9 @@ public class Privilege implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = true, unique = false)
+    private double priority;
+    
     @Column(nullable = false, unique = true)
     private String name;
 
@@ -46,11 +49,12 @@ public class Privilege implements Serializable
         super();
     }
 
-    public Privilege(String name, String label, String type) {
+    public Privilege(String name, String label, String type, double priority) {
         super();
         this.name = name;
         this.description = label;
         this.type = type;
+        this.priority = priority;
     }
 
     public void addUser(UserAccount user)

@@ -53,7 +53,7 @@ public class PrivilegeServiceTest
     @BeforeAll   
     public void createOrganization()
     {
-        assertNotNull(privServ.save(new Privilege(privilege, "label", "type")));
+        assertNotNull(privServ.save(new Privilege(privilege, "label", "type", 0.0)));
        // Organization persist = entityManager.persist(new Organization(organization));
        // assertNotNull(persist);
     }

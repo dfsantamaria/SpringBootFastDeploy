@@ -71,7 +71,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
    @Transactional
    private  Privilege getOrSetSuperAdminPrivilege()
    {
-    Privilege priv = getOrSetPrivilege("ROLE_SUPERADMIN", "Superadministrator", "Access");
+    Privilege priv = getOrSetPrivilege("ROLE_SUPERADMIN", "Superadministrator", "Access", 1.0);
     priv=this.save(priv);
     return priv;
    }
@@ -81,13 +81,13 @@ public class PrivilegeService implements PrivilegeServiceInterface
     *
    */
   @Transactional
-  private Privilege getOrSetPrivilege(String privName, String label, String type)
+  private Privilege getOrSetPrivilege(String privName, String label, String type, double priority)
   {
        Optional<Privilege> privileges = this.findByName(privName);
        Privilege priv;
        if (privileges.isEmpty())
        {
-            priv = new Privilege(privName, label, type);                       
+            priv = new Privilege(privName, label, type, priority);                       
         }
        else 
            priv=privileges.get();
@@ -101,7 +101,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
    @Transactional
    private  Privilege getOrSetAdminPrivilege()
    {
-    Privilege priv = this.getOrSetPrivilege("ROLE_ADMIN", "Administrator", "Access");
+    Privilege priv = this.getOrSetPrivilege("ROLE_ADMIN", "Administrator", "Access", 2.0);
     priv=this.save(priv);
     return priv;
    }
@@ -113,7 +113,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
    @Transactional
    private  Privilege getOrSetStaffPrivilege()
    {
-    Privilege priv = getOrSetPrivilege("ROLE_STAFF", "Staff", "Access");
+    Privilege priv = getOrSetPrivilege("ROLE_STAFF", "Staff", "Access", 3.0);
     priv=this.save(priv);
     return priv;
   }
@@ -125,7 +125,7 @@ public class PrivilegeService implements PrivilegeServiceInterface
   @Transactional
   private Privilege getOrSetStandardUserPrivilege()
   {
-    Privilege priv = getOrSetPrivilege("ROLE_STANDARDUSER", "Standard User", "Access");
+    Privilege priv = getOrSetPrivilege("ROLE_STANDARDUSER", "Standard User", "Access", 4.0);
     priv=this.save(priv);
     return priv;
   }
