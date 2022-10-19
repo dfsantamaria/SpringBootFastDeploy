@@ -61,7 +61,7 @@ public class AuthLanding
                                       Model model)
         {
           this.setModel(model, user);
-          
+          model.addAttribute("togglePassword", "true");
           if(!passdtoBinding.hasErrors()) 
            {                 
               UserAccount account=userService.findByMail(user.getMail()).get();

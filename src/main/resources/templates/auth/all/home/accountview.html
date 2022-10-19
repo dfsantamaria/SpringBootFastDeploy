@@ -16,7 +16,7 @@
      
      <script th:src="@{/public/js/cookie.js}" type="text/javascript"></script>
      <script th:src="@{/public/js/togglePassword.js}" type="text/javascript"></script>
-     
+     <script th:src="@{/public/js/toggleForm.js}" type="text/javascript"></script>
   </head>
 
  
@@ -59,27 +59,27 @@
              <div class="input-group-text"><i class="fas fa-user"></i>
             <div th:if="${viewMail}" style="margin-left: 10px"> Email: <span class="wordWrap" th:text="${viewMail}"> Mail </span> </br> </div> 
             </div></div>
-
-            <div class="field-inside">
-            <div class="input-group-text"><i class="fa fa-university"></i>
-            <div th:if="${viewOrgName}" style="margin-left: 10px;"> Organization name: <span class="wordWrap" th:text="${viewOrgName}"> Org name </span> </br> </div> 
-            </div></div>
-
-            <div class="field-inside">
-            <div class="input-group-text"><i class="fa fa-key"></i>
-            <div th:if="${viewPrivilege}" style="margin-left: 10px;"> Role: <span class="wordWrap" th:text="${viewPrivilege}"> Privilege </span> </br> </div> 
-            </div>
-           </div>
+          
+          
+          
+             <div class="field-inside" style="margin-bottom: -10px">              
+                 <div class="input-group mb-3">                       
+                     <span class="input-group-text" style="flex:3">
+                         <i class="fas fa-lock"></i>
+                         <span style="margin-left: 10px">Password: ********</span>
+                      </span>                      
+                     
+                     <span class="input-group-text" style="margin-left: auto" type="button" onclick="toggleForm('editPassword');">
+                        <i class="fas fa-edit"></i>
+                     </span>
+                 </div>                                  
              
-                    
-                 
-      </fieldset>
-     
-   
-      <form name="form-edit" th:action="@{/auth/api/all/updateData}" method="post">   
-        <div class="form-group">
-         <fieldset>
-          <legend>  Change password </legend>          
+          <!-- edit password -->          
+         <form name="form-edit" th:action="@{/auth/api/all/updateData}" method="post">   
+         <div id="editPassword" th:style="${togglePassword == 'true' ? 'display:block' : 'display:none'}">
+           <div class="form-group" style="width: 90%; margin-left: 10px;">
+           <fieldset>
+           <legend>  Change password </legend>          
           <div th:object="${passdto}">
           <div class="field-inside">
               
@@ -130,14 +130,40 @@
 
 
           <div th:if="${passwordAccepted}" th:text="${passwordAccepted}" class="alert-success">  Password modified  </div>
-          <div th:if="${passwordError}" th:text="${passwordError}" class="has-error">  Error, check the passowrd fields  </div>          
+          <div th:if="${passwordError}" th:text="${passwordError}" class="has-error">  Error, check the password fields  </div>          
         </fieldset>
+            <button type="submit" class="btn btn-lg btn-primary btn-block">Submit</button> 
+        </div>
+         </div>
+         </form>
+          <!-- end edit password -->
+         </div>
+          
+          
+          
+
+            <div class="field-inside">
+              <div class="input-group-text"><i class="fa fa-university"></i>
+              <div th:if="${viewOrgName}" style="margin-left: 10px;"> Organization name: <span class="wordWrap" th:text="${viewOrgName}"> Org name </span> </br> </div> 
+              </div>
+            </div>
+
+            <div class="field-inside">
+            <div class="input-group-text"><i class="fa fa-key"></i>
+            <div th:if="${viewPrivilege}" style="margin-left: 10px;"> Role: <span class="wordWrap" th:text="${viewPrivilege}"> Privilege </span> </br> </div> 
+            </div>
+           </div>
+             
+                    
+                 
+      </fieldset>   
+   
+   
        </div>          
           
-       <button type="submit" class="btn btn-lg btn-primary btn-block">Submit</button>                 
-       </form>                  
-   </div>
-   </div>
+                       
+                       
+   </div>   
    <div th:insert="fragments/cookie.html"> </div> 
 </body>
 </html>
