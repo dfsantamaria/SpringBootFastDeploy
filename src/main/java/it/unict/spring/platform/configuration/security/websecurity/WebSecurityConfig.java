@@ -12,6 +12,7 @@ import it.unict.spring.platform.configuration.security.login.JdbcTokenRepository
 import it.unict.spring.platform.configuration.security.logout.CustomLogoutSuccessHandler;
 import it.unict.spring.platform.configuration.security.login.CustomLoginFailureHandler;
 import it.unict.spring.platform.configuration.security.login.CustomLoginSuccessHandler;
+import it.unict.spring.platform.configuration.security.matchers.MaintenanceRequestMatcher;
 import it.unict.spring.platform.service.security.CustomUserDetailsService;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,9 @@ public class WebSecurityConfig
  private DataSource dataSource;  
  @Autowired
  private CustomUserDetailsService customUserDetailsService;
- 
+ @Autowired 
+ MaintenanceRequestMatcher maintenanceRequestMatcher;
+
  @Value("${rememberme.key}")
  private String rememberkey;
  
@@ -53,7 +56,7 @@ public class WebSecurityConfig
                     
         http.csrf().disable().              
  
-                authorizeHttpRequests().                
+                authorizeHttpRequests().requestMatchers(maintenanceRequestMatcher).denyAll().                
                 antMatchers("/public/**", "/").permitAll(). 
                 antMatchers("/auth/api/all/**").authenticated().
                 antMatchers("/auth/api/superadmin/**").hasAnyRole("SUPERADMIN").

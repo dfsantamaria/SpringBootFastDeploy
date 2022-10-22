@@ -11,6 +11,7 @@ import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import it.unict.spring.platform.utility.user.ModelTemplate;
+import it.unict.spring.platform.utility.user.SettingStore;
 import java.util.Locale;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class PlatformController
 {
     @Autowired
     UserService userService;
+    @Autowired 
+    SettingStore settingStore;
     
     @RequestMapping(value = "/viewPlatformManagement", method = RequestMethod.GET)
     public ModelAndView platformManagView(Locale locale, @AuthenticationPrincipal CustomUserDetails user, Model model)
@@ -36,4 +39,11 @@ public class PlatformController
       ModelTemplate.setNavBar(setPriv.iterator(), model); 
       return new ModelAndView("auth/superadmin/platform/viewPlatformManagement"); 
     }
+    
+     @RequestMapping(value = "/toggleMaintenance", method = RequestMethod.GET)
+     public ModelAndView platformManagView(Model model)
+     {
+        settingStore.toggleMaintenanceMode();
+        return new ModelAndView("auth/superadmin/platform/viewPlatformManagement");
+     }
 }
