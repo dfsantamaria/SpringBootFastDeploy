@@ -36,14 +36,15 @@ public class PlatformController
     public ModelAndView platformManagView(Locale locale, @AuthenticationPrincipal CustomUserDetails user, Model model)
     {
       Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);  
-      ModelTemplate.setNavBar(setPriv.iterator(), model); 
-      return new ModelAndView("auth/superadmin/platform/viewPlatformManagement"); 
+      ModelTemplate.setNavBar(setPriv.iterator(), model);       
+      model.addAttribute("maintenance", platformService.isMaintenanceMode());
+      return new ModelAndView("auth/superadmin/platform/PlatformManagement"); 
     }
     
      @RequestMapping(value = "/toggleMaintenance", method = RequestMethod.GET)
      public ModelAndView platformManagView(Model model)
      {
         platformService.toggleMaintenanceMode();
-        return new ModelAndView("auth/superadmin/platform/viewPlatformManagement");
+        return new ModelAndView("redirect:/auth/api/superadmin/platform/viewPlatformManagement");
      }
 }

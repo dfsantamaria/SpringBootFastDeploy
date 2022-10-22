@@ -21,8 +21,32 @@
  <div th:insert="fragments/topNav.html"> </div> 
      <div class="outer">
       <div style="margin-top: 10px;">
-	    <h1 class="form-heading">Manage the platform</h1>       
-      	<legend> page still under construction! </legend> 
+	    <h1 class="form-heading">Manage the platform</h1>
+            
+            <fieldset>
+                 <legend> Settings </legend>
+                 
+                 <div style="margin-bottom: -10px"> 
+                     <form id="maintenanceForm" th:action="@{/auth/api/superadmin/platform/toggleMaintenance}">            
+                        <div class="input-group mb-3">                       
+                            <span class="input-group-text" style="flex:3">
+                                <i class="fas fa-sliders-h"></i>
+                                <span style="margin-left: 10px">Maintance mode is &nbsp;                                  
+                                </span>
+                                <span th:switch="${maintenance}">
+                                <b th:case="True"> ON </b>
+                                <b th:case="False"> OFF </b>
+                                </span> 
+                            </span> 
+                            <span th:switch="${maintenance}" class="input-group-text" style="margin-left: auto" type="button" onclick="document.getElementById('maintenanceForm').submit();">
+                               <i th:case="True" class="fas fa-toggle-on fa-lg">  </i>
+                               <i th:case="False" class="fas fa-toggle-off fa-lg"> </i>                            
+                            </span>
+                        </div>  
+                      </form>
+                 </div>
+                 
+            </fieldset>
       </div>
      </div>
 </body>
