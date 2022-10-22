@@ -8,9 +8,11 @@ package it.unict.spring.platform;
  */
 
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
+import it.unict.spring.platform.persistence.model.platform.PlatformStatus;
 import it.unict.spring.platform.persistence.model.user.SecureToken;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
+import it.unict.spring.platform.service.platform.PlatformStatusService;
 import it.unict.spring.platform.service.user.PrivilegeService;
 import it.unict.spring.platform.service.user.SecureTokenService;
 import it.unict.spring.platform.service.user.UserRegisterService;
@@ -56,7 +58,9 @@ public class Application extends SpringBootServletInitializer
   public SecureTokenService tokenService;
   @Autowired
   public PrivilegeService privService;
-
+  @Autowired
+  public PlatformStatusService platformService;
+  
   
   @Override
   public SpringApplicationBuilder configure(SpringApplicationBuilder application)
@@ -93,7 +97,9 @@ public class Application extends SpringBootServletInitializer
        {
         try
         {  
-           privService.startUpPrivileges();            
+           if(!platformService.isStatusDefined()) 
+               platformService.save(new PlatformStatus(false));
+           privService.startUpPrivileges();             
            if(userService.findByMail("daniele.santamaria@unict.it").isEmpty())
            {
               UserAccount user = userService.getSuperAdminUser("dfsantamaria", "lll@@", "daniele.santamaria@unict.it",

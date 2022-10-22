@@ -8,10 +8,10 @@ package it.unict.spring.platform.controller.user.superadmin;
  */
 
 import it.unict.spring.platform.persistence.model.user.Privilege;
+import it.unict.spring.platform.service.platform.PlatformStatusService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import it.unict.spring.platform.utility.user.ModelTemplate;
-import it.unict.spring.platform.utility.user.SettingStore;
 import java.util.Locale;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class PlatformController
     @Autowired
     UserService userService;
     @Autowired 
-    SettingStore settingStore;
+    PlatformStatusService platformService;
     
     @RequestMapping(value = "/viewPlatformManagement", method = RequestMethod.GET)
     public ModelAndView platformManagView(Locale locale, @AuthenticationPrincipal CustomUserDetails user, Model model)
@@ -43,7 +43,7 @@ public class PlatformController
      @RequestMapping(value = "/toggleMaintenance", method = RequestMethod.GET)
      public ModelAndView platformManagView(Model model)
      {
-        settingStore.toggleMaintenanceMode();
+        platformService.toggleMaintenanceMode();
         return new ModelAndView("auth/superadmin/platform/viewPlatformManagement");
      }
 }

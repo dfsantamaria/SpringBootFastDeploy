@@ -30,7 +30,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         entityManagerFactoryRef = "mainDataEntityManager",
         transactionManagerRef = "mainTransactionManager",
         basePackages = {"it.unict.spring.platform.persistence.repository.data", 
-                        "it.unict.spring.platform.persistence.repository.user"}
+                        "it.unict.spring.platform.persistence.repository.user",
+                        "it.unict.spring.platform.persistence.repository.platform"}
         )
 public class JpaTransactMain
 {
@@ -43,7 +44,8 @@ public class JpaTransactMain
         return builder
                 .dataSource(serversDataSource)
                 .packages("it.unict.spring.platform.persistence.model.data", 
-                "it.unict.spring.platform.persistence.model.user")
+                "it.unict.spring.platform.persistence.model.user",
+                "it.unict.spring.platform.persistence.model.platform")
                 .persistenceUnit("mainUnit")
                 .properties(additionalJpaProperties())
                 .build();
