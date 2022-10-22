@@ -14,10 +14,14 @@ public class MaintenanceRequestMatcher implements RequestMatcher
 
     @Override
     public boolean matches(HttpServletRequest request)
-    {        
+    {     
+        
         return platformService.isMaintenanceMode()
         && !request.isUserInRole("ROLE_SUPERADMIN")
-        && !request.getServletPath().startsWith("/public");
+        && !request.getServletPath().startsWith("/public") 
+        && !request.getServletPath().startsWith("/auth/api/access/login/signout")
+        && !request.getServletPath().equals("/");
+          
         
     }
 }
