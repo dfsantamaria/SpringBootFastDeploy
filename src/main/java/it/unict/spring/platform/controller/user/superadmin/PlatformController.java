@@ -23,13 +23,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
-@RequestMapping("/auth/api/superadmin")
+@RequestMapping("/auth/api/superadmin/platform")
 public class PlatformController
 {
     @Autowired
     UserService userService;
     
-    @RequestMapping(value = "/platform/viewPlatformManagement", method = RequestMethod.GET)
+    @RequestMapping(value = "/viewPlatformManagement", method = RequestMethod.GET)
     public ModelAndView platformManagView(Locale locale, @AuthenticationPrincipal CustomUserDetails user, Model model)
     {
       Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);  
