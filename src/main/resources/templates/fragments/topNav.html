@@ -26,6 +26,15 @@
         </div>
       </li>
       
+        <li th:if="${managePlatform}" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuPlatform" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Platform
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuPlatform">
+          <a class="dropdown-item" th:href="@{/auth/api/superadmin/platform/viewPlatformManagement}"  th:text="${managePlatform}"> Users</a>         
+        </div>
+      </li>
+      
     </ul>
   </div>
 </nav>
