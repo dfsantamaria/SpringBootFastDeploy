@@ -9,6 +9,7 @@ package it.unict.spring.platform.configuration.security.websecurity;
 
 
 import it.unict.spring.platform.configuration.security.authentication.CustomAccessDeniedHandler;
+import it.unict.spring.platform.configuration.security.authentication.CustomAuthEntryPoint;
 import it.unict.spring.platform.configuration.security.login.JdbcTokenRepositoryImpl;
 import it.unict.spring.platform.configuration.security.logout.CustomLogoutSuccessHandler;
 import it.unict.spring.platform.configuration.security.login.CustomLoginFailureHandler;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -31,6 +33,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -48,7 +52,10 @@ public class WebSecurityConfig
  private CustomUserDetailsService customUserDetailsService;
  @Autowired 
  MaintenanceRequestMatcher maintenanceRequestMatcher;
-
+ @Autowired
+ private CustomAuthEntryPoint unauthorizedHandler; // handle unauthorized request,
+ 
+ 
  @Value("${rememberme.key}")
  private String rememberkey;
  
@@ -76,6 +83,7 @@ public class WebSecurityConfig
                 permitAll(). 
                 
                 and().exceptionHandling().accessDeniedHandler(accessDeniedHandler()).
+                and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).         
                 
                 and()
                 .rememberMe()

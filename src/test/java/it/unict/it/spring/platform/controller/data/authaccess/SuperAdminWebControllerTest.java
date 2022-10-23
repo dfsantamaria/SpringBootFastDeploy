@@ -55,6 +55,6 @@ public class SuperAdminWebControllerTest
     void sayHelloUnauthorizedTest() throws Exception 
     {
        ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/auth/api/superadmin/hello").param("myName", name));
-       perform.andExpect(status().isUnauthorized());
+       perform.andExpect(status().isFound()); //
     }
 }
