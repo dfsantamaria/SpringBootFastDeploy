@@ -50,7 +50,7 @@ public class SuperAdminWebControllerTest
         perform.andExpect(status().isFound());        
     }
     
-   @Test
+    @Test
     @WithAnonymousUser
     void sayHelloUnauthorizedTest() throws Exception 
     {

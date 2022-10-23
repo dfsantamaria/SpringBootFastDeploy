@@ -19,7 +19,10 @@ public class MaintenanceRequestMatcher implements RequestMatcher
         return platformService.isMaintenanceMode()
         && !request.isUserInRole("ROLE_SUPERADMIN")
         && !request.getServletPath().startsWith("/public") 
-        && !request.getServletPath().startsWith("/auth/api/access/login/signout")
+        && !request.getServletPath().startsWith("/auth/api/access/login")        
+        //&& !request.getServletPath().startsWith("/auth/api/access/login/signout")
+        //&& !request.getServletPath().startsWith("/auth/api/access/login/signin")
+        //&& !request.getServletPath().startsWith("/auth/api/all/accountView")      
         && !request.getServletPath().equals("/");
           
         
