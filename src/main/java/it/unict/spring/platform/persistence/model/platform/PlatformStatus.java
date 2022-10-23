@@ -1,8 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package it.unict.spring.platform.persistence.model.platform;
+
+/**
+ *
+ * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
+ */
 
 import java.io.Serializable;
 import javax.persistence.Column;

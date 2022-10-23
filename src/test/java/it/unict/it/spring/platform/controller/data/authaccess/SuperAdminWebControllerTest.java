@@ -47,7 +47,7 @@ public class SuperAdminWebControllerTest
     public void sayHelloNonAuthTest() throws Exception
     {        
         ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/auth/api/superadmin/hello").param("myName", name));
-        perform.andExpect(status().isForbidden());        
+        perform.andExpect(status().isFound());        
     }
     
    @Test

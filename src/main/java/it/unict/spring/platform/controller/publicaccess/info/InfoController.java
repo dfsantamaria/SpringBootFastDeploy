@@ -1,4 +1,4 @@
-package it.unict.spring.platform.controller.info.publicaccess;
+package it.unict.spring.platform.controller.publicaccess.info;
 
 /**
  *

@@ -7,10 +7,8 @@ package it.unict.spring.platform.configuration.security.login;
  * 
  */
 
-import it.unict.spring.platform.persistence.model.user.UserLogin;
 import it.unict.spring.platform.service.user.UserLoginService;
 import it.unict.spring.platform.service.user.UserService;
-import it.unict.spring.platform.utility.user.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
