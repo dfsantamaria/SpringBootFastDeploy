@@ -65,7 +65,6 @@ public class WebSecurityConfig
                 antMatchers("/auth/api/admin/**").hasAnyRole("SUPERADMIN","ADMIN").
                 antMatchers("/auth/api/staff/**").hasAnyRole("SUPERADMIN","ADMIN","STAFF").
                 antMatchers("/auth/api/standarduser/**").hasAnyRole("SUPERADMIN","ADMIN","STAFF","STANDARDUSER").
-                
                 anyRequest().authenticated().and().httpBasic();
                         
         http.               
