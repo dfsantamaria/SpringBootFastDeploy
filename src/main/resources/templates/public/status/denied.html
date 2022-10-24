@@ -22,11 +22,14 @@
             <div class="container-in" style="margin-top: 10px">
                 <h1 class="form-heading">Page Not Available</h1>                 
                   <th:block th:if="${maintenance} == False">
-                    <div><p>You cannot access this page beacause either it does not exist or it is not reacheable</p></div>
+                    <div><p>You cannot access this page or the page is not reacheable.
+                         <span th:if="${logged} == null"> You can login to check whether the page is accessible for logged user.</span>
+                               
+                        </p></div>
                    </th:block>
                 
                     <th:block th:if="${maintenance} == True">
-                            <div><p>This platform is under maintenance, it will be available as soon as possible</p></div>
+                            <div><p>This platform is under maintenance, it will be available as soon as possible. </p></div>
                    </th:block>
                 <div>
                 <th:block>
@@ -39,6 +42,12 @@
                    <button class="btn btn-lg btn-primary btn-block" type="submit">Log out</button>  
                  </form>                 
                 </th:block>
+                <th:block th:if="${logged} == null">                   
+                 <form th:action="@{/public/api/access/login/signin}">                     
+                   <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>  
+                 </form>                 
+                </th:block>    
+                    
                </div>
                         
             </div>        
