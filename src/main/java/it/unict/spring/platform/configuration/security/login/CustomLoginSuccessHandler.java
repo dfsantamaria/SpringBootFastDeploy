@@ -41,6 +41,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
        UserLogin logInfo= user.getLogin();
        loginService.resetLoginFail(logInfo);  
        userService.setSuspended(user, false);
+       System.out.println(request.getHeader("Referer"));
        getRedirectStrategy().sendRedirect(request, response, "/auth/api/all/accountView");             
     } 
 }

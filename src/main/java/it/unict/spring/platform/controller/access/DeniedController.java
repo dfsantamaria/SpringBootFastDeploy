@@ -26,7 +26,7 @@ public class DeniedController
   PlatformStatusService platformService;
     
   @RequestMapping(value = "/forbidden", method = RequestMethod.GET)
-  public ModelAndView home(HttpServletRequest request, HttpServletResponse response, Model model, Authentication authentication)
+  public ModelAndView forbiddenManager(HttpServletRequest request, HttpServletResponse response, Model model, Authentication authentication)
    {
     model.addAttribute("maintenance", platformService.isMaintenanceMode()); 
     if(authentication==null)

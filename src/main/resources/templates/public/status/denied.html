@@ -37,10 +37,9 @@
                  <button class="btn btn-lg btn-primary btn-block" type="submit">Home</button>
                 </form> 
                  </th:block>
-                <th:block th:if="${logged}">
-                 <form th:action="@{/auth/api/access/login/signout}">
-                   <button class="btn btn-lg btn-primary btn-block" type="submit">Log out</button>  
-                 </form>                 
+                <th:block th:if="${logged}">                 
+                   <button class="btn btn-lg btn-primary btn-block" th:onclick="history.back();">Go back</button> 
+                                  
                 </th:block>
                 <th:block th:if="${logged} == null">                   
                  <form th:action="@{/public/api/access/login/signin}">                     
