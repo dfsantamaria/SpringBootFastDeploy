@@ -30,7 +30,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     UserLoginService loginService;
     @Autowired
     UserService userService;
-    
+    public static final String REDIRECT_URL_SESSION_ATTRIBUTE_NAME = "REDIRECT_URL";
     @Override       
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -39,9 +39,17 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
        CustomUserDetails details = (CustomUserDetails) authentication.getPrincipal();
        UserAccount user=userService.findByMail(details.getMail()).get();
        UserLogin logInfo= user.getLogin();
-       loginService.resetLoginFail(logInfo);  
-       userService.setSuspended(user, false);
-       System.out.println(request.getHeader("Referer"));
-       getRedirectStrategy().sendRedirect(request, response, "/auth/api/all/accountView");             
+       loginService.resetLoginFail(logInfo);
+       if(user.isAccountSuspended())
+         userService.setSuspended(user, false);       
+       // getRedirectStrategy().sendRedirect(request, response, "/auth/api/all/accountView");     
+       Object redirectURLObject = request.getSession().getAttribute(REDIRECT_URL_SESSION_ATTRIBUTE_NAME);
+       if(redirectURLObject != null)
+         setDefaultTargetUrl(redirectURLObject.toString());
+       else
+         setDefaultTargetUrl("/auth/api/all/accountView");        
+
+       request.getSession().removeAttribute(REDIRECT_URL_SESSION_ATTRIBUTE_NAME);
+       super.onAuthenticationSuccess(request, response, authentication);       
     } 
 }
