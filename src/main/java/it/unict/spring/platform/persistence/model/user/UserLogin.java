@@ -28,7 +28,7 @@ import lombok.AccessLevel;
 public class UserLogin implements Serializable
 {
     @Id
-    private Long id;
+    private Long user_id;
     private int failCount;
     private Timestamp lastFailDate;
     
@@ -49,7 +49,7 @@ public class UserLogin implements Serializable
     public void setUser(UserAccount user)
     {
       this.user = user;
-      this.id = user.getId();    
+      this.user_id = user.getId();    
     }
     
     @Override
@@ -67,7 +67,7 @@ public class UserLogin implements Serializable
         if (!(obj instanceof UserLogin)) 
             return false;
          
-        return this.id != null && this.id.equals(((UserLogin) obj).getId())
+        return this.user_id != null && this.user_id.equals(((UserLogin) obj).getUser_id())
                                && this.failCount==(((UserLogin) obj).getFailCount())
                                && this.lastFailDate.equals(((UserLogin) obj).getLastFailDate());
    }
