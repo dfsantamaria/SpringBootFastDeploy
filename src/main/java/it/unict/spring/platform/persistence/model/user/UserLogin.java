@@ -22,7 +22,7 @@ import lombok.AccessLevel;
  */
 
 
-@Entity(name="UserLogin")
+@Entity(name="userlogin")
 @Table(name = "userlogin", catalog = "useraccount")
 @Data
 public class UserLogin implements Serializable
@@ -41,7 +41,7 @@ public class UserLogin implements Serializable
     }
     
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
-    @MapsId
+    @MapsId("user_id")
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @Setter(AccessLevel.NONE)
     private UserAccount user;
