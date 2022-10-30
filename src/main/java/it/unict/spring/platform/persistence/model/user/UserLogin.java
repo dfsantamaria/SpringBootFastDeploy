@@ -13,7 +13,8 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.Setter;
 import lombok.AccessLevel;
-
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
@@ -28,6 +29,7 @@ import lombok.AccessLevel;
 public class UserLogin implements Serializable
 {
     @Id
+    //@GeneratedValue(strategy = GenerationType.TABLE)
     private Long user_id;
     private int failCount;
     private Timestamp lastFailDate;
