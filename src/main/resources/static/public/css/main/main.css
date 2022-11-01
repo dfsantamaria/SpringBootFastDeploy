@@ -161,5 +161,6 @@ field-inside
 {
     display: block;  
     margin-left: auto; 
-    margin-right: auto    
+    margin-right: auto;
+    max-width: 95%;    
 }
