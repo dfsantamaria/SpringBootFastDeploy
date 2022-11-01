@@ -2,7 +2,7 @@
  -- https://github.com/dfsantamaria/SpringBootFastDeploy.git -- --> 
  
 <th:block th:fragment="pagebar(formname, inputname)"> 
-      <script th:src="@{/public/js/page-bar.js}" type="text/javascript"></script>    
+      <script th:src="@{/public/js/main/page-bar.js}" type="text/javascript"></script>    
       <!-- Page number -->  
              <input th:attr="form=${formname}" th:id="${inputname}" th:field="*{paging.currentPage}" type = "hidden" value = "1"/> 
              <!-- <input th:attr="form=${formname}" th:field="*{paging.totalPages}" type = "hidden" value = "1"/>     -->        
