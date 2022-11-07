@@ -47,19 +47,19 @@ public class Application extends SpringBootServletInitializer
   
   @Autowired  
   @Qualifier("mainDataEntityManager")  
-  public LocalContainerEntityManagerFactoryBean dataEntityManagerFactory;
+  private LocalContainerEntityManagerFactoryBean dataEntityManagerFactory;
     
  
   @Autowired
-  public UserService userService;
+  private UserService userService;
   @Autowired
-  public UserRegisterService registerService;    
+  private UserRegisterService registerService;    
   @Autowired
-  public SecureTokenService tokenService;
+  private SecureTokenService tokenService;
   @Autowired
-  public PrivilegeService privService;
+  private PrivilegeService privService;
   @Autowired
-  public PlatformStatusService platformService;
+  private PlatformStatusService platformService;
   
   
   @Override
