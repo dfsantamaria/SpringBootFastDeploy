@@ -43,17 +43,10 @@ public class UserLogin implements Serializable
     }
     
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
-    @MapsId("user_id")
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @Setter(AccessLevel.NONE)
+    @MapsId
+    @JoinColumn(name = "user_id", referencedColumnName = "id")   
     private UserAccount user;
-    
-    public void setUser(UserAccount user)
-    {
-      this.user = user;
-      this.user_id = user.getId();    
-    }
-    
+        
     @Override
     public int hashCode() 
     {        

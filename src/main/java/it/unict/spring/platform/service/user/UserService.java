@@ -258,7 +258,7 @@ public class UserService implements UserServiceInterface, SearcheableInterface<U
     @Transactional
     public void createLoginInfo(UserAccount user)
     {
-     UserLogin userlogin=new UserLogin();
+     UserLogin userlogin=new UserLogin();       
      this.addLoginToUser(userlogin,user);
      loginService.save(userlogin);
     }
@@ -267,7 +267,9 @@ public class UserService implements UserServiceInterface, SearcheableInterface<U
     @Transactional
     public void addLoginToUser(UserLogin login, UserAccount account)
     {
-      account.setLogin(login);
+      UserAccount acc= this.findById(account.getId());   
+      login.setUser(acc);      
+      acc.setLogin(login);
     }
     
     @Override
