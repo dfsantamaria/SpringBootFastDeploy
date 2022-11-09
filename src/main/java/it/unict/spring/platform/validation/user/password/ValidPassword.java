@@ -1,4 +1,4 @@
-package it.unict.spring.platform.validation.user;
+package it.unict.spring.platform.validation.user.password;
 
 /**
  *
@@ -9,6 +9,7 @@ package it.unict.spring.platform.validation.user;
 
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -19,13 +20,16 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 
-@Target({TYPE,ANNOTATION_TYPE})
-@Retention(RUNTIME)
-@Constraint(validatedBy = PasswordMatchesValidator.class)
 @Documented
-public @interface PasswordMatches
-{
-    String message() default "Passwords don't match";
+@Constraint(validatedBy = PasswordConstraintValidator.class)
+@Target({TYPE, FIELD, ANNOTATION_TYPE })
+@Retention(RUNTIME)
+public @interface ValidPassword {
+
+    String message() default "Invalid Password";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
+
 }
