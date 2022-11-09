@@ -13,8 +13,6 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.Setter;
 import lombok.AccessLevel;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
@@ -43,7 +41,7 @@ public class UserLogin implements Serializable
     }
     
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
-    @MapsId("user_id")
+    @MapsId
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @Setter(AccessLevel.NONE)
     private UserAccount user;
