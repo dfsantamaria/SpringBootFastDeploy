@@ -65,6 +65,7 @@ public class CustomMailService implements MailServiceInterface
 
   SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
   simpleMailMessage.setTo(toAddress);
+  simpleMailMessage.setFrom(senderMail);
   simpleMailMessage.setSubject(subject);
   simpleMailMessage.setText(message);
   emailSender.send(simpleMailMessage);
