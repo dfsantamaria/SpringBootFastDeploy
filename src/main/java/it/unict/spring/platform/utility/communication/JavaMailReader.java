@@ -18,13 +18,15 @@ public class JavaMailReader
     private String username;
     private String password;
     private String host;
+    private String inbox;
     
-    public JavaMailReader(Store store, String host, String username, String password)
+    public JavaMailReader(Store store, String host, String username, String password, String inbox)
     {
       this.host=host;  
       this.store=store;
       this.username=username;
       this.password=password;
+      this.inbox=inbox;
     }
 
     public void connect() throws MessagingException
@@ -36,5 +38,10 @@ public class JavaMailReader
     {
       return store;
     }   
+    
+    public String getInboxFolderName()
+    {
+        return this.inbox;
+    }
     
 }

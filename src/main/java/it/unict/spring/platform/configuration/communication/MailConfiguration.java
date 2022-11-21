@@ -56,7 +56,7 @@ public class MailConfiguration
       mailProps.setProperty("mail.debug","false");
       Session session = Session.getDefaultInstance(mailProps);   
       Store store = session.getStore(protocol);      
-      return new JavaMailReader (store, host, username, password);
+      return new JavaMailReader (store, host, username, password, "Inbox");
     }
     
 }
