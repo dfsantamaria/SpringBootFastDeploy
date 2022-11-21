@@ -28,7 +28,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest(classes=Application.class)
 @Transactional
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-//@Disabled
+@Disabled
 public class MailTest 
 {  
     @SpyBean
