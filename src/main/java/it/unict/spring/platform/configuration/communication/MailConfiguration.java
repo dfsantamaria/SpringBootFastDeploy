@@ -46,6 +46,7 @@ public class MailConfiguration
     @Bean
     public JavaMailReader emailReader(@Value("imaps") String protocol,
                                             @Value("${mailreceiver.mail.host}")  String host,
+                                            @Value("${mailreceiver.mail.port}")  Integer port,
                                             @Value("${mailreceiver.mail.password}")  String password,
                                             @Value("${mailreceiver.mail.username}") String username) throws NoSuchProviderException, MessagingException
     {
@@ -56,7 +57,7 @@ public class MailConfiguration
       mailProps.setProperty("mail.debug","false");
       Session session = Session.getDefaultInstance(mailProps);   
       Store store = session.getStore(protocol);      
-      return new JavaMailReader (store, host, username, password, "Inbox");
+      return new JavaMailReader (store, host, port, username, password, "Inbox");
     }
     
 }
