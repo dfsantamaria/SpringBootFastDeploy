@@ -26,11 +26,19 @@ public class DeniedController
   PlatformStatusService platformService;
     
   @RequestMapping(value = "/forbidden", method = RequestMethod.GET)
-  public ModelAndView home(HttpServletRequest request, HttpServletResponse response, Model model, Authentication authentication)
+  public ModelAndView forbiddenManager(HttpServletRequest request, HttpServletResponse response, Model model, Authentication authentication)
    {
-    if(authentication != null)    
-     model.addAttribute("logged", true);         
-    model.addAttribute("maintenance", platformService.isMaintenanceMode());       
+    model.addAttribute("maintenance", platformService.isMaintenanceMode()); 
+    if(authentication==null)
+    {
+      model.addAttribute("logged", false);
+      if(!platformService.isMaintenanceMode())
+          return new ModelAndView("redirect:/public/api/access/login/signin");  
+    }
+    else
+    {
+        model.addAttribute("logged", true);        
+    }       
     return new ModelAndView("public/status/denied");
    }
 }

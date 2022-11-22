@@ -18,23 +18,32 @@ public class JavaMailReader
     private String username;
     private String password;
     private String host;
+    private int port;
+    private String inbox;
     
-    public JavaMailReader(Store store, String host, String username, String password)
+    public JavaMailReader(Store store, String host, int port, String username, String password, String inbox)
     {
       this.host=host;  
       this.store=store;
       this.username=username;
       this.password=password;
+      this.inbox=inbox;
+      this.port = port;
     }
 
     public void connect() throws MessagingException
     {
-       store.connect(host, username, password);       
+       store.connect(host, port, username, password);       
     }
 
     public Store getStore()
     {
       return store;
     }   
+    
+    public String getInboxFolderName()
+    {
+        return this.inbox;
+    }
     
 }

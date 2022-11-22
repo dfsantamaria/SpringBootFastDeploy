@@ -44,21 +44,28 @@ public class CustomMailService implements MailServiceInterface
     emailReader.getStore().close();
   }
  
-  public Message[] getInbox() throws MessagingException
+  public Message[] getInbox(String folder) throws MessagingException
     {        
       emailReader.connect();
-      Folder emailFolder = emailReader.getStore().getFolder("INBOX");
+      Folder emailFolder = emailReader.getStore().getFolder(folder);
       emailFolder.open(Folder.READ_ONLY);
       // retrieve the messages from the folder in an array and print it
       Message[] messages=emailFolder.getMessages().clone();       
       return messages;
     }
+  
+  
+  public Message[] getInbox()throws MessagingException
+  {
+    return this.getInbox(emailReader.getInboxFolderName());
+  }
  
  @Override
  public void sendSimpleEmail(String toAddress, String subject, String message) {
 
   SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
   simpleMailMessage.setTo(toAddress);
+  simpleMailMessage.setFrom(senderMail);
   simpleMailMessage.setSubject(subject);
   simpleMailMessage.setText(message);
   emailSender.send(simpleMailMessage);

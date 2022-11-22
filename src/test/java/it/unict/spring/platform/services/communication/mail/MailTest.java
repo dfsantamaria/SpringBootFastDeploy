@@ -15,19 +15,20 @@ import java.time.LocalDateTime;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
+import javax.transaction.Transactional;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("test")
-@ComponentScan(basePackages = {"it.unict.spring.application.service.*", "it.unict.spring.application.configuration.*"})
-@SpringBootTest(classes=Application.class, properties = {"spring.main.allow-bean-definition-overriding=true"})
-
+@SpringBootTest(classes=Application.class)
+@Transactional
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Disabled
 public class MailTest 
 {  
@@ -37,7 +38,7 @@ public class MailTest
     private final String subject=MailTest.class+"-"+Timestamp.valueOf(LocalDateTime.now()).toString();
         
     
-    @BeforeEach
+    @BeforeAll
     //Send myself an email  containing a timestamp, we then check the inbox for such email
     public void emailTest() throws MessagingException
     {
@@ -49,7 +50,7 @@ public class MailTest
     //we check the inbox to find the email with the given timestamp
     public void read() throws NoSuchProviderException, MessagingException
     {     
-      Message[] messages = mailService.getInbox(); 
+      Message[] messages = mailService.getInbox(); //getInbox("Inbox")
       Message found=null;
       for(Message m: messages)
       {

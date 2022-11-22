@@ -65,6 +65,7 @@ public class CustomUserDetailsServiceTest
   private SecureToken thesecuretoken;
   
   @BeforeAll
+  @Transactional
   public void pushData() throws MultipleUsersFoundException
   {
           theuser = userService.getSuperAdminUser(username, 
@@ -82,6 +83,7 @@ public class CustomUserDetailsServiceTest
   }
   
   @AfterAll
+  @Transactional
   public void clear()
   {
     userService.deleteUser(theuser);

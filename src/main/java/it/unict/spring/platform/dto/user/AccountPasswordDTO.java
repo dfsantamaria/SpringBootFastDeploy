@@ -9,8 +9,8 @@ package it.unict.spring.platform.dto.user;
  */
 
 import com.sun.istack.NotNull;
-import it.unict.spring.platform.validation.user.PasswordMatches;
-import it.unict.spring.platform.validation.user.ValidPassword;
+import it.unict.spring.platform.validation.user.password.PasswordMatches;
+import it.unict.spring.platform.validation.user.password.ValidPassword;
 import lombok.Data;
 
 

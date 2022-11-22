@@ -13,7 +13,6 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.Setter;
 import lombok.AccessLevel;
-
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
@@ -22,13 +21,14 @@ import lombok.AccessLevel;
  */
 
 
-@Entity(name="UserLogin")
+@Entity(name="userlogin")
 @Table(name = "userlogin", catalog = "useraccount")
 @Data
 public class UserLogin implements Serializable
 {
     @Id
-    private Long id;
+    //@GeneratedValue(strategy = GenerationType.TABLE)
+    private Long user_id;
     private int failCount;
     private Timestamp lastFailDate;
     
@@ -49,7 +49,7 @@ public class UserLogin implements Serializable
     public void setUser(UserAccount user)
     {
       this.user = user;
-      this.id = user.getId();    
+      this.user_id = user.getId();    
     }
     
     @Override
@@ -67,7 +67,7 @@ public class UserLogin implements Serializable
         if (!(obj instanceof UserLogin)) 
             return false;
          
-        return this.id != null && this.id.equals(((UserLogin) obj).getId())
+        return this.user_id != null && this.user_id.equals(((UserLogin) obj).getUser_id())
                                && this.failCount==(((UserLogin) obj).getFailCount())
                                && this.lastFailDate.equals(((UserLogin) obj).getLastFailDate());
    }
