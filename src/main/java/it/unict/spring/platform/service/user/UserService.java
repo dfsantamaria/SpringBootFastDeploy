@@ -33,7 +33,7 @@ import it.unict.spring.platform.persistence.model.user.UserLogin;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.persistence.repository.user.UserRepository;
 import it.unict.spring.platform.service.communication.CustomMailService;
-import it.unict.spring.platform.serviceinterface.user.SearcheableInterface;
+import it.unict.spring.platform.serviceinterface.utility.search.SearcheableInterface;
 import it.unict.spring.platform.serviceinterface.user.UserServiceInterface;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.util.ArrayList;

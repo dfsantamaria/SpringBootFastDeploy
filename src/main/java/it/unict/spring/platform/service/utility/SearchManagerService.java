@@ -9,7 +9,7 @@ package it.unict.spring.platform.service.utility;
 
 
 import it.unict.spring.platform.dto.user.PageDTO;
-import it.unict.spring.platform.serviceinterface.user.SearcheableInterface;
+import it.unict.spring.platform.serviceinterface.utility.search.SearcheableInterface;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Page;
