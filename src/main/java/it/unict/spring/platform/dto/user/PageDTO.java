@@ -20,11 +20,15 @@ public class PageDTO
    
    public boolean isNextDisabled()
    {
+     if (totalPages==currentPage)
+         return true;
      return getFirstPage()+pageSpan >= totalPages;
    }
    
    public boolean isPreviousDisabled()
    {
+     if(currentPage<=1)
+         return true;
      return getFirstPage() <= pageSpan;
    } 
    
