@@ -87,7 +87,7 @@ public class SearchManagerServiceTest
        PageDTO pageSearch=new PageDTO();
        pageSearch.setCurrentPage(1);
        pageSearch.setPageSpan(10);
-       pageSearch.setItemsNumber("10");
+       pageSearch.setItemsNumber(10);
        Page<UserAccount> pages = searchManager.search(userServ, pageSearch, testUser);
        List<UserSearchDTO> results = userServ.createUserSearchDTOFromPage(pages);
        assertFalse(results.isEmpty());

@@ -24,7 +24,7 @@ public class SearchManagerService<T>
 {    
     public Page<T> search(SearcheableInterface searchService, PageDTO pageSearch, SearchDTOInterface searchdto)
     {
-      int itemsNumb = Integer.parseInt(pageSearch.getItemsNumber());         
+      int itemsNumb = pageSearch.getItemsNumber();         
       if(pageSearch.getCurrentPage()<0)
       {
          int currentPage;
