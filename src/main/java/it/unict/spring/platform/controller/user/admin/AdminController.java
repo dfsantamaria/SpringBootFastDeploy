@@ -7,7 +7,7 @@ package it.unict.spring.platform.controller.user.admin;
  * 
  */
 
-import it.unict.spring.platform.dto.user.PageDTO;
+import it.unict.spring.platform.dto.utility.PageDTO;
 import it.unict.spring.platform.dto.user.UserSearchDTO;
 import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.persistence.model.user.UserAccount;

@@ -1,4 +1,4 @@
-package it.unict.spring.platform.dto.user;
+package it.unict.spring.platform.dto.utility;
 /**
  *
  * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
@@ -36,15 +36,16 @@ public class PageDTO
    {
      if(this.getTotalPages()==0)
          return 1;
-     return (this.getPageSpan() <= this.getTotalPages()? this.getPageSpan() : this.getTotalPages());     
+     return  this.getFirstPage() + Math.min(this.getPageSpan(), getTotalPages()-getFirstPage()+1) -1;     
    }
    
    public int getFirstPage()
-   {
-     int count = 1;
-     while(count<this.getCurrentPage())
-         count+=this.getPageSpan();
-     return count;
+   { 
+     int shift= getPageSpan(); 
+     if((getCurrentPage() % getPageSpan()) !=0)
+         shift = (getCurrentPage() % getPageSpan());
+     return getCurrentPage() - shift +1;
    }
+
    
 }

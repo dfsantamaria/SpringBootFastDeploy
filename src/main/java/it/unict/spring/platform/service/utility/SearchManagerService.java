@@ -8,7 +8,7 @@ package it.unict.spring.platform.service.utility;
  */
 
 
-import it.unict.spring.platform.dto.user.PageDTO;
+import it.unict.spring.platform.dto.utility.PageDTO;
 import it.unict.spring.platform.serviceinterface.utility.search.SearcheableInterface;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,16 +25,7 @@ public class SearchManagerService<T>
     public Page<T> search(SearcheableInterface searchService, PageDTO pageSearch, SearchDTOInterface searchdto)
     {
       int itemsNumb = pageSearch.getItemsNumber();         
-      if(pageSearch.getCurrentPage()<0)
-      {
-         int currentPage;
-         if(pageSearch.getCurrentPage() == -1)          
-           currentPage= pageSearch.getFirstPage()- pageSearch.getPageSpan(); 
-         else  
-           currentPage = pageSearch.getFirstPage()+pageSearch.getPageSpan();         
-         pageSearch.setCurrentPage(currentPage);       
-      } 
-      
+          
       Page<T> pages = null;
       try
       {

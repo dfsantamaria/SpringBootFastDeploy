@@ -9,7 +9,7 @@ package it.unict.spring.platform.services.utility;
 
 import it.unict.spring.platform.common.InitData;
 import it.unict.spring.platform.Application;
-import it.unict.spring.platform.dto.user.PageDTO;
+import it.unict.spring.platform.dto.utility.PageDTO;
 import it.unict.spring.platform.dto.user.UserSearchDTO;
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
