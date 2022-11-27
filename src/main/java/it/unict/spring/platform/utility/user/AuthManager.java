@@ -8,8 +8,11 @@ import it.unict.spring.platform.persistence.model.user.Privilege;
 
 /**
  *
- * @author danie
+ * @author Daniele Francesco Santamaria daniele.santamaria@unict.it
+ * -- https://github.com/dfsantamaria/SpringBootFastDeploy.git --
+ * 
  */
+
 public  class AuthManager
 {    
   public static boolean isAtLeastAdmin(Privilege auth)
