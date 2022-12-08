@@ -13,8 +13,7 @@ import lombok.Data;
 public class PageDTO 
 {   
    private int totalPages; //number of Page get from the Search
-   private int itemsNumber; //number of results to be shown for each page
-  
+   private int itemsNumber; //number of results to be shown for each page  
    private int pageSpan; //number of page button to be shown
    private int currentPage; //the current page
    
@@ -36,7 +35,7 @@ public class PageDTO
    {
      if(this.getTotalPages()==0)
          return 1;
-     return  this.getFirstPage() + Math.min(this.getPageSpan(), getTotalPages()-getFirstPage()+1) -1;     
+     return  this.getFirstPage() + Math.min(this.getPageSpan(), getTotalPages()-getFirstPage()+1) -1;   
    }
    
    public int getFirstPage()
@@ -47,5 +46,11 @@ public class PageDTO
      return getCurrentPage() - shift +1;
    }
 
+   public int getItemStep()
+   {
+     if(currentPage==1)
+         return 1;
+     return (currentPage-1)*(getPageSpan()+1);
+   }
    
 }
