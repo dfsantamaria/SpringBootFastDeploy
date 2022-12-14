@@ -38,9 +38,9 @@
                             <div th:if="${viewName}" style="margin-left: 10px"> Name: <span class="wordWrap" th:text="${viewName}"> Name </span> </br> </div>
                         </div>                    </div>        
 
-                    <div class="field-inside"> 
+                    <div th:if="${viewMiddleName}" class="field-inside"> 
                         <div class="input-group-text"> <i class="fa fa-address-book"></i>
-                            <div th:if="${viewMiddleName}" style="margin-left: 10px;"> Middle name: <span class="wordWrap" th:text="${viewMiddleName}"> Middle name </span> </br> </div>	
+                            <div style="margin-left: 10px;"> Middle name: <span class="wordWrap" th:text="${viewMiddleName}"> Middle name </span> </br> </div>	
                         </div>
                     </div>
 
