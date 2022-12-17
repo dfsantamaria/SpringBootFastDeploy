@@ -504,4 +504,10 @@ public class UserService implements UserServiceInterface, SearcheableInterface<U
          mails.add(account.getMail());
       return mails;
     }
+    
+    @Override    
+    public void sendNotificationMail(CustomUserDetails user, String head, String usermessage)
+    {
+      mailService.sendSimpleEmail(user.getMail(), head, usermessage);  
+    }
 }

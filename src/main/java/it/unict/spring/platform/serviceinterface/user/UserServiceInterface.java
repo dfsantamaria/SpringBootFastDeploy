@@ -8,7 +8,6 @@ package it.unict.spring.platform.serviceinterface.user;
  */
 
 import it.unict.spring.platform.dto.user.UserAccountDTO;
-import it.unict.spring.platform.dto.user.UserSearchDTO;
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
 import it.unict.spring.platform.exception.user.UserAccountAlreadyVerified;
 import it.unict.spring.platform.persistence.model.user.Organization;
@@ -74,4 +73,5 @@ public interface UserServiceInterface
     void enableRoleStaffMember(Long id, String token, boolean approve);
     void upgradeUserPrivilegeWithToken(Long id, String token, boolean approve, Privilege privilege);
     void sendEnableStaffRoleMail(UserAccount user, String url);
+    void sendNotificationMail(CustomUserDetails user, String head, String usermessage);
 }

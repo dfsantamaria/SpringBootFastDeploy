@@ -116,7 +116,7 @@ public class AdminController
          }
          message+="User will be notified of your decision. ";
          model.addAttribute("message", message);
-         //send email to user with head, usermessage
+         userService.sendNotificationMail(user, head, usermessage);
          
        }           
        return new ModelAndView("auth/all/home/authnotification");   
