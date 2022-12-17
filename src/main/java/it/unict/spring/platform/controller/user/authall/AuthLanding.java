@@ -117,5 +117,6 @@ public class AuthLanding
           model.addAttribute("viewUsername", user.getUsername() );  
           model.addAttribute("viewMail",  user.getMail());
           model.addAttribute("viewOrgName", org.getName());
+          model.addAttribute("roleupgrade", userService.isRoleUpgradePending(user.getId()));
         }
 }

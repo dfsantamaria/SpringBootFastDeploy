@@ -25,6 +25,7 @@ public interface SecureTokenRepository extends JpaRepository<SecureToken, Long>
  List<SecureToken> findAllByUser(UserAccount user);
  Optional<SecureToken> findOneByToken(String token);
  Optional<SecureToken> findOneByUser(UserAccount user);
+ Optional<SecureToken> findOneByUser_IdAndTokenId_TokenType(Long id, String token);
  @Override 
  SecureToken save(SecureToken user);   
  @Override

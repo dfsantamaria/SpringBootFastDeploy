@@ -48,6 +48,12 @@ public class SecureTokenService implements SecureTokenServiceInterface
       return repository.findAllByUser(user);
     }
        
+    @Override   
+    @Transactional
+    public Optional<SecureToken> findOneByUser_IdAndTokenType(Long id, String tokentype)
+    {
+      return repository.findOneByUser_IdAndTokenId_TokenType(id, tokentype);
+    }
     
     @Override
     @Transactional

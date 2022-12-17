@@ -149,7 +149,9 @@
 
                     <div class="field-inside">
                         <div class="input-group-text"><i class="fa fa-key"></i>
-                            <div th:if="${viewPrivilege}" style="margin-left: 10px;"> Role: <span class="wordWrap" th:text="${viewPrivilege}"> Privilege </span> </br> </div> 
+                            <div th:if="${viewPrivilege}" style="margin-left: 10px;"> Role: <span class="wordWrap" th:text="${viewPrivilege}"> Privilege </span>
+                             <span th:if="${roleupgrade}"> (Upgrade is pending) </span> </br>
+                            </div>  
                         </div>
                     </div>    
                 </fieldset>   

@@ -510,4 +510,10 @@ public class UserService implements UserServiceInterface, SearcheableInterface<U
     {
       mailService.sendSimpleEmail(user.getMail(), head, usermessage);  
     }
+    
+    @Override
+    public boolean isRoleUpgradePending(Long id)
+    {      
+      return secureTokenService.findOneByUser_IdAndTokenType(id, "UStaff").isPresent();
+    }
 }

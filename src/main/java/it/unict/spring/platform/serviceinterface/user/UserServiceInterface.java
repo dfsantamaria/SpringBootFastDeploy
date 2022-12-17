@@ -74,4 +74,5 @@ public interface UserServiceInterface
     void upgradeUserPrivilegeWithToken(Long id, String token, boolean approve, Privilege privilege);
     void sendEnableStaffRoleMail(UserAccount user, String url);
     void sendNotificationMail(CustomUserDetails user, String head, String usermessage);
+    boolean isRoleUpgradePending(Long id);
 }

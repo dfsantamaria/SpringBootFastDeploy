@@ -19,7 +19,7 @@ public interface SecureTokenServiceInterface
     SecureToken generateToken (UserAccount user, String tokenType);
     SecureToken save (SecureToken token);  
     void delete(SecureToken token);      
-    
+    Optional<SecureToken> findOneByUser_IdAndTokenType(Long id, String tokentype);
     List<SecureToken> findByUser(UserAccount user);
     Optional<SecureToken> findByToken(String token);
     void consumeToken(SecureToken sec);
