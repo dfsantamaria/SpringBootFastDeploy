@@ -59,20 +59,16 @@ public interface UserServiceInterface
     void addRegisterToUser(UserRegister register, UserAccount account);
     void addLoginToUser(UserLogin login, UserAccount user);
     public void createLoginInfo(UserAccount user);
-    void setEnabled(UserAccount user, boolean enabled);
-   
-    
+    void setEnabled(UserAccount user, boolean enabled);    
     void sendRegistrationMail(UserAccount user, String url);
-    void sendRecoverPasswordMail(UserAccount user, String url);
-    
+    void sendRecoverPasswordMail(UserAccount user, String url);    
     SecureToken assignTokenToUser(UserAccount user, String type);
     boolean verifyRegistrationToken(String token) throws UserAccountAlreadyVerified;
-    boolean verifyPasswordChangedToken(String token, String password);
-    
+    boolean verifyPasswordChangedToken(String token, String password);    
     void setAccountNonLocked(UserAccount user, boolean enabled);
     void enableRoleStaffMember(Long id, String token, boolean approve);
     void upgradeUserPrivilegeWithToken(Long id, String token, boolean approve, Privilege privilege);
     void sendEnableStaffRoleMail(UserAccount user, String url);
-    void sendNotificationMail(CustomUserDetails user, String head, String usermessage);
+    void sendNotificationMail(Long id, String head, String usermessage);
     boolean isRoleUpgradePending(Long id);
 }

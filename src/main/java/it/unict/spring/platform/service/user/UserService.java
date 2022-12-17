@@ -506,9 +506,10 @@ public class UserService implements UserServiceInterface, SearcheableInterface<U
     }
     
     @Override    
-    public void sendNotificationMail(CustomUserDetails user, String head, String usermessage)
+    public void sendNotificationMail(Long user, String head, String usermessage)
     {
-      mailService.sendSimpleEmail(user.getMail(), head, usermessage);  
+      String mail= this.findById(user).getMail();
+      mailService.sendSimpleEmail(mail, head, usermessage);  
     }
     
     @Override
