@@ -11,6 +11,7 @@ import it.unict.spring.platform.dto.utility.PageDTO;
 import it.unict.spring.platform.dto.user.UserSearchDTO;
 import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
+import it.unict.spring.platform.service.user.SecureTokenService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.util.Locale;
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -38,6 +40,8 @@ public class AdminController
 {
    @Autowired
    UserService userService; 
+   @Autowired
+   SecureTokenService secureTokenService;
    @Autowired
    SearchManagerService searchManager;
    
@@ -81,7 +85,49 @@ public class AdminController
       return new ModelAndView("redirect:/auth/api/admin/usersView");
    }  
    
-
+   @RequestMapping(value = "/upgradeUserRoleAtStaff", method = RequestMethod.GET)
+    public ModelAndView upgradeUserRoleAtStaff(@AuthenticationPrincipal CustomUserDetails user,
+                                      @RequestParam("token") String token, 
+                                      @RequestParam("approve") boolean approve, Model model)
+    {
+       this.setModelTemplate(user, model);
+       Long id=secureTokenService.existsToken(token); 
+       if(id==0L)
+       {           
+          model.addAttribute("parsed",true);
+       }
+       else
+       {         
+         model.addAttribute("parsed", false);
+         userService.enableRoleStaffMember(id, token, approve);
+         String message="";
+         String usermessage="";
+         String head="Web Platform: Account Upgrade decision";
+         if(approve)
+         {
+             message+="The request has been accepted.";
+             usermessage+="Your request for account updgrade has been accepted";
+         }
+         else
+         {
+             message+="The request has been rejected.";
+             usermessage+="Your request for account updgrade has been rejected. "
+                     + "Contact an administrator for clarifications. ";
+         }
+         message+="User will be notified of your decision. ";
+         model.addAttribute("message", message);
+         //send email to user with head, usermessage
+         
+       }           
+       return new ModelAndView("auth/all/home/authnotification");   
+    }
+    
+    
+    private void setModelTemplate(CustomUserDetails user, Model model)
+    {
+      Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);  
+      ModelTemplate.setNavBar(setPriv.iterator(), model);
+    }
 }
 
                                       

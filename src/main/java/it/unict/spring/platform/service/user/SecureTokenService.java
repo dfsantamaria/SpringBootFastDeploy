@@ -95,5 +95,13 @@ public class SecureTokenService implements SecureTokenServiceInterface
       applogger.info("Token consumed: "+ sec.getToken() + "user id:"+ sec.getTokenId().getTokenId());
     }
            
-    
+    @Override
+    @Transactional
+    public Long existsToken(String token)
+    {
+        List<SecureToken> findAllByToken = repository.findAllByToken(token);
+        if(findAllByToken.isEmpty())
+            return 0L;
+        return findAllByToken.get(0).getUser().getId();
+    }
 }

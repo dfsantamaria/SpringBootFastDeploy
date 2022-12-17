@@ -22,13 +22,15 @@ public class UserAccountDTO
     private String mail;      
     @Valid    
     private AccountPasswordDTO password;
+    @NotNull
+    Long role=0L;
     
-    
-    public UserAccountDTO(String username, String mail, String password, String confirmPassword)
+    public UserAccountDTO(String username, String mail, String password, String confirmPassword, Long role)
     {
       this.username=username;
       this.mail = mail;
-      this.password=new AccountPasswordDTO(password, confirmPassword);      
+      this.password=new AccountPasswordDTO(password, confirmPassword);
+      this.role=role;      
     }      
     
 }

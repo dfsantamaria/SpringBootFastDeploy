@@ -60,7 +60,8 @@ public class RegistrationControllerTest
                                                .param("password.password", user.getPassword())
                                                .param("password.confirmPassword", user.getPassword())
                                                .param("mail", user.getMail())
-                                               .param("name", "test organization").with(csrf())
+                                               .param("name", "test organization")
+                                               .param("role","1").with(csrf())
                 )
            .andExpect(status().isOk());                
       service.deleteUser(user); 

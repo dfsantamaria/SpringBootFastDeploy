@@ -71,5 +71,7 @@ public interface UserServiceInterface
     boolean verifyPasswordChangedToken(String token, String password);
     
     void setAccountNonLocked(UserAccount user, boolean enabled);
-   
+    void enableRoleStaffMember(Long id, String token, boolean approve);
+    void upgradeUserPrivilegeWithToken(Long id, String token, boolean approve, Privilege privilege);
+    void sendEnableStaffRoleMail(UserAccount user, String url);
 }

@@ -456,4 +456,52 @@ public class UserService implements UserServiceInterface, SearcheableInterface<U
        return result;
     }
 
+    
+    
+    
+    @Override   
+    @Transactional
+    public void sendEnableStaffRoleMail(UserAccount user, String url)
+    { 
+      String infouser=user.getMail();      
+      List<String> adminMails = this.getAdminMails();
+      SecureToken token = secureTokenService.generateToken(user, "UStaff");       
+      this.save(user);
+      secureTokenService.save(token);
+      String message="User "+ infouser+" requested to be registered as Staff member for the Web Portal. Click here to approve: ";
+      message+=url+"?token="+ token.getToken()+"&approve=true\n";
+      message+="To reject the request click here: ";
+      message+=url+"?token="+ token.getToken()+"&approve=false\n";    
+      for(String mail : adminMails)
+         mailService.sendSimpleEmail(mail, "User request for Web Portal",message);  
+    }
+
+    
+    @Transactional
+    @Override
+    public void upgradeUserPrivilegeWithToken(Long id, String token, boolean approve, Privilege privilege)
+    {
+      UserAccount user=this.findById(id);
+      if(approve)
+      {          
+        privilegeService.upgradeUserPrivilege(user, privilege);
+      }
+      secureTokenService.delete(secureTokenService.findByToken(token).get());
+    }
+    
+    @Transactional
+    @Override
+    public void enableRoleStaffMember(Long id, String token, boolean approve)
+    {
+     this.upgradeUserPrivilegeWithToken(id, token, approve, privilegeService.getStaffUserPrivilege());
+    }
+    
+    private List<String> getAdminMails()
+    {
+      List<UserAccount> accounts=repository.findAllByPrivileges_Id(2L);
+      List<String> mails = new ArrayList<>();
+      for (UserAccount account : accounts)
+         mails.add(account.getMail());
+      return mails;
+    }
 }

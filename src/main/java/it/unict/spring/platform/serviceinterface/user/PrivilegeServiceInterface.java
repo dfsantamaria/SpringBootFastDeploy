@@ -8,6 +8,7 @@ package it.unict.spring.platform.serviceinterface.user;
  */
 
 import it.unict.spring.platform.persistence.model.user.Privilege;
+import it.unict.spring.platform.persistence.model.user.UserAccount;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,9 @@ public interface PrivilegeServiceInterface
     void startUpPrivileges();//   Persist the default user roles    
     Privilege getPrivilege(String privName); // Retrieve the user role given in input
     Privilege getSuperAdminPrivilege(); //Retrieve the superadmin user role
-    Privilege getStandardUserPrivilege();   
+    Privilege getStandardUserPrivilege(); 
+    Privilege getStaffUserPrivilege();
+    void upgradeUserPrivilege(UserAccount user, Privilege newprivilege);
 //  Privilege getAdminPrivilege(); 
     
  //   Privilege getStaffPrivilege();

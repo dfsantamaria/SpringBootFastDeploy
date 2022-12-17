@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.util.StringUtils;
 
 
 @Controller
@@ -103,7 +104,12 @@ public class RegistrationController
                                                                  userreg, organization);  
             userService.createLoginInfo(user);
             userService.sendRegistrationMail(user, request.getRequestURL().toString());
-            
+            if(userdto.getRole() == 1)
+            {              
+              String url=StringUtils.substringBefore(request.getRequestURL(), request.getContextPath())+request.getContextPath();
+              url+="/auth/api/admin/upgradeUserRoleAtStaff";
+              userService.sendEnableStaffRoleMail(user, url);
+            }
           } 
           catch (MultipleUsersFoundException ex)
            {

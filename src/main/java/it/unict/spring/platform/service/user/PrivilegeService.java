@@ -9,6 +9,7 @@ package it.unict.spring.platform.service.user;
 
 import it.unict.spring.platform.serviceinterface.user.PrivilegeServiceInterface;
 import it.unict.spring.platform.persistence.model.user.Privilege;
+import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.repository.user.PrivilegeRepository;
 import java.util.List;
 import java.util.Optional;
@@ -149,6 +150,13 @@ public class PrivilegeService implements PrivilegeServiceInterface
     return getPrivilege("ROLE_STANDARDUSER");
   }
   
+  @Override 
+  @Transactional
+  public Privilege getStaffUserPrivilege()
+  {
+    return getPrivilege("ROLE_STAFF");
+  }
+  
   /* 
     * Retrive the admin user role given in input
     *
@@ -167,4 +175,19 @@ public class PrivilegeService implements PrivilegeServiceInterface
            priv=privileges.get();
        return priv;
   }  
+  
+  @Override
+  @Transactional
+  public  void upgradeUserPrivilege(UserAccount user, Privilege newprivilege)
+    {
+      for(Privilege privilege: user.getPrivileges())
+      {
+        if(privilege.getType().equals("Access") && privilege.getPriority()!=newprivilege.getPriority())
+        {
+          user.removePrivileges(privilege);
+          break;
+        }
+      }    
+      user.addPrivileges(newprivilege);       
+    }
 }

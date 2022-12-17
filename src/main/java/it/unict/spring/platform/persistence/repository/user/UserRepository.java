@@ -35,4 +35,5 @@ public interface UserRepository extends JpaRepository<UserAccount, Long>
     void delete(UserAccount user); 
     @Override
     void deleteById(Long id);  
+    List<UserAccount> findAllByPrivileges_Id(Long id);
 }
