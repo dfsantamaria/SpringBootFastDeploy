@@ -138,7 +138,7 @@ public class RegistrationController
        {
        if(userService.verifyRegistrationToken(token))       
        {
-           model.addAttribute("tokenSuccess","You registration have been verified");
+           model.addAttribute("tokenSuccess","You registration has been verified");
            response.setStatus(HttpServletResponse.SC_OK);
        }    
        else  
