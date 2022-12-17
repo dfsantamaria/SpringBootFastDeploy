@@ -1,4 +1,4 @@
-package it.unict.spring.platform.serviceinterface.user;
+package it.unict.spring.platform.serviceinterface.utility.search;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,5 +13,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface SearcheableInterface<T,D>
 {
-   Page<T> searchFromDTO(D usersearchdto, Pageable pageable);    
+   Page<T> searchFromDTO(D searchdto, Pageable pageable);    
 }

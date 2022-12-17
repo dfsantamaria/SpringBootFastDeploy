@@ -7,7 +7,8 @@
              <input th:attr="form=${formname}" th:id="${inputname}" th:field="*{paging.currentPage}" type = "hidden" value = "1"/> 
              <!-- <input th:attr="form=${formname}" th:field="*{paging.totalPages}" type = "hidden" value = "1"/>     -->        
              <input th:attr="form=${formname}"  th:field="*{paging.pageSpan}" type = "hidden" value = "1"/>              
-             <select th:attr="form=${formname}" class="form-control form-control-sm" style="height: 38px " id="pageSelect" th:field="*{paging.itemsNumber}">                        
+             <select th:attr="form=${formname}" class="form-control form-control-sm" style="height: 38px " id="pageSelect" 
+                     th:field="*{paging.itemsNumber}" th:onchange="submitPage([[${formname}]], [[${inputname}]], 1);">                        
               <option  th:each="val: ${itemVals}"  th:value="${val}" th:text="${val}"> 
               </option>  
              </select>              
@@ -18,24 +19,25 @@
                     
                 <a class="page-link"                        
                         href="javascript:;"                        
-                        th:onclick="submitPage([[${formname}]], [[${inputname}]], -1);">
+                        th:onclick="submitPage([[${formname}]], [[${inputname}]], [[${paging.getFirstPage()-1}]])">
                         Previous
                 </a> 
-                </li>   
-                <li th:each="page : ${paging.getCurrentSpan()}" 
-                    class="page-item" th:classappend="${page == paging.getCurrentPage()} ? 'disabled'">                    
+                </li>  
+                <th:block th:each="page : ${#numbers.sequence(paging.getFirstPage(), paging.getCurrentSpan())}">
+                <li class="page-item" th:classappend="${page == paging.getCurrentPage()} ? 'disabled'">                    
                  
-                    <a class="page-link"                        
+                    <a class="page-link"                       
                        href="javascript:;"
-                       th:onclick="submitPage([[${formname}]], [[${inputname}]], ${page});"
+                       th:onclick="submitPage([[${formname}]], [[${inputname}]], [[${page}]]);"
                        th:text="${page}">
-                    </a>                                            
+                    </a>                      
                 </li>
+                </th:block>
                 <!-- Next -->
                 <li class="page-item" th:classappend="${paging.isNextDisabled()} ? 'disabled'"> 
                 <a class="page-link"                        
                         href="javascript:;"                        
-                        th:onclick="submitPage([[${formname}]], [[${inputname}]], -2);">
+                        th:onclick="submitPage([[${formname}]], [[${inputname}]], [[${paging.getCurrentSpan()+1}]]);">
                         Next
                 </a> 
                 </li>                

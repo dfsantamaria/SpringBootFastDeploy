@@ -22,10 +22,10 @@ public class ModelTemplate
     { 
       Privilege auth=((Privilege) privileges.next());
       //check wheter the user is administrator or superadministrator and activate the related functionalities
-      if(auth.getType().equals("Access") && auth.getPriority()<=2)
+      if(AuthManager.isAtLeastAdmin(auth))
           model.addAttribute("userPage", "Manage Users");
-      if(auth.getType().equals("Access") && auth.getPriority()<=1)
+      if(AuthManager.isAtLeastSuperadmin(auth))
           model.addAttribute("managePlatform", "Manage Platform");
     }
-  }
+  } 
 }
