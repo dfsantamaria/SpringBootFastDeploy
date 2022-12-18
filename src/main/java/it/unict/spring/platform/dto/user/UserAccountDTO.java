@@ -21,11 +21,10 @@ public class UserAccountDTO
     @NotNull   
     private String mail;      
     @Valid    
-    private AccountPasswordDTO password;
-    @NotNull
-    Long role=0L;
+    private AccountPasswordDTO password;    
+    double role=0.0;
     
-    public UserAccountDTO(String username, String mail, String password, String confirmPassword, Long role)
+    public UserAccountDTO(String username, String mail, String password, String confirmPassword, double role)
     {
       this.username=username;
       this.mail = mail;

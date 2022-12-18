@@ -19,6 +19,7 @@ import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.service.user.OrganizationService;
 import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
+import it.unict.spring.platform.utility.user.AuthManager;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -104,7 +105,7 @@ public class RegistrationController
                                                                  userreg, organization);  
             userService.createLoginInfo(user);
             userService.sendRegistrationMail(user, request.getRequestURL().toString());
-            if(userdto.getRole() == 1)
+            if(userdto.getRole() == AuthManager.getStaffPriority())
             {              
               String url=StringUtils.substringBefore(request.getRequestURL(), request.getContextPath())+request.getContextPath();
               url+="/auth/api/admin/upgradeUserRoleAtStaff";

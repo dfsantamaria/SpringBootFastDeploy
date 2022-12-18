@@ -9,10 +9,8 @@ package it.unict.spring.platform.persistence.repository.user;
 
 
 import it.unict.spring.platform.persistence.model.user.UserAccount;
-import it.unict.spring.platform.persistence.model.user.UserRegister;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,5 +33,5 @@ public interface UserRepository extends JpaRepository<UserAccount, Long>
     void delete(UserAccount user); 
     @Override
     void deleteById(Long id);  
-    List<UserAccount> findAllByPrivileges_Id(Long id);
+    List<UserAccount> findAllByPrivileges_Id(Long id);    
 }

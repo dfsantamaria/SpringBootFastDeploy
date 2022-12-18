@@ -148,11 +148,32 @@
                     </div>
 
                     <div class="field-inside">
-                        <div class="input-group-text"><i class="fa fa-key"></i>
+                        <div class="input-group mb-3">
+                        <div class="input-group-text" style="flex:3">
+                            <i class="fa fa-key"></i>
                             <div th:if="${viewPrivilege}" style="margin-left: 10px;"> Role: <span class="wordWrap" th:text="${viewPrivilege}"> Privilege </span>
                              <span th:if="${roleupgrade}"> (Upgrade is pending) </span> </br>
                             </div>  
                         </div>
+                        <span th:if="not ${roleupgrade}" class="input-group-text" style="margin-left: auto" type="button" onclick="toggleForm('editRole');">
+                                <i class="fas fa-edit"></i>
+                        </span>
+                        </div>
+                        <form name="form-edit" th:action="@{/auth/api/all/updateRole}" method="post"> 
+                           <div id="editRole" style="display: none">
+                               <fieldset>
+                                   <legend>  Request a role upgrade &nbsp; </legend>                                          
+                                            <div class="field-inside">
+                                                <select id="roleform" th:name="roleid" class="form-control" style="margin-left: auto" aria-label="select role" required>
+                                                    <option value="">Select a role</option> 
+                                                        <option th:each="role : ${roleSet}" th:value="${role.getId()}" th:text="${role.getName()}">                                      
+                                                    </option>                                 
+                                                 </select>                                                 
+                                            </div>                                        
+                               </fieldset>
+                               <button type="submit" class="btn btn-lg btn-primary btn-block">Request upgrade</button>
+                           </div>
+                        </form>   
                     </div>    
                 </fieldset>   
             </div>        

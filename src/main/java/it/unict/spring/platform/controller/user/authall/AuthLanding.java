@@ -8,12 +8,14 @@ package it.unict.spring.platform.controller.user.authall;
  */
 
 import it.unict.spring.platform.dto.user.AccountPasswordDTO;
+import it.unict.spring.platform.dto.user.RoleDTO;
 import it.unict.spring.platform.persistence.model.user.Organization;
 import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.persistence.model.user.UserRegister;
 import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
+import it.unict.spring.platform.utility.user.AuthManager;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.util.Iterator;
 import java.util.Locale;
@@ -31,6 +33,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import it.unict.spring.platform.utility.user.ModelTemplate;
+import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.util.StringUtils;
 
 @Controller
 @RequestMapping("/auth/api/all")
@@ -45,9 +51,13 @@ public class AuthLanding
     UserRegisterService regService;
     
 	@RequestMapping(value = "/accountView", method = RequestMethod.GET)
-	public ModelAndView home(Locale locale, @AuthenticationPrincipal CustomUserDetails user, Model model)
+	public ModelAndView home(Locale locale, 
+                                    @AuthenticationPrincipal CustomUserDetails user,                                    
+                                    RedirectAttributes attributes, Model model)
         {
 	 this.setModel(model, user);
+         List<RoleDTO> roles= userService.getRolesFromRoleDTO(user.getId());
+         model.addAttribute("roleSet", roles);
 	 return new ModelAndView("auth/all/home/accountview");
 	}
         
@@ -55,13 +65,14 @@ public class AuthLanding
         public ModelAndView updateData(
                                       @AuthenticationPrincipal CustomUserDetails user,
                                       HttpServletRequest request,
-                                      HttpServletResponse response,
+                                      HttpServletResponse response,                                      
                                       @ModelAttribute("passdto") @Valid AccountPasswordDTO password, 
                                       BindingResult passdtoBinding,
+                                      RedirectAttributes attributes,
                                       Model model)
         {
-          this.setModel(model, user);
-          model.addAttribute("togglePassword", "true");
+          //this.setModel(model, user);
+          attributes.addFlashAttribute("togglePassword", "true");
           if(!passdtoBinding.hasErrors()) 
            {                 
               UserAccount account=userService.findByMail(user.getMail()).get();
@@ -69,22 +80,48 @@ public class AuthLanding
               {
                 account.setPassword(userService.encodePassword(password.getPassword()));
                 userService.save(account);     
-                model.addAttribute("passwordAccepted", "Password modified");
+                attributes.addFlashAttribute("passwordAccepted", "Password modified");
               }
               else
               {
-                model.addAttribute("passwordError", "Your old password does not match");
+                attributes.addFlashAttribute("passwordError", "Your old password does not match");
               }
-              return new ModelAndView("auth/all/home/accountview");
+              return new ModelAndView("redirect:/auth/api/all/accountView");
             }
             else
             {
-              model.addAttribute("passwordError", "Check yuor password fields");
-              return new ModelAndView("auth/all/home/accountview");
+              attributes.addFlashAttribute("passwordError", "Check yuor password fields");
+              return new ModelAndView("redirect:/auth/api/all/accountView");
             }
           
         }
         
+        
+        
+        @RequestMapping(value = "/updateRole", method = RequestMethod.POST)
+        public ModelAndView updateRole(
+                                      @AuthenticationPrincipal CustomUserDetails user,
+                                      HttpServletRequest request,
+                                      HttpServletResponse response,
+                                      @RequestParam("roleid") double id,                                      
+                                      RedirectAttributes attributes,
+                                      Model model)
+        {   
+            
+          System.out.println(id);
+          if(id>0)
+          {
+              if(id==AuthManager.getStaffPriority())
+              {
+                String url=StringUtils.substringBefore(request.getRequestURL(), request.getContextPath())+request.getContextPath();
+                url+="/auth/api/admin/upgradeUserRoleAtStaff";                
+                userService.sendEnableStaffRoleMail(user, url);
+              }
+            return new ModelAndView("redirect:/auth/api/all/accountView");
+          }
+          else
+               return new ModelAndView("redirect:/public/api/access/error/forbidden");            
+        }
         
         /*
         * Set the model page 
@@ -119,4 +156,5 @@ public class AuthLanding
           model.addAttribute("viewOrgName", org.getName());
           model.addAttribute("roleupgrade", userService.isRoleUpgradePending(user.getId()));
         }
+
 }

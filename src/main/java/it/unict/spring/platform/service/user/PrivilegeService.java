@@ -190,4 +190,15 @@ public class PrivilegeService implements PrivilegeServiceInterface
       }    
       user.addPrivileges(newprivilege);       
     }
+  @Override
+  public List<Privilege> findPrivilegeBetweenPriority(String type, Double priorityStart, Double priorityEnd)
+  {
+    return repository.findAllByTypeAndPriorityLessThanAndPriorityGreaterThan(type, priorityStart, priorityEnd);
+  }
+
+    @Override
+    public Optional<Privilege> findUserPrivileges(Long id, String access)
+    {
+      return repository.findOneByUsers_IdAndType(id, "Access");
+    }
 }

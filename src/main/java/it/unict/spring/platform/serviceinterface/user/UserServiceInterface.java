@@ -7,6 +7,7 @@ package it.unict.spring.platform.serviceinterface.user;
  * 
  */
 
+import it.unict.spring.platform.dto.user.RoleDTO;
 import it.unict.spring.platform.dto.user.UserAccountDTO;
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
 import it.unict.spring.platform.exception.user.UserAccountAlreadyVerified;
@@ -71,4 +72,6 @@ public interface UserServiceInterface
     void sendEnableStaffRoleMail(UserAccount user, String url);
     void sendNotificationMail(Long id, String head, String usermessage);
     boolean isRoleUpgradePending(Long id);
+    List<RoleDTO> getRolesFromRoleDTO(Long id);
+    void sendEnableStaffRoleMail(CustomUserDetails user, String url);
 }

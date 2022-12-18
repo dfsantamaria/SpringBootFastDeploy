@@ -24,4 +24,6 @@ public interface PrivilegeRepository extends JpaRepository<Privilege, Long>
     Privilege save(Privilege privilege);
     @Override
     void delete(Privilege todo);
+    List<Privilege> findAllByTypeAndPriorityLessThanAndPriorityGreaterThan(String type, Double priorityStart, Double priorityEnd);
+    Optional<Privilege> findOneByUsers_IdAndType(Long id, String type);
 }

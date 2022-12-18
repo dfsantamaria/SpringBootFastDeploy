@@ -24,10 +24,7 @@ public interface PrivilegeServiceInterface
     Privilege getStandardUserPrivilege(); 
     Privilege getStaffUserPrivilege();
     void upgradeUserPrivilege(UserAccount user, Privilege newprivilege);
-//  Privilege getAdminPrivilege(); 
-    
- //   Privilege getStaffPrivilege();
- //   
- //   
     void delete(Privilege privilege);
+    List<Privilege> findPrivilegeBetweenPriority(String type, Double priorityStart, Double priorityEnd);
+    Optional<Privilege> findUserPrivileges(Long id, String access);
 }

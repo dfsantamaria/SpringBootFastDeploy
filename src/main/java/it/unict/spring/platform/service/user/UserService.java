@@ -7,6 +7,7 @@ package it.unict.spring.platform.service.user;
  * 
  */
 
+import it.unict.spring.platform.dto.user.RoleDTO;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -35,6 +36,7 @@ import it.unict.spring.platform.persistence.repository.user.UserRepository;
 import it.unict.spring.platform.service.communication.CustomMailService;
 import it.unict.spring.platform.serviceinterface.utility.search.SearcheableInterface;
 import it.unict.spring.platform.serviceinterface.user.UserServiceInterface;
+import it.unict.spring.platform.utility.user.AuthManager;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -516,5 +518,29 @@ public class UserService implements UserServiceInterface, SearcheableInterface<U
     public boolean isRoleUpgradePending(Long id)
     {      
       return secureTokenService.findOneByUser_IdAndTokenType(id, "UStaff").isPresent();
+    }
+
+    @Override
+    public List<RoleDTO> getRolesFromRoleDTO(Long id)
+    {
+      Privilege priv = privilegeService.findUserPrivileges(id, "Access").get();      
+      List<Privilege> privs = privilegeService.findPrivilegeBetweenPriority("Access", priv.getPriority(), AuthManager.getAdminPriority());
+      List<RoleDTO> roles=new ArrayList<>();
+      for(Privilege iter : privs)
+      {        
+        RoleDTO role= new RoleDTO();
+        role.setId(iter.getPriority());
+        role.setName(iter.getDescription());
+        roles.add(role);
+      }
+      return roles;
+    }
+
+    @Override
+    @Transactional
+    public void sendEnableStaffRoleMail(CustomUserDetails user, String url)
+    {
+        UserAccount account=this.findById(user.getId());
+        this.sendEnableStaffRoleMail(account, url);
     }
 }
