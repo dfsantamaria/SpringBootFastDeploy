@@ -61,8 +61,8 @@ public class AuthLanding
 	 return new ModelAndView("auth/all/home/accountview");
 	}
         
-        @RequestMapping(value = "/updateData", method = RequestMethod.POST)
-        public ModelAndView updateData(
+        @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+        public ModelAndView updatePassword(
                                       @AuthenticationPrincipal CustomUserDetails user,
                                       HttpServletRequest request,
                                       HttpServletResponse response,                                      
@@ -79,7 +79,9 @@ public class AuthLanding
               if(userService.comparePassword(account.getPassword(), password.getOldpassword()))
               {
                 account.setPassword(userService.encodePassword(password.getPassword()));
-                userService.save(account);     
+                userService.save(account);   
+                userService.sendNotificationMail(user.getId(), "Web Portal", "Your account's password has been changed. "
+                        + "For any enquires contact an administrator.");
                 attributes.addFlashAttribute("passwordAccepted", "Password modified");
               }
               else
