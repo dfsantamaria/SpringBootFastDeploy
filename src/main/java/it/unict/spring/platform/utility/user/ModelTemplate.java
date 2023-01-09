@@ -26,6 +26,8 @@ public class ModelTemplate
           model.addAttribute("userPage", "Manage Users");
       if(AuthManager.isAtLeastSuperadmin(auth))
           model.addAttribute("managePlatform", "Manage Platform");
+      if(AuthManager.isAtLeastStandardUser(auth))
+           model.addAttribute("help", "Help");
     }
   } 
 }

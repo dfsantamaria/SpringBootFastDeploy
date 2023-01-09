@@ -36,6 +36,18 @@
       </li>
       
     </ul>
+      
+      <ul class="navbar-nav ml-auto">
+       <li th:if="${help}" class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuHelp" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Help
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuHelp">
+          <a class="dropdown-item" th:href="@{/auth/api/all/help}"> Contact Us</a>         
+        </div>
+       </li> 
+      </ul>   
+      
   </div>
 </nav>
 </th:block>

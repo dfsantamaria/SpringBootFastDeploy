@@ -53,4 +53,9 @@ public  class AuthManager
   {
     return auth.getType().equals("Access") && auth.getPriority()<= AuthManager.getStaffPriority();
   }
+  
+   public static boolean isAtLeastStandardUser(Privilege auth)
+  {
+    return auth.getType().equals("Access") && auth.getPriority()<= AuthManager.getStandardUserPriority();
+  }
 }

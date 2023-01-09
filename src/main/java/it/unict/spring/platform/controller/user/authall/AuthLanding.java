@@ -159,4 +159,11 @@ public class AuthLanding
           model.addAttribute("roleupgrade", userService.isRoleUpgradePending(user.getId()));
         }
 
+        @RequestMapping(value = "/help", method = RequestMethod.GET)
+	public ModelAndView viewHelp(Locale locale, @AuthenticationPrincipal CustomUserDetails user, Model model)
+        {
+	  Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);          
+          ModelTemplate.setNavBar(setPriv.iterator(), model);
+	  return new ModelAndView("auth/all/home/help");
+	}
 }
