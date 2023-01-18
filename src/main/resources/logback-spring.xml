@@ -27,25 +27,6 @@
     </sift>
   </appender>
 
-  <appender name="ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <append>true</append>     
-    <encoder>
-      <pattern>[%d{yyyy-MM-dd_HH:mm:ss.SSS}] %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
-    </encoder>
-    
-    
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- rollover daily and when the file reaches 15 MegaBytes -->
-            <fileNamePattern>${catalina.base}/${LOG_PATH}/platform-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <!-- ${catalina.base} -->
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>15MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>30</maxHistory>
-            <cleanHistoryOnStart>true</cleanHistoryOnStart>
-    </rollingPolicy>
-    
-  </appender>
                             
   <root level="INFO">
     <appender-ref ref="SIFT" />
