@@ -33,12 +33,16 @@ public class DeniedController
     {
       model.addAttribute("logged", false);
       if(!platformService.isMaintenanceMode())
-          return new ModelAndView("redirect:/public/api/access/login/signin");  
+      {
+          response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+          return new ModelAndView("redirect:/public/api/access/login/signin");
+      }  
     }
     else
     {
         model.addAttribute("logged", true);        
-    }       
+    }   
+    response.setStatus(HttpServletResponse.SC_FORBIDDEN);    
     return new ModelAndView("public/status/denied");
    }
 }
