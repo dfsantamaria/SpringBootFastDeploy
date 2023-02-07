@@ -22,7 +22,7 @@
             <div class="container-in" style="margin-top: 10px">
                 <h1 class="form-heading">Page Not Available</h1>                 
                   <th:block th:if="${maintenance} == False">
-                    <div><p>You cannot access this page or the page is not reacheable.
+                    <div><p>You are not allowed to access this page or the page is not reacheable.
                          <span th:if="${logged} == null"> You can login to check whether the page is accessible for logged user.</span>
                                
                         </p></div>
@@ -37,12 +37,12 @@
                  <button class="btn btn-lg btn-primary btn-block" type="submit">Home</button>
                 </form> 
                  </th:block>
-                <th:block th:if="${logged}"> 
-                  <th:block th:if="${back == null}">  
-                   <button class="btn btn-lg btn-primary btn-block" th:onclick="history.back();">Go back</button>
+                <th:block th:if="${logged} and ${goback}"> 
+                  <th:block th:if="${back}">  
+                   <button  th:data-back="${back}" class="btn btn-lg btn-primary btn-block" onclick="goBack(this.getAttribute('data-back'));">Go back</button>
                   </th:block>
-                  <th:block th:if="${back != null}">  
-                   <button class="btn btn-lg btn-primary btn-block" th:onclick="|${back}|">Go back</button>
+                  <th:block th:if="${back} == null">  
+                   <button class="btn btn-lg btn-primary btn-block" th:onclick="history.back();">Go back</button>
                   </th:block>    
                 </th:block>
                 <th:block th:if="${logged} == null">                   
@@ -56,6 +56,11 @@
             </div>        
 
         </div>   
-        
+        <script>
+           function goBack(url)
+           {
+                 location.href = url;
+           } 
+        </script>
     </body>
 </html>
