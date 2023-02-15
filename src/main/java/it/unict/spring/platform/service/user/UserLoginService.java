@@ -63,11 +63,18 @@ public class UserLoginService implements UserLoginServiceInterface
     
     @Override       
     @Transactional
-    public void updateLoginFail(UserLogin userlogin)
+    public void updateLoginFailDate(UserLogin userlogin)
     {       
        int count=userlogin.getFailCount()+1;
        userlogin.setFailCount(count);
        userlogin.setLastFailDate(Timestamp.valueOf(LocalDateTime.now()));
        this.save(userlogin);
+    }
+    
+    @Override
+    @Transactional
+    public void updateLoginSuccessDate(UserLogin userlogin)
+    {
+      userlogin.setLastSuccessDate(Timestamp.valueOf(LocalDateTime.now()));
     }
 }

@@ -50,6 +50,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
          setDefaultTargetUrl("/auth/api/all/accountView");        
 
        request.getSession().removeAttribute(REDIRECT_URL_SESSION_ATTRIBUTE_NAME);
+       loginService.updateLoginSuccessDate(logInfo);
        super.onAuthenticationSuccess(request, response, authentication);       
     } 
 }

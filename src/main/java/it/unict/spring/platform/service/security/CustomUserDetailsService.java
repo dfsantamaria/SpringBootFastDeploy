@@ -63,9 +63,10 @@ public class CustomUserDetailsService implements UserDetailsService
             throw new UserAccountLockedException(username);
         if(!users.get(0).isCredentialsNonExpired())
             throw new UserCredentialsExpiredException(username);         
+        UserLogin login=users.get(0).getLogin();
         if(users.get(0).isAccountSuspended())
         { 
-            UserLogin login=users.get(0).getLogin();
+            
             if(LocalDateTime.now().isAfter(login.getLastFailDate().toLocalDateTime().plusMinutes(60)))
              {
                 userService.setSuspended(users.get(0), false);
@@ -73,7 +74,8 @@ public class CustomUserDetailsService implements UserDetailsService
              }      
             else
               throw new TooManyLoginAttemptsException(username); 
-        }
+        }       
+        loginService.updateLoginSuccessDate(login);
         return new CustomUserDetails(users.get(0));
     }
 }

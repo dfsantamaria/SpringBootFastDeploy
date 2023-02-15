@@ -89,9 +89,9 @@ public class UserLoginServiceTest
   {
        UserAccount user = userService.findByUsername(username).get();
        UserLogin login = loginService.findById(user.getId()).get();
-       loginService.updateLoginFail(login);
-       loginService.updateLoginFail(login);
-       loginService.updateLoginFail(login);
+       loginService.updateLoginFailDate(login);
+       loginService.updateLoginFailDate(login);
+       loginService.updateLoginFailDate(login);
        assertEquals(login.getFailCount(), 3);
        assertNotNull(login.getLastFailDate());
        loginService.resetLoginFail(login);

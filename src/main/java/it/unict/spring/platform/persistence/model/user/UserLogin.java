@@ -31,6 +31,7 @@ public class UserLogin implements Serializable
     private Long user_id;
     private int failCount;
     private Timestamp lastFailDate;
+    private Timestamp lastSuccessDate;
     
     
     public UserLogin()

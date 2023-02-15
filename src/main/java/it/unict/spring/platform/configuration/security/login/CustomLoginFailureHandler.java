@@ -60,7 +60,7 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
              {
              Long id = accounts.get(0).getId();
              UserLogin userLogin = loginService.findById(id).get();            
-             loginService.updateLoginFail(userLogin);           
+             loginService.updateLoginFailDate(userLogin);           
              //System.out.println(username + " "+userLogin.getFailCount()+ " "+LocalDateTime.now().isBefore(userLogin.getLastFailDate().toLocalDateTime().plusMinutes(60)));
              if(userLogin.getFailCount()  > 3 && LocalDateTime.now().isBefore(userLogin.getLastFailDate().toLocalDateTime().plusMinutes(60)) )
              {

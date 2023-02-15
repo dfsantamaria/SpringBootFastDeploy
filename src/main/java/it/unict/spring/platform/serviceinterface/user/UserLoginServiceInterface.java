@@ -16,6 +16,7 @@ public interface UserLoginServiceInterface
     void delete(UserLogin userlogin); 
     List<UserLogin> findAll();   
     public Optional<UserLogin> findById(Long id);
-    public void updateLoginFail(UserLogin userlogin);
+    public void updateLoginFailDate(UserLogin userlogin);
     public void resetLoginFail(UserLogin userlogin);
+    public void updateLoginSuccessDate(UserLogin userlogin);
 }
