@@ -78,7 +78,7 @@ public class SearchManagerServiceTest
     public void testSearchManager()
     {
        UserSearchDTO testUser=new UserSearchDTO();
-       testUser.setMail(mail);
+       testUser.setMail("@uni");
        testUser.setFirstName("");
        testUser.setMiddleName("");
        testUser.setLastName("");

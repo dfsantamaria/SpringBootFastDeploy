@@ -25,6 +25,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 public interface UserServiceInterface
 {
@@ -34,8 +35,7 @@ public interface UserServiceInterface
     List<UserAccount> findByMailOrUsername(String namemail);
     List<UserAccount> findByMailOrUsername(String namemail, String username);
     UserAccount findById(Long id);
-    Page<UserAccount> findAll(Example<UserAccount> example, Pageable pageable);
-    List<UserAccount> findAll(Example<UserAccount> example);
+    Page<UserAccount> findAll(Specification<UserAccount> example, Pageable pageable);   
     
     Page<UserAccount> findByMailOrUsername(String pattern, Pageable pageable);    
     

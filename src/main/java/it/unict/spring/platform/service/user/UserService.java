@@ -36,14 +36,15 @@ import it.unict.spring.platform.persistence.repository.user.UserRepository;
 import it.unict.spring.platform.service.communication.CustomMailService;
 import it.unict.spring.platform.serviceinterface.utility.search.SearcheableInterface;
 import it.unict.spring.platform.serviceinterface.user.UserServiceInterface;
+import it.unict.spring.platform.specifications.user.UserAccountSpecs;
 import it.unict.spring.platform.utility.user.AuthManager;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 @Service
 public class UserService implements UserServiceInterface, SearcheableInterface<UserAccount,UserSearchDTO>
@@ -78,17 +79,18 @@ public class UserService implements UserServiceInterface, SearcheableInterface<U
     
     @Override
     @Transactional
-    public Page<UserAccount> findAll(Example<UserAccount> example, Pageable pageable)
+    public Page<UserAccount> findAll(Specification<UserAccount> specs, Pageable pageable)
     {
-        return repository.findAll(example, pageable);
+        return repository.findAll(specs, pageable);
     }
     
+    /*
     @Override
     @Transactional
     public List<UserAccount> findAll(Example<UserAccount> example)
     {
         return repository.findAll(example);
-    }
+    }*/
     
     @Override
     @Transactional
@@ -393,43 +395,12 @@ public class UserService implements UserServiceInterface, SearcheableInterface<U
     public Page<UserAccount> searchFromDTO(UserSearchDTO usersearchdto, Pageable pageable)
     {      
        if(usersearchdto.allNullFields())
-           return Page.empty();
-       
-       ExampleMatcher matcher = ExampleMatcher
-                                  .matching()
-                                  .withIgnoreCase()
-                                  .withIgnorePaths("register.user", "isAccountNonLocked","isEnabled","isSuspended", "password")
-                                  .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);              
-              
-       UserAccount account=new UserAccount(); 
-       UserRegister register=new UserRegister();
-       Organization organization=new Organization();
-       
-       //The user account data
-       if(usersearchdto.getUsername()!=null)
-           account.setUsername(usersearchdto.getUsername());
-       if(usersearchdto.getMail()!=null)
-           account.setMail(usersearchdto.getMail());
-      
-       //The register data
-       if(usersearchdto.getFirstName()!= null)       
-           register.setFirstname(usersearchdto.getFirstName());         
-       
-       if(usersearchdto.getMiddleName()!= null)
-          register.setMiddlename(usersearchdto.getMiddleName());
-       
-       if(usersearchdto.getLastName()!= null)
-          register.setLastname(usersearchdto.getLastName());
-       
-       if(usersearchdto.getOrgname()!=null)
-          organization.setName(usersearchdto.getOrgname());
-       
-       account.setRegister(register);
-       account.setOrganizations(Set.of(organization));
-       
-       Example<UserAccount> userExample = Example.of(account, matcher);
-       
-       Page<UserAccount> out =  this.findAll(userExample, pageable);
+           return Page.empty();       
+       Specification<UserAccount> specs=
+               UserAccountSpecs.getUserAccountByData(usersearchdto.getUsername(), usersearchdto.getMail(), 
+                                                     usersearchdto.getFirstName(), usersearchdto.getMiddleName(),
+                                                     usersearchdto.getLastName(), usersearchdto.getOrgname());
+       Page<UserAccount> out =  this.findAll(specs, pageable);
        return out;
     }    
 
@@ -544,3 +515,41 @@ public class UserService implements UserServiceInterface, SearcheableInterface<U
         this.sendEnableStaffRoleMail(account, url);
     }
 }
+
+
+
+/*
+       ExampleMatcher matcher = ExampleMatcher
+                                  .matching()
+                                  .withIgnoreCase()
+                                  .withIgnorePaths("register.user", "isAccountNonLocked","isEnabled","isSuspended", "password")
+                                  .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);              
+              
+       UserAccount account=new UserAccount(); 
+       UserRegister register=new UserRegister();
+       Organization organization=new Organization();
+       
+       //The user account data
+       if(usersearchdto.getUsername()!=null)
+           account.setUsername(usersearchdto.getUsername());
+       if(usersearchdto.getMail()!=null)
+           account.setMail(usersearchdto.getMail());
+      
+       //The register data
+       if(usersearchdto.getFirstName()!= null)       
+           register.setFirstname(usersearchdto.getFirstName());         
+       
+       if(usersearchdto.getMiddleName()!= null)
+          register.setMiddlename(usersearchdto.getMiddleName());
+       
+       if(usersearchdto.getLastName()!= null)
+          register.setLastname(usersearchdto.getLastName());
+       
+       if(usersearchdto.getOrgname()!=null)
+          organization.setName(usersearchdto.getOrgname());
+       
+       account.setRegister(register);
+       account.setOrganizations(Set.of(organization));
+       
+       Example<UserAccount> userExample = Example.of(account, matcher);
+       */
