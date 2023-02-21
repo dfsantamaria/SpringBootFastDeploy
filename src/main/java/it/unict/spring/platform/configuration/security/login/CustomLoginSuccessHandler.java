@@ -30,10 +30,11 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     @Autowired
     UserLoginService loginService;
     @Autowired
-    UserService userService;
-    public static final String REDIRECT_URL_SESSION_ATTRIBUTE_NAME = "REDIRECT_URL";
+    UserService userService;    
     @Autowired 
     private HttpServletRequest request;
+
+    public static final String REDIRECT_URL_SESSION_ATTRIBUTE_NAME = "REDIRECT_URL";
     
     @Override       
     @Transactional
