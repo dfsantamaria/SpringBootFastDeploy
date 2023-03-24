@@ -7,7 +7,7 @@ package it.unict.spring.platform.dto.user;
  * 
  */
 
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
