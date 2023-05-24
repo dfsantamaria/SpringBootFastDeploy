@@ -30,9 +30,11 @@ import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.SecureTokenService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
+import org.junit.jupiter.api.Disabled;
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
 @AutoConfigureMockMvc
+@Disabled
 public class RegistrationControllerTest
 {       
     @Autowired

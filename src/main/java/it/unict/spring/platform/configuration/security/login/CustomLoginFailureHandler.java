@@ -37,21 +37,17 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
     @Transactional
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
             throws IOException, ServletException
-    {      
-        super.setDefaultFailureUrl("/public/api/access/login/signin?error");
-        //if(exception.getMessage().startsWith("Too many login attempts"))
-        //   getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorAttempts");                 
-        //else
-        if(exception.getMessage().startsWith("Registration not completed"))
-           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorEnabled"); 
-        else if(exception.getMessage().startsWith("User account is expired"))
-           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorExpired"); 
+    {     
+                
+        if(exception.getMessage().startsWith("Registration not completed"))           
+           response.sendError(HttpServletResponse.SC_FORBIDDEN, "Registration not completed");
+        else if(exception.getMessage().startsWith("Bad credentials"))
+           response.sendError(HttpServletResponse.SC_FORBIDDEN, "Bad credentials");
         else if(exception.getMessage().startsWith("User account is locked"))
-           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorLocked"); 
+           response.sendError(HttpServletResponse.SC_FORBIDDEN, "User account is locked"); 
         else if(exception.getMessage().startsWith("User credentials are expired"))
-           getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorCredentials"); 
-        else  if(exception.getMessage().startsWith("Bad credentials") || 
-                exception.getMessage().startsWith("Too many login attempts"))
+           response.sendError(HttpServletResponse.SC_FORBIDDEN, "User credentials are expired"); 
+        else  if(exception.getMessage().startsWith("Too many login attempts"))
         {            
             String username=request.getParameter("username");    
             
@@ -65,13 +61,13 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
              if(userLogin.getFailCount()  > 3 && LocalDateTime.now().isBefore(userLogin.getLastFailDate().toLocalDateTime().plusMinutes(60)) )
              {
                  userService.setSuspended(accounts.get(0), true);
-                 getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorAttempts");
+                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "To many login attemps");
              }       
              else
-                 getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorLogin");      
+                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "Error Login");      
              }
-            else 
-                getRedirectStrategy().sendRedirect(request, response, "/public/api/access/login/signin?errorLogin");
+            else                 
+               response.sendError(HttpServletResponse.SC_FORBIDDEN, "Error Login ");
       
         }  
        

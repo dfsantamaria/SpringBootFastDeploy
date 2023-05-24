@@ -8,7 +8,6 @@ package it.unict.spring.platform.configuration.security.websecurity;
  */
 
 
-import it.unict.spring.platform.configuration.security.authentication.CustomAccessDeniedHandler;
 import it.unict.spring.platform.configuration.security.authentication.CustomAuthEntryPoint;
 import it.unict.spring.platform.configuration.security.login.JdbcTokenRepositoryImpl;
 import it.unict.spring.platform.configuration.security.logout.CustomLogoutSuccessHandler;
@@ -29,7 +28,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -79,7 +77,7 @@ public class WebSecurityConfig
                 failureHandler(authenticationFailureHandler()).                 
                 permitAll(). 
                 
-                and().exceptionHandling().accessDeniedHandler(accessDeniedHandler()).
+               
                 and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).         
                 
                 and()
@@ -140,10 +138,6 @@ public class WebSecurityConfig
         tokenRepo.setDataSource(dataSource);
         return tokenRepo;
     }
-    
-    @Bean
-     public AccessDeniedHandler accessDeniedHandler()
-     {
-        return new CustomAccessDeniedHandler();
-     }
+          
+  
 }
