@@ -21,6 +21,6 @@ public class CustomAuthEntryPoint implements AuthenticationEntryPoint, Serializa
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException
     {       
-        response.sendRedirect(request.getContextPath()+"/public/api/access/error/forbidden");
+        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
     }
 }

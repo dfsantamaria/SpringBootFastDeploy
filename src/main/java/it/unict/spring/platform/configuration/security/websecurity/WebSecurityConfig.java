@@ -10,7 +10,6 @@ package it.unict.spring.platform.configuration.security.websecurity;
 
 import it.unict.spring.platform.configuration.security.authentication.CustomAuthEntryPoint;
 import it.unict.spring.platform.configuration.security.login.JdbcTokenRepositoryImpl;
-import it.unict.spring.platform.configuration.security.logout.CustomLogoutSuccessHandler;
 import it.unict.spring.platform.configuration.security.login.CustomLoginFailureHandler;
 import it.unict.spring.platform.configuration.security.login.CustomLoginSuccessHandler;
 import it.unict.spring.platform.configuration.security.matchers.MaintenanceRequestMatcher;
@@ -30,7 +29,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 
@@ -89,8 +87,7 @@ public class WebSecurityConfig
                 
                 and()
                 .logout()
-                .logoutUrl("/auth/api/access/login/signout")
-                .logoutSuccessHandler(logoutSuccessHandler())
+                .logoutUrl("/auth/api/access/login/signout")                
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")                
                 .permitAll();       
@@ -125,12 +122,7 @@ public class WebSecurityConfig
         return  new CustomLoginSuccessHandler();
     } 
     
-    @Bean
-    public LogoutSuccessHandler logoutSuccessHandler()
-    {
-        return new CustomLogoutSuccessHandler();
-    }
-    
+       
     @Bean
     public PersistentTokenRepository persistentTokenRepository()
     {
