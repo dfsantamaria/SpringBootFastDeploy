@@ -23,7 +23,7 @@ public class AccountPasswordDTO
     private String password;
     @NotNull
     private String confirmPassword;
-    @NotNull    
+       
     private String oldpassword;
     
     public AccountPasswordDTO()

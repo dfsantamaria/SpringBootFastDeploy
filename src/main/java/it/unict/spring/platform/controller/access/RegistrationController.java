@@ -25,6 +25,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.thymeleaf.util.StringUtils;
+
 
 
 @Controller
@@ -104,12 +105,10 @@ public class RegistrationController
                                                                  UserExpirationInformation.getCredentialExpirationDate(),
                                                                  userreg, organization);  
             userService.createLoginInfo(user);
-            userService.sendRegistrationMail(user, request.getRequestURL().toString());
+            userService.sendRegistrationMail(user, new JSONObject());
             if(userdto.getRole() == AuthManager.getStaffPriority())
-            {              
-              String url=StringUtils.substringBefore(request.getRequestURL(), request.getContextPath())+request.getContextPath();
-              url+="/auth/api/admin/upgradeUserRoleAtStaff";
-              userService.sendEnableStaffRoleMail(user, url);
+            {                
+              userService.sendEnableStaffRoleMail(user, new JSONObject());
             }
           } 
           catch (MultipleUsersFoundException ex)
@@ -178,7 +177,7 @@ public class RegistrationController
            List<UserAccount> user=userService.findByMailOrUsername(username);  
            if(user.size() == 1  && (!user.get(0).isEnabled()) && userService.comparePassword(user.get(0).getPassword(), password))
             {
-             userService.sendRegistrationMail(user.get(0), request.getRequestURL().toString());
+             //userService.sendRegistrationMail(user.get(0), request.getRequestURL().toString());
              response.setStatus(HttpServletResponse.SC_OK);
              model.addAttribute("confirmReg", "We sent an email. Check your inbox to finalize the registration");
             }

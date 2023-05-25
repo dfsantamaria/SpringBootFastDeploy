@@ -8,24 +8,16 @@ package it.unict.spring.platform.controller.access;
  */
 
 
-import it.unict.spring.platform.dto.user.AccountPasswordDTO;
 import it.unict.spring.platform.dto.user.TokenPasswordDTO;
 import it.unict.spring.platform.dto.user.UserAccountDTO;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.UserService;
-import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Optional;
@@ -51,20 +43,8 @@ public class RecoverAccessController
        Optional<UserAccount> users = userService.findByMail(user.getMail());        
        if(!users.isEmpty())
        {
-         userService.sendRecoverPasswordMail(users.get(), request.getRequestURL().toString());
-       }
-       else
-       {  
-           try 
-           {
-           //Simulate sending mail
-           TimeUnit.SECONDS.sleep((long) (2+(Math.random()*3)));
-           }
-           catch (InterruptedException ex)
-           {
-               applogger.error(ex.toString());
-           }
-       }
+         userService.sendRecoverPasswordMail(users.get(), new JSONObject());
+       }       
        JSONObject obj=new JSONObject();
        obj.put("status","success");
        return new ResponseEntity<>(obj.toString(),HttpStatus.OK);        

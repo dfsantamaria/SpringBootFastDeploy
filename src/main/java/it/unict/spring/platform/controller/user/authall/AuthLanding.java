@@ -29,7 +29,7 @@ import java.util.Arrays;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.thymeleaf.util.StringUtils;
+
 
 @RestController
 @RequestMapping("/auth/api/all")
@@ -79,9 +79,9 @@ public class AuthLanding
           {
               if(id==AuthManager.getStaffPriority())
               {
-                String url=StringUtils.substringBefore(request.getRequestURL(), request.getContextPath())+request.getContextPath();
+                String url="";//StringUtils.substringBefore(request.getRequestURL(), request.getContextPath())+request.getContextPath();
                 url+="/auth/api/admin/upgradeUserRoleAtStaff";                
-                userService.sendEnableStaffRoleMail(user, url);
+                userService.sendEnableStaffRoleMail(user, new JSONObject());
                 obj.put("status","success");
                 return new ResponseEntity<>(obj.toString(), HttpStatus.OK);
               }

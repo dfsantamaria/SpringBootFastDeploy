@@ -22,10 +22,10 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 import java.util.Optional;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.json.JSONObject;
 
 public interface UserServiceInterface
 {
@@ -61,17 +61,17 @@ public interface UserServiceInterface
     void addLoginToUser(UserLogin login, UserAccount user);
     public void createLoginInfo(UserAccount user);
     void setEnabled(UserAccount user, boolean enabled);    
-    void sendRegistrationMail(UserAccount user, String url);
-    void sendRecoverPasswordMail(UserAccount user, String url);    
+    void sendRegistrationMail(UserAccount user, JSONObject obj);
+    void sendRecoverPasswordMail(UserAccount user, JSONObject obj);    
     SecureToken assignTokenToUser(UserAccount user, String type);
     boolean verifyRegistrationToken(String token) throws UserAccountAlreadyVerified;
     boolean verifyPasswordChangedToken(String token, String password);    
     void setAccountNonLocked(UserAccount user, boolean enabled);
     void enableRoleStaffMember(Long id, String token, boolean approve);
     void upgradeUserPrivilegeWithToken(Long id, String token, boolean approve, Privilege privilege);
-    void sendEnableStaffRoleMail(UserAccount user, String url);
+    void sendEnableStaffRoleMail(UserAccount user, JSONObject obj);
     void sendNotificationMail(Long id, String head, String usermessage);
     boolean isRoleUpgradePending(Long id);
     List<RoleDTO> getRolesFromRoleDTO(Long id);
-    void sendEnableStaffRoleMail(CustomUserDetails user, String url);
+    void sendEnableStaffRoleMail(CustomUserDetails user, JSONObject obj);
 }

@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.thymeleaf.util.StringUtils;
+
 
 @Component
 public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
@@ -49,8 +49,8 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
          userService.setSuspended(user, false);       
        // getRedirectStrategy().sendRedirect(request, response, "/auth/api/all/accountView");     
        Object redirectURLObject = request.getSession().getAttribute(REDIRECT_URL_SESSION_ATTRIBUTE_NAME);
-       String url=StringUtils.substringBefore(request.getRequestURL().toString(), request.getContextPath())       
-                                  +request.getContextPath(); 
+       String url="";//StringUtils.substringBefore(request.getRequestURL().toString(), request.getContextPath())       
+                    //              +request.getContextPath(); 
        
        if(redirectURLObject != null && redirectURLObject.toString().startsWith(url))
          setDefaultTargetUrl(redirectURLObject.toString());

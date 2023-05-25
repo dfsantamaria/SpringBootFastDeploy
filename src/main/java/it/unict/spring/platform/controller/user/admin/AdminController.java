@@ -63,23 +63,7 @@ public class AdminController
        }
        else
        {             
-         userService.enableRoleStaffMember(id, token, approve);
-         String message="";
-         String usermessage="";
-         String head="Web Platform: Account Upgrade decision";
-         if(approve)
-         {
-             message+="The request has been accepted.";
-             usermessage+="Your request for account updgrade has been accepted";
-         }
-         else
-         {
-             message+="The request has been rejected.";
-             usermessage+="Your request for account updgrade has been rejected. "
-                     + "Contact an administrator for clarifications. ";
-         }
-         message+="User will be notified of your decision. ";         
-         userService.sendNotificationMail(id, head, usermessage);
+         userService.enableRoleStaffMember(id, token, approve);      
          obj.put("status","success");
          obj.put("approve", approve);
          return new ResponseEntity<>(obj.toString(), HttpStatus.OK);

@@ -41,7 +41,7 @@ import it.unict.spring.platform.utility.user.AuthManager;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
 import java.util.ArrayList;
 import java.util.Optional;
-import org.springframework.data.domain.Example;
+import org.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -312,26 +312,40 @@ public class UserService implements UserServiceInterface, SearcheableInterface<U
 
     @Override   
     @Transactional
-    public void sendRecoverPasswordMail(UserAccount user, String url)
-    {       
-      this.sendEmail(user, "Reset your password:", "Click to proceed: ", url, "/checkResetPassword?token=", "RPass");  
+    public void sendRecoverPasswordMail(UserAccount user, JSONObject obj)
+    {    
+      this.sendEmail(user, "Reset your password", obj, "token", "RPass"); 
     }
     
-    @Override   
+    @Override  
     @Transactional
-    public void sendRegistrationMail(UserAccount user, String url)
+    public void sendRegistrationMail(UserAccount user, JSONObject obj)
     {       
-      this.sendEmail(user, "Confirm registration", "Click to proceed: ", url,"/registrationConfirm?token=", "FReg");  
+      this.sendEmail(user, "Confirm registration", obj, "token", "FReg");  
     }
     
     @Transactional
-    private void sendEmail(UserAccount user, String object, String body,  String url, String prefix, String type)
+    private void sendEmail(UserAccount user, String object, String body,  String url, String prefix, String tokentype)
     {
-       
-      SecureToken token=this.assignTokenToUser(user, type);     
-      user=this.save(user);
-      token=secureTokenService.save(token);
-      mailService.sendSimpleEmail(user.getMail(), object, body +  url+prefix + token.getToken());
+      String token=this.storeNewToken(user, tokentype);      
+      mailService.sendSimpleEmail(user.getMail(), object, body +  url+prefix + token);
+    }
+    
+    @Transactional
+    private void sendEmail(UserAccount user,  String object, JSONObject obj, String field, String tokentype)
+    {
+      String token=this.storeNewToken(user, tokentype); 
+      obj.put(field,token);
+      mailService.sendSimpleEmail(user.getMail(), object, obj.toString());
+    }
+    
+    @Transactional
+    private String storeNewToken(UserAccount user, String type)
+    {
+     SecureToken token=this.assignTokenToUser(user, type);     
+     user=this.save(user);
+     token=secureTokenService.save(token);
+     return token.getToken();
     }
     
     @Override
@@ -434,19 +448,23 @@ public class UserService implements UserServiceInterface, SearcheableInterface<U
     
     @Override   
     @Transactional
-    public void sendEnableStaffRoleMail(UserAccount user, String url)
+    public void sendEnableStaffRoleMail(UserAccount user, JSONObject obj)
     { 
-      String infouser=user.getMail();      
+      String infouser = user.getMail();      
       List<String> adminMails = this.getAdminMails();
       SecureToken token = secureTokenService.generateToken(user, "UStaff");       
       this.save(user);
       secureTokenService.save(token);
-      String message="User "+ infouser+" requested to be registered as Staff member for the Web Portal. Click here to approve: ";
-      message+=url+"?token="+ token.getToken()+"&approve=true\n";
-      message+="To reject the request click here: ";
-      message+=url+"?token="+ token.getToken()+"&approve=false\n";    
+      obj.put("mail", infouser);
+      obj.put("action", "promote");
+      obj.put("type", "UStaff");
+      obj.put("token", token.getToken());
+      //String message="User "+ infouser+" requested to be registered as Staff member for the Web Portal. Click here to approve: ";
+      //message+=url+"?token="+ token.getToken()+"&approve=true\n";
+      //message+="To reject the request click here: ";
+      //message+=url+"?token="+ token.getToken()+"&approve=false\n";    
       for(String mail : adminMails)
-         mailService.sendSimpleEmail(mail, "User request for Web Portal",message);  
+         mailService.sendSimpleEmail(mail, "User request for Web Portal", obj.toString());  
     }
 
     
@@ -509,10 +527,10 @@ public class UserService implements UserServiceInterface, SearcheableInterface<U
 
     @Override
     @Transactional
-    public void sendEnableStaffRoleMail(CustomUserDetails user, String url)
+    public void sendEnableStaffRoleMail(CustomUserDetails user, JSONObject obj)
     {
         UserAccount account=this.findById(user.getId());
-        this.sendEnableStaffRoleMail(account, url);
+        this.sendEnableStaffRoleMail(account, obj);
     }
 }
 
