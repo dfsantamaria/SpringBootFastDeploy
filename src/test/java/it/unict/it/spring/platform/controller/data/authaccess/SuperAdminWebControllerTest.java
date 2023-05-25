@@ -21,20 +21,21 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import org.junit.jupiter.api.Disabled;
+
 
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
 @AutoConfigureMockMvc
-@Disabled
 public class SuperAdminWebControllerTest
 {       
     @Autowired
-    private MockMvc mvc;
+    private MockMvc mvc;   
     private final String name="name";
     
+
+    
     @Test
-    @WithMockUser(username = "admin", roles = { "SUPERADMIN" })
+    @WithMockUser(username = "admin", roles = { "SUPERADMIN" })    
     public void sayHelloAuthTest() throws Exception
     {        
         ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/auth/api/superadmin/hello").param("myName", name));
@@ -48,7 +49,7 @@ public class SuperAdminWebControllerTest
     public void sayHelloNonAuthTest() throws Exception
     {        
         ResultActions perform = mvc.perform(MockMvcRequestBuilders.get("/auth/api/superadmin/hello").param("myName", name));
-        perform.andExpect(status().isFound());        
+        perform.andExpect(status().isForbidden());        
     }
     
     @Test

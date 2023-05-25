@@ -18,7 +18,6 @@ import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.data.DataService;
 import it.unict.spring.platform.service.user.UserRegisterService;
 import it.unict.spring.platform.service.user.UserService;
-import it.unict.spring.platform.utility.user.UserExpirationInformation;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.AfterAll;
