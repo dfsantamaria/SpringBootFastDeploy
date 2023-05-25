@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.json.JSONObject;
 import org.json.JSONArray;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.thymeleaf.util.StringUtils;
 
 @RestController
@@ -75,18 +76,13 @@ public class AuthLanding
         }
         
            
-        
-        @RequestMapping(value = "/updateRole", method = RequestMethod.POST)
-        public ModelAndView updateRole(
-                                      @AuthenticationPrincipal CustomUserDetails user,
-                                      HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      @RequestParam("roleid") double id,                                      
-                                      RedirectAttributes attributes,
-                                      Model model)
+        @GetMapping(value="updateRole")       
+        public ResponseEntity<String> updateRole(@AuthenticationPrincipal CustomUserDetails user,  HttpServletRequest request,                                    
+                                      @RequestParam("roleid") double id                                      
+                                      )
         {   
-            
-          System.out.println(id);
+          JSONObject obj=new JSONObject();
+          
           if(id>0)
           {
               if(id==AuthManager.getStaffPriority())
@@ -94,11 +90,17 @@ public class AuthLanding
                 String url=StringUtils.substringBefore(request.getRequestURL(), request.getContextPath())+request.getContextPath();
                 url+="/auth/api/admin/upgradeUserRoleAtStaff";                
                 userService.sendEnableStaffRoleMail(user, url);
+                obj.put("status","success");
+                return new ResponseEntity<>(obj.toString(), HttpStatus.OK);
               }
-            return new ModelAndView("redirect:/auth/api/all/accountView");
+              obj.put("status","failed");
+              return new ResponseEntity<>(obj.toString(), HttpStatus.NOT_IMPLEMENTED);
           }
           else
-               return new ModelAndView("redirect:/public/api/access/error/forbidden");            
+          {
+              obj.put("status","failed");
+              return new ResponseEntity<>(obj.toString(), HttpStatus.BAD_REQUEST);
+          } 
         }
        
 
