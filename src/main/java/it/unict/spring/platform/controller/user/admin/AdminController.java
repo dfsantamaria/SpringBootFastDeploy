@@ -7,34 +7,27 @@ package it.unict.spring.platform.controller.user.admin;
  * 
  */
 
-import it.unict.spring.platform.dto.utility.PageDTO;
+import it.unict.spring.platform.dto.user.UserPerPageDTO;
 import it.unict.spring.platform.dto.user.UserSearchDTO;
-import it.unict.spring.platform.persistence.model.user.Privilege;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.SecureTokenService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.CustomUserDetails;
-import java.util.Locale;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-import it.unict.spring.platform.utility.user.ModelTemplate;
 import it.unict.spring.platform.service.utility.SearchManagerService;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
 import org.springframework.data.domain.Page;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/auth/api/admin")
 public class AdminController
 {
@@ -45,60 +38,31 @@ public class AdminController
    @Autowired
    SearchManagerService searchManager;
    
-   @RequestMapping(value = "/usersView", method = RequestMethod.GET)
-   public ModelAndView usersView(Locale locale,
-                                 @ModelAttribute("usersearchdto") UserSearchDTO usersearchdto,
-                                 BindingResult searchBindResult,
-                                 @ModelAttribute("paging") PageDTO pageSearch,
-                                 BindingResult pageSearchBind,
-                                 @AuthenticationPrincipal CustomUserDetails user, Model model)
-   {   
-     Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);
-     ModelTemplate.setNavBar(setPriv.iterator(), model);
-     pageSearch.setPageSpan(10);
-     pageSearch.setCurrentPage(1);     
-     model.addAttribute("paging", pageSearch);    
-     return new ModelAndView("auth/admin/home/users");
-   } 
-
-   @RequestMapping(value = "searchuser", method = RequestMethod.POST)
-   public ModelAndView searchUser( HttpServletRequest request,
-                                   HttpServletResponse response,
-                                   @ModelAttribute("usersearchdto") UserSearchDTO usersearchdto,
-                                   BindingResult searchBindResult,
-                                   @ModelAttribute ("paging") PageDTO pageSearch,
-                                   BindingResult pageSearchBind,
-                                   @AuthenticationPrincipal CustomUserDetails user,                                   
-                                   Model model, RedirectAttributes attributes) 
-   {   
-      //check value of pageSearch.getCurrentPage() : -1 or -2 
-          
-      Page<UserAccount> pages = searchManager.search(userService, pageSearch, usersearchdto);
+   @GetMapping(value = "searchuser", consumes = {"application/json"})
+   public ResponseEntity<String> searchUser( @RequestBody UserPerPageDTO userperpagedto,                                                                
+                                   @AuthenticationPrincipal CustomUserDetails user                                   
+                                   ) 
+   {           
+      Page<UserAccount> pages = searchManager.search(userService, userperpagedto.getPage(), userperpagedto.getUser());
       List<UserSearchDTO> results = userService.createUserSearchDTOFromPage(pages);
-       if(!results.isEmpty())
-         attributes.addFlashAttribute("result", results); 
-       else 
-       attributes.addFlashAttribute("result", null);        
-      
-      attributes.addFlashAttribute("usersearchdto", model.getAttribute("usersearchdto"));
-      attributes.addFlashAttribute("paging", pageSearch);      
-      return new ModelAndView("redirect:/auth/api/admin/usersView");
+      return new ResponseEntity<>(results.toString(), HttpStatus.OK);
    }  
    
-   @RequestMapping(value = "/upgradeUserRoleAtStaff", method = RequestMethod.GET)
-    public ModelAndView upgradeUserRoleAtStaff(@AuthenticationPrincipal CustomUserDetails user,
+   
+    @GetMapping(value = "upgradeUserRoleAtStaff")
+    public ResponseEntity<String> upgradeUserRoleAtStaff(@AuthenticationPrincipal CustomUserDetails user,
                                       @RequestParam("token") String token, 
-                                      @RequestParam("approve") boolean approve, Model model)
-    {
-       this.setModelTemplate(user, model);
+                                      @RequestParam("approve") boolean approve)
+    {       
        Long id=secureTokenService.existsToken(token); 
+       JSONObject obj=new JSONObject();
        if(id==0L)
        {           
-          model.addAttribute("parsed",true);
+          obj.put("status","failed");
+          return new ResponseEntity<>(obj.toString(), HttpStatus.BAD_REQUEST);   
        }
        else
-       {         
-         model.addAttribute("parsed", false);
+       {             
          userService.enableRoleStaffMember(id, token, approve);
          String message="";
          String usermessage="";
@@ -114,20 +78,13 @@ public class AdminController
              usermessage+="Your request for account updgrade has been rejected. "
                      + "Contact an administrator for clarifications. ";
          }
-         message+="User will be notified of your decision. ";
-         model.addAttribute("message", message);
+         message+="User will be notified of your decision. ";         
          userService.sendNotificationMail(id, head, usermessage);
-         
-       }           
-       return new ModelAndView("auth/all/home/authnotification");   
-    }
-    
-    
-    private void setModelTemplate(CustomUserDetails user, Model model)
-    {
-      Set<Privilege> setPriv = userService.findPrivilegeFromCustomUserDetails(user);  
-      ModelTemplate.setNavBar(setPriv.iterator(), model);
-    }
+         obj.put("status","success");
+         obj.put("approve", approve);
+         return new ResponseEntity<>(obj.toString(), HttpStatus.OK);
+       }         
+    }    
 }
 
                                       

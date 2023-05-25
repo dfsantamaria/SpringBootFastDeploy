@@ -9,6 +9,8 @@ package it.unict.spring.platform.controller.access;
 
 
 import it.unict.spring.platform.dto.user.AccountPasswordDTO;
+import it.unict.spring.platform.dto.user.TokenPasswordDTO;
+import it.unict.spring.platform.dto.user.UserAccountDTO;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.UserService;
 import java.util.concurrent.TimeUnit;
@@ -16,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,9 +29,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Optional;
-import org.springframework.security.core.Authentication;
+import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/public/api/access/recover")
 public class RecoverAccessController
 {    
@@ -39,27 +44,11 @@ public class RecoverAccessController
     
     private static final Logger applogger = LoggerFactory.getLogger(RecoverAccessController.class);  
     
-    @RequestMapping("viewRecoverPassword")
-    public ModelAndView recoverPasswordView(HttpServletRequest request,
-                                            HttpServletResponse response, 
-                                            Authentication authentication,
-                                            Model model)
-    { 
-       if(authentication!=null) 
-            return new ModelAndView("redirect:/auth/api/all/accountView");
-       return  new ModelAndView("public/access/recover/recoverPassword");        
-    }
-    
-    
-    @RequestMapping("sendRecoverPassword")
-    public ModelAndView sendRecoverPasswordView(HttpServletRequest request,
-                                            HttpServletResponse response,  
-                                            @RequestParam("mail") String mail,
-                                            Model model) 
+     
+    @GetMapping(value="sendRecoverPassword", consumes = {"application/json"})
+    public ResponseEntity<String> sendRecoverPassword(@RequestBody UserAccountDTO user, HttpServletRequest request) 
     {
-       Optional<UserAccount> users = userService.findByMail(mail); 
-       model.addAttribute("requestNewPassword", "We sent an email to reset your password");
-       response.setStatus(HttpServletResponse.SC_OK);
+       Optional<UserAccount> users = userService.findByMail(user.getMail());        
        if(!users.isEmpty())
        {
          userService.sendRecoverPasswordMail(users.get(), request.getRequestURL().toString());
@@ -76,44 +65,27 @@ public class RecoverAccessController
                applogger.error(ex.toString());
            }
        }
-       return  new ModelAndView("public/access/recover/recoverPassword");        
+       JSONObject obj=new JSONObject();
+       obj.put("status","success");
+       return new ResponseEntity<>(obj.toString(),HttpStatus.OK);        
     }
     
-    @GetMapping(value={"/sendRecoverPassword/checkResetPassword"})
-     public ModelAndView confirmRegistration(HttpServletRequest request,
-                                             HttpServletResponse response,
-                                             @RequestParam("token") String token, Model model)
-     {
-      
-         model.addAttribute("token", token);
-         return new ModelAndView("public/access/recover/changePassword");
-     }
      
     @PostMapping(value="changePassword")
-    public ModelAndView changePassword(HttpServletRequest request,
-                                       HttpServletResponse response, 
-                                       @RequestParam("token") String token,
-                                       @ModelAttribute("passdto") @Valid AccountPasswordDTO passdto,
-                                       BindingResult passBindResult,
-                                       Model model)
+    public ResponseEntity<String> changePassword(@Valid @RequestBody TokenPasswordDTO tokenpassword)
     {  
-       if(passBindResult.hasErrors())
-       {               
-           model.addAttribute("passError", "Check the password fields");
-           model.addAttribute("token", token);
-           return new ModelAndView("public/access/recover/changePassword");
-       }
-       System.out.println(token);
-       if(userService.verifyPasswordChangedToken(token, passdto.getPassword()))
-       {               
-          model.addAttribute("changedPassword", "Password correctly reset");
-          return new ModelAndView("public/access/login/signin");
+       JSONObject obj=new JSONObject();     
+       if(userService.verifyPasswordChangedToken(tokenpassword.getToken(), tokenpassword.getPassword().getPassword()))
+       {            
+        obj.put("status","success");
+        return new ResponseEntity<>(obj.toString(),HttpStatus.OK);
        }  
        else
        {
-         model.addAttribute("passError", "Link not valid");
-         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-         return new ModelAndView("public/access/recover/changePassword");
+         //model.addAttribute("passError", "Link not valid");
+         //response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+         obj.put("status","failed");
+         return new ResponseEntity<>(obj.toString(),HttpStatus.BAD_REQUEST);
        }
       
     }

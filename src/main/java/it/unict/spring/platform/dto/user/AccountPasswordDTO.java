@@ -22,7 +22,8 @@ public class AccountPasswordDTO
     @ValidPassword
     private String password;
     @NotNull
-    private String confirmPassword;    
+    private String confirmPassword;
+    @NotNull    
     private String oldpassword;
     
     public AccountPasswordDTO()
