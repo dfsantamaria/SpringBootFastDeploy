@@ -8,7 +8,9 @@ package it.unict.it.spring.platform.controller.access;
  */
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unict.spring.platform.Application;
+import it.unict.spring.platform.dto.user.LoginDTO;
 import javax.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +27,20 @@ import it.unict.spring.platform.service.user.UserLoginService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.persistence.model.user.UserLogin;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
+import java.security.cert.LDAPCertStoreParameters;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Disabled;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
 @AutoConfigureMockMvc
-@Disabled
 public class LoginControllerTest
-{       
+{   
+    @Autowired
+    ObjectMapper objectMapper;
+    
     @Autowired
     private MockMvc mvc;
     
@@ -57,9 +64,7 @@ public class LoginControllerTest
     public void isLogoutForLoggedUser() throws Exception
     {
      mvc.perform(MockMvcRequestBuilders.get(("/auth/api/access/login/signout"))). 
-              andExpect(status().is3xxRedirection())
-             .andExpect(redirectedUrl("/public/api/access/login/signin?logout"));
-              //.andExpect(redirectedUrl("/public/api/access/login/signin?logout"));
+              andExpect(status().isNoContent());
     }
     
     
@@ -67,10 +72,11 @@ public class LoginControllerTest
   @Transactional
   public void canLog() throws Exception
   {
-    mvc.perform(formLogin("/public/api/access/login/signin").user(username).password(password))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/auth/api/all/accountView"));    
+    LoginDTO dto=new LoginDTO(password, username);    
     
+    mvc.perform(MockMvcRequestBuilders.put(("/public/api/access/login/signin")).characterEncoding("utf-8") 
+                                                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(dto)))              
+                                                .andExpect(status().isOk());
     UserAccount account=userService.findByUsername(username).get();
     Long id = account.getId();
     UserLogin login = loginService.findById(id).get();
@@ -86,9 +92,10 @@ public class LoginControllerTest
   @Test
   public void cannotLog() throws Exception
   {
-    mvc.perform(formLogin("/public/api/access/login/signin").user("nonregistered").password("any"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/public/api/access/login/signin?errorLogin"));    
+    LoginDTO dto=new LoginDTO("apassword", "ausername");  
+    mvc.perform(MockMvcRequestBuilders.put(("/public/api/access/login/signin")).characterEncoding("utf-8") 
+                                                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(dto)))              
+                                                .andExpect(status().isForbidden());
   }
   
 }

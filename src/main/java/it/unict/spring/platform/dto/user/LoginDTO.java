@@ -6,9 +6,13 @@ package it.unict.spring.platform.dto.user;
 
 import com.sun.istack.NotNull;
 import it.unict.spring.platform.validation.user.password.ValidPassword;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginDTO
 {
   @NotNull

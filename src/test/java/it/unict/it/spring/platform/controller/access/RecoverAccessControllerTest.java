@@ -9,6 +9,8 @@ package it.unict.it.spring.platform.controller.access;
 
 
 import it.unict.spring.platform.Application;
+import it.unict.spring.platform.dto.user.AccountPasswordDTO;
+import it.unict.spring.platform.dto.user.TokenPasswordDTO;
 import it.unict.spring.platform.persistence.model.user.SecureToken;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.SecureTokenService;
@@ -24,12 +26,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import org.junit.jupiter.api.Disabled;
+import org.springframework.http.MediaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
 @AutoConfigureMockMvc
-@Disabled
+
 public class RecoverAccessControllerTest 
 {
     @Autowired
@@ -38,6 +41,8 @@ public class RecoverAccessControllerTest
     private UserService service;
     @Autowired
     private SecureTokenService tokenService;
+    @Autowired
+    ObjectMapper objectMapper;
     
     @Test
     @Transactional
@@ -48,10 +53,14 @@ public class RecoverAccessControllerTest
       service.save(user);
       SecureToken token = tokenService.generateToken(user, "RPass");
       tokenService.save(token);
-      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/recover/changePassword"))
-                                               .param("token", token.getToken())
-                                               .param("password", "the_newPassword")
-                                               .param("confirmPassword", "the_newPassword"))
+      
+      TokenPasswordDTO dto = new TokenPasswordDTO();
+      dto.setPassword(new AccountPasswordDTO("the_newPassword","the_newPassword"));
+      dto.setToken(token.getToken());
+      
+              
+      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/recover/changePassword")).characterEncoding("utf-8") 
+                                                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(dto)))              
                 
            .andExpect(status().isOk()); 
       UserAccount changeUser=service.findById(user.getId());

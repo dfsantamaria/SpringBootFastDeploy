@@ -51,7 +51,7 @@ public class RecoverAccessController
     }
     
      
-    @PostMapping(value="changePassword")
+    @PostMapping(value="changePassword", consumes = {"application/json"})
     public ResponseEntity<String> changePassword(@Valid @RequestBody TokenPasswordDTO tokenpassword)
     {  
        JSONObject obj=new JSONObject();     
