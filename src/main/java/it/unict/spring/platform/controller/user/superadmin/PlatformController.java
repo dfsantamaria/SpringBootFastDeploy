@@ -8,7 +8,6 @@ package it.unict.spring.platform.controller.user.superadmin;
  */
 
 import it.unict.spring.platform.service.platform.PlatformStatusService;
-import org.json.HTTP;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
