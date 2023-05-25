@@ -30,6 +30,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 
 @Configuration
@@ -56,7 +57,9 @@ public class WebSecurityConfig
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
     {
                     
-        http.csrf().disable().              
+        http.csrf()
+                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and().
+                           
  
                 authorizeHttpRequests().requestMatchers(maintenanceRequestMatcher).denyAll().                
                 antMatchers("/public/**", "/").permitAll(). 
