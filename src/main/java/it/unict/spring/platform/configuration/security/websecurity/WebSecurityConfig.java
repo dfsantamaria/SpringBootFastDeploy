@@ -68,8 +68,7 @@ public class WebSecurityConfig
                 anyRequest().authenticated().and().httpBasic();
                         
         http.               
-                formLogin().
-                //loginPage("/public/api/access/login/signin").  
+                formLogin().                 
                 loginProcessingUrl("/public/api/access/login/signin").
                 successHandler(authenticationSuccessHandler()).
                 failureHandler(authenticationFailureHandler()).                 
