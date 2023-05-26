@@ -131,7 +131,7 @@ public class RegistrationControllerTest
                                                                  UserExpirationInformation.getCredentialExpirationDate(), "organization");
        service.save(user);
      }
-      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/confirmResendRegister"))
+      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/confirmResendRegister")).with(csrf())
                                                .param("username", "testName3")
                                                .param("password", "PlainPassword")
                                               

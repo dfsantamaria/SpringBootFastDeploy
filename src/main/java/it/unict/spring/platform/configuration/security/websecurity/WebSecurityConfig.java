@@ -11,7 +11,6 @@ package it.unict.spring.platform.configuration.security.websecurity;
 import it.unict.spring.platform.configuration.security.authentication.CustomAccessDeniedHandler;
 import it.unict.spring.platform.configuration.security.authentication.CustomAuthEntryPoint;
 import it.unict.spring.platform.configuration.security.login.JdbcTokenRepositoryImpl;
-import it.unict.spring.platform.configuration.security.logout.CustomLogoutSuccessHandler;
 import it.unict.spring.platform.configuration.security.login.CustomLoginFailureHandler;
 import it.unict.spring.platform.configuration.security.login.CustomLoginSuccessHandler;
 import it.unict.spring.platform.configuration.security.matchers.MaintenanceRequestMatcher;
@@ -34,6 +33,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 
 @Configuration
@@ -60,10 +60,10 @@ public class WebSecurityConfig
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
     {
                     
-        http.csrf().disable().              
+        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and().             
  
                 authorizeHttpRequests().requestMatchers(maintenanceRequestMatcher).denyAll().                
-                antMatchers("/public/**", "/").permitAll(). 
+                antMatchers("/public/**").permitAll(). 
                 antMatchers("/auth/api/all/**").authenticated().
                 antMatchers("/auth/api/superadmin/**").hasAnyRole("SUPERADMIN").
                 antMatchers("/auth/api/admin/**").hasAnyRole("SUPERADMIN","ADMIN").
@@ -91,8 +91,8 @@ public class WebSecurityConfig
                 
                 and()
                 .logout()
-                .logoutUrl("/auth/api/access/login/signout")
-                .logoutSuccessHandler(logoutSuccessHandler())
+                .logoutUrl("/auth/api/access/login/signout")   
+                
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")                
                 .permitAll();       
@@ -127,12 +127,7 @@ public class WebSecurityConfig
         return  new CustomLoginSuccessHandler();
     } 
     
-    @Bean
-    public LogoutSuccessHandler logoutSuccessHandler()
-    {
-        return new CustomLogoutSuccessHandler();
-    }
-    
+        
     @Bean
     public PersistentTokenRepository persistentTokenRepository()
     {

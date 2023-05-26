@@ -44,3 +44,17 @@ The main application is available at **/spring/platform**. Remember to change th
 Remember to edit the entry "rememberme.key" in "application.properties with a static but random string.
 
 Remember to change the link to the "Privacy Policy" in "src/main/resources/templates/fragments".
+
+
+## Testing with PostMAN
+
+In order to test the API with Postman, do the following steps. Open Postman and
+  - Create an environment "Dev" (as example) and create the varible xsrf-token;
+  - enable "Dev" environment in the method call window;
+  - create an Header variable as following: KEY: X-XSRF-TOKEN, VALUE:{{xsrf-token}};
+  - in Tests, insert the following code:
+  ```
+       var xsrfCookie = postman.getResponseCookie("XSRF-TOKEN");
+       postman.setEnvironmentVariable("xsrf-token", xsrfCookie.value);
+  ```
+  
