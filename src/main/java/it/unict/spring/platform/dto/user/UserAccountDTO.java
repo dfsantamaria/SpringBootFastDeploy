@@ -11,9 +11,11 @@ package it.unict.spring.platform.dto.user;
 import com.sun.istack.NotNull;
 import javax.validation.Valid;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 //@PasswordMatches
 @Data
+@NoArgsConstructor
 public class UserAccountDTO
 {    
     @NotNull    

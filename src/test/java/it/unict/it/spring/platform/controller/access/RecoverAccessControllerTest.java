@@ -28,7 +28,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.http.MediaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
@@ -60,7 +59,7 @@ public class RecoverAccessControllerTest
       dto.setToken(token.getToken());
       
               
-      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/recover/changePassword")).with(csrf()).characterEncoding("utf-8")
+      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/recover/changePassword")).characterEncoding("utf-8")
                                                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(dto)))              
                 
            .andExpect(status().isOk()); 

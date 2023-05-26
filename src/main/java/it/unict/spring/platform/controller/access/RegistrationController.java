@@ -9,6 +9,7 @@ package it.unict.spring.platform.controller.access;
 
 
 import it.unict.spring.platform.dto.user.OrganizationDTO;
+import it.unict.spring.platform.dto.user.RegisterUserDTO;
 import it.unict.spring.platform.dto.user.UserAccountDTO;
 import it.unict.spring.platform.dto.user.UserRegisterDTO;
 import it.unict.spring.platform.exception.user.MultipleUsersFoundException;
@@ -29,6 +30,8 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +39,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,102 +61,71 @@ public class RegistrationController
     UserRegisterService regService;
     private static final Logger applogger = LoggerFactory.getLogger(RegistrationController.class);  
  
-    
-     @RequestMapping("register")
-     public ModelAndView viewRegister(HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      @ModelAttribute("userregdto") UserRegisterDTO userregdto,
-                                      BindingResult userRegBindResult,
-                                      @ModelAttribute("userdto") UserAccountDTO userdto, 
-                                      BindingResult userBindResult,
-                                      @ModelAttribute("orgdto") OrganizationDTO orgdto, 
-                                      BindingResult orgBindResult,
-                                      Authentication authentication,
-                                      Model model)
-     {    
-         if(authentication!=null) 
-            return new ModelAndView("redirect:/auth/api/all/accountView");
-         model.addAttribute("userregdto", userregdto);
-         model.addAttribute("userdto", userdto);  
-         model.addAttribute("orgdto", orgdto);
-         return new ModelAndView("public/access/registration/register");
-     }
-     
+         
     
      
-     @RequestMapping(value="registerUser", method = RequestMethod.POST)
-     public ModelAndView registerUser(HttpServletRequest request,
-                                      HttpServletResponse response,
-                                  @ModelAttribute("userregdto") UserRegisterDTO userregdto,
-                                  BindingResult userRegBindResult,
-                                  @ModelAttribute("userdto") @Valid UserAccountDTO userdto,
-                                  BindingResult userBindResult,
-                                  @ModelAttribute("orgdto") @Valid OrganizationDTO orgdto,
-                                  BindingResult orgBindResult,                                 
-                                  Model model)
+     @PostMapping(value="registerUser", consumes = {"application/json"})
+     public ResponseEntity<String> registerUser(@Valid @RequestBody RegisterUserDTO registration)
      {        
-         if(userBindResult.hasErrors() || orgBindResult.hasErrors() || userRegBindResult.hasErrors())
-         {               
-          model.addAttribute("fieldError","Errors occured, check your fields");
-          response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-          return new ModelAndView("public/access/registration/register");   
-         }       
+         JSONObject obj=new JSONObject();     
          try 
           {
-            Organization organization = orgService.mapFromOrganization(orgdto);     
-            UserRegister userreg=regService.mapFromUserRegister(userregdto);
-            UserAccount user=userService.mapFromUserDTO(userdto, UserExpirationInformation.getAccountExpirationDate(),
+            
+            Organization organization = orgService.mapFromOrganization(registration.getOrganization());     
+            UserRegister userreg=regService.mapFromUserRegister(registration.getRegister());
+            UserAccount user=userService.mapFromUserDTO(registration.getUser(), UserExpirationInformation.getAccountExpirationDate(),
                                                                  UserExpirationInformation.getCredentialExpirationDate(),
                                                                  userreg, organization);  
             userService.createLoginInfo(user);
             userService.sendRegistrationMail(user, new JSONObject());
-            if(userdto.getRole() == AuthManager.getStaffPriority())
+            if(registration.getUser().getRole() == AuthManager.getStaffPriority())
             {                
               userService.sendEnableStaffRoleMail(user, new JSONObject());
             }
           } 
           catch (MultipleUsersFoundException ex)
            {
-            model.addAttribute("fieldError","This account already exists");
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new ModelAndView("public/access/registration/register");
+            obj.put("status", "failed");
+            obj.put("error", "Account already exists");            
+            return new ResponseEntity<>(obj.toString(), HttpStatus.BAD_REQUEST);
            }
           catch (Exception ex)
           {
-            model.addAttribute("fieldError","Internal errors occured, try to login or register again");
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return new ModelAndView("public/access/registration/register");
+            obj.put("status", "failed");
+            obj.put("error", "Internal error");            
+            return new ResponseEntity<>(obj.toString(), HttpStatus.BAD_REQUEST);
           }
          
-         response.setStatus(HttpServletResponse.SC_OK);
-         model.addAttribute("confirmReg", "We sent an email. Check your inbox to complete the registration");
-         return  new ModelAndView("public/access/login/signin");
+           obj.put("status", "success");                     
+           return new ResponseEntity<>(obj.toString(), HttpStatus.OK);         
      }
      
      
      @GetMapping(value={"/registerUser/registrationConfirm", "/confirmResendRegister/registrationConfirm" })
-     public ModelAndView confirmRegistration(HttpServletRequest request,HttpServletResponse response,
-                                      @RequestParam("token") String token, Model model)
+     public ResponseEntity<String> confirmRegistration(@RequestParam("token") String token)
      {
+       JSONObject obj=new JSONObject();  
        try
        {
        if(userService.verifyRegistrationToken(token))       
        {
-           model.addAttribute("tokenSuccess","You registration has been verified");
-           response.setStatus(HttpServletResponse.SC_OK);
+           obj.put("status", "success");                     
+           return new ResponseEntity<>(obj.toString(), HttpStatus.OK);   
        }    
        else  
        {
-          response.setStatus(HttpServletResponse.SC_BAD_REQUEST); 
-          model.addAttribute("tokenFailed", "Registration failed");         
+          obj.put("status", "failed");
+          obj.put("error", "token failed");
+          return new ResponseEntity<>(obj.toString(), HttpStatus.BAD_REQUEST);            
        }
        }
        catch(UserAccountAlreadyVerified exception)
        {
-         model.addAttribute("tokenVerified", "Registration already verified");
-         response.setStatus(HttpServletResponse.SC_BAD_REQUEST); 
+         obj.put("status", "failed");
+         obj.put("error", "token invalid or expired");
+         return new ResponseEntity<>(obj.toString(), HttpStatus.BAD_REQUEST); 
        }
-       return  new ModelAndView("public/access/login/signin");
+       
      }
      
      

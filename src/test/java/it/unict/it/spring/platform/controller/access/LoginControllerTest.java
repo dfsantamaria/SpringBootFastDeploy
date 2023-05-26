@@ -27,7 +27,6 @@ import it.unict.spring.platform.persistence.model.user.UserLogin;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.springframework.http.MediaType;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
@@ -60,7 +59,7 @@ public class LoginControllerTest
     public void isLogoutForLoggedUser() throws Exception
     {
      mvc.perform(MockMvcRequestBuilders.get(("/auth/api/access/login/signout"))). 
-              andExpect(status().isOk());
+              andExpect(status().isNoContent());
     }
     
     
@@ -70,7 +69,7 @@ public class LoginControllerTest
   {
     LoginDTO dto=new LoginDTO(password, username);    
     
-    mvc.perform(MockMvcRequestBuilders.put(("/public/api/access/login/signin")).with(csrf()).characterEncoding("utf-8") 
+    mvc.perform(MockMvcRequestBuilders.put(("/public/api/access/login/signin")).characterEncoding("utf-8") 
                                                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(dto)))              
                                                 .andExpect(status().isOk());
     UserAccount account=userService.findByUsername(username).get();

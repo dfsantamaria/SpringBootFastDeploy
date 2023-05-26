@@ -9,8 +9,10 @@ package it.unict.spring.platform.dto.user;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class UserRegisterDTO
 {
     @NotNull

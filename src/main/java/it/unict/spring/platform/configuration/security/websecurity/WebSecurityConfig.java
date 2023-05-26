@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -30,7 +31,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+
 
 
 @Configuration
@@ -57,12 +58,9 @@ public class WebSecurityConfig
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
     {
                     
-        http.csrf()
-                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and().
-                           
- 
+        http.csrf().disable().
                 authorizeHttpRequests().requestMatchers(maintenanceRequestMatcher).denyAll().                
-                antMatchers("/public/**", "/").permitAll(). 
+                antMatchers("/public/**").permitAll().                
                 antMatchers("/auth/api/all/**").authenticated().
                 antMatchers("/auth/api/superadmin/**").hasAnyRole("SUPERADMIN").
                 antMatchers("/auth/api/admin/**").hasAnyRole("SUPERADMIN","ADMIN").
@@ -72,7 +70,7 @@ public class WebSecurityConfig
                         
         http.               
                 formLogin().
-                loginPage("/public/api/access/login/signin").  
+                //loginPage("/public/api/access/login/signin").  
                 loginProcessingUrl("/public/api/access/login/signin").
                 successHandler(authenticationSuccessHandler()).
                 failureHandler(authenticationFailureHandler()).                 

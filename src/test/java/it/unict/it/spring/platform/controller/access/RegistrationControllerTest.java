@@ -1,5 +1,6 @@
 package it.unict.it.spring.platform.controller.access;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -25,16 +26,21 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 
 import it.unict.spring.platform.Application;
+import it.unict.spring.platform.dto.user.OrganizationDTO;
+import it.unict.spring.platform.dto.user.RegisterUserDTO;
+import it.unict.spring.platform.dto.user.UserAccountDTO;
+import it.unict.spring.platform.dto.user.UserRegisterDTO;
 import it.unict.spring.platform.persistence.model.user.SecureToken;
 import it.unict.spring.platform.persistence.model.user.UserAccount;
 import it.unict.spring.platform.service.user.SecureTokenService;
 import it.unict.spring.platform.service.user.UserService;
 import it.unict.spring.platform.utility.user.UserExpirationInformation;
 import org.junit.jupiter.api.Disabled;
+import org.springframework.http.MediaType;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @ActiveProfiles("test")
 @SpringBootTest(classes=Application.class)
 @AutoConfigureMockMvc
-@Disabled
 public class RegistrationControllerTest
 {       
     @Autowired
@@ -43,29 +49,24 @@ public class RegistrationControllerTest
     private UserService service;
     @Autowired
     private SecureTokenService tokenService;
+    @Autowired
+    ObjectMapper objectMapper;
     
-    @Test
-    public void isRegistrationPubliclyAvailable() throws Exception 
-    {
-      mvc.perform(MockMvcRequestBuilders.get(("/public/api/access/registration/register"))).andExpect(status().isOk());
-    }
-    
+       
     @Test
     @Transactional
     public void isRegistrationSavingData() throws Exception
     {
       UserAccount user= new UserAccount("testName", "PlainPassword", "test@mail.com", UserExpirationInformation.getAccountExpirationDate(),
                                                                  UserExpirationInformation.getCredentialExpirationDate());
-      service.deleteUser(user);       
-      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/registerUser"))
-                                               .param("username", user.getUsername())
-                                               .param("password.password", user.getPassword())
-                                               .param("password.confirmPassword", user.getPassword())
-                                               .param("mail", user.getMail())
-                                               .param("name", "test organization")
-                                               .param("role","1").with(csrf())
-                )
-           .andExpect(status().isOk());                
+      service.deleteUser(user);   
+      RegisterUserDTO regUserDTO=new RegisterUserDTO(new UserAccountDTO(user.getUsername(), user.getMail(), user.getPassword(), user.getPassword(),1), 
+                                                     new UserRegisterDTO("name", "mname", "lname"), new OrganizationDTO("test organization"));
+      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/registerUser")).characterEncoding("utf-8") 
+                                                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(regUserDTO)))              
+                                                .andExpect(status().isOk());                                               
+                
+                       
       service.deleteUser(user); 
     }
     
@@ -75,16 +76,14 @@ public class RegistrationControllerTest
     {
       UserAccount user= new UserAccount("testName", "PlainPassword", "test@mail.com", UserExpirationInformation.getAccountExpirationDate(),
                                                                  UserExpirationInformation.getCredentialExpirationDate());
-      service.deleteUser(user);      
-      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/registerUser"))
-                                               .param("username", user.getUsername())
-                                               .param("password", user.getPassword())
-                                               .param("confirmPassword", "mismatchPassword")
-                                               .param("mail", user.getMail())
-                                               .param("name", "test organization").with(csrf())
-                )
-           .andExpect(status().isBadRequest());
-         //  .andExpect(model().attribute("errorMessage", "Errors occured, check your fields"));
+      service.deleteUser(user);        
+      RegisterUserDTO regUserDTO=new RegisterUserDTO(new UserAccountDTO(user.getUsername(), user.getMail(), user.getPassword(), "mismatchpassword",1), 
+                                                     new UserRegisterDTO("name", "mname", "lname"), new OrganizationDTO("test organization"));
+      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/registerUser")).characterEncoding("utf-8") 
+                                                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(regUserDTO)))              
+                                                .andExpect(status().isBadRequest());
+                   
+      service.deleteUser(user); 
       
       service.deleteUser(user);   
     }
