@@ -39,7 +39,7 @@ A set of JUnit test in the folder **/test** are provided to ensure that your mod
 
 
 ## Main application
-The main application is available at **/spring/platform**. Remember to change the final name of your application before deploying, by changing the name **platform** with you application name alongside the project files. Remember also to change the name of the context set in the **context.xml** file in **/resources/webapp/META-INF/**. 
+The main application is available at **/spring/platform**. Remember to change the final name of your application before deploying, by changing the name **platform** with you application name alongside the project files. Remember also to change the name of the context set in the **context.xml** file in **/resources/webapp/META-INF/**.  Change also in application.properties the entry **server.servlet.context-path**
 
 Remember to edit the entry "rememberme.key" in "application.properties with a static but random string.
 

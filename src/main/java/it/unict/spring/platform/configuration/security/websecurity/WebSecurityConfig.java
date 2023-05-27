@@ -14,6 +14,7 @@ import it.unict.spring.platform.configuration.security.login.CustomLoginFailureH
 import it.unict.spring.platform.configuration.security.login.CustomLoginSuccessHandler;
 import it.unict.spring.platform.configuration.security.matchers.MaintenanceRequestMatcher;
 import it.unict.spring.platform.service.security.CustomUserDetailsService;
+import it.unict.spring.platform.utility.user.ServerUtils;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -128,7 +129,12 @@ public class WebSecurityConfig
         JdbcTokenRepositoryImpl tokenRepo = new JdbcTokenRepositoryImpl();
         tokenRepo.setDataSource(dataSource);
         return tokenRepo;
-    }
-          
+    }           
   
+    @Bean
+    public ServerUtils serverUtils(@Value("${server.servlet.context-path}") String context)
+    {
+      ServerUtils utils=new ServerUtils(context);
+      return utils;
+    }
 }

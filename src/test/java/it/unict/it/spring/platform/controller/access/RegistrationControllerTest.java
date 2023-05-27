@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 
 import it.unict.spring.platform.Application;
+import it.unict.spring.platform.dto.user.LoginDTO;
 import it.unict.spring.platform.dto.user.OrganizationDTO;
 import it.unict.spring.platform.dto.user.RegisterUserDTO;
 import it.unict.spring.platform.dto.user.UserAccountDTO;
@@ -88,6 +89,13 @@ public class RegistrationControllerTest
       service.deleteUser(user);   
     }
     
+    @Test
+    public void TestUtils() throws Exception
+    {      
+      String result= mvc.perform(MockMvcRequestBuilders.get("/public/api/access/registration/test")).andReturn().getResponse().getContentAsString();
+      System.out.println(result);
+    }
+            
     
     @Test
     @Transactional
@@ -132,12 +140,11 @@ public class RegistrationControllerTest
                                                                  UserExpirationInformation.getCredentialExpirationDate(), "organization");
        service.save(user);
      }
-      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/confirmResendRegister"))
-                                               .param("username", "testName3")
-                                               .param("password", "PlainPassword")
-                                              
-                )
-           .andExpect(status().isOk());                
+     LoginDTO  login=new LoginDTO("PlainPassword", "testName3");
+      mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/registration/confirmResendRegister")).characterEncoding("utf-8") 
+                                                .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).
+                                       content(objectMapper.writeValueAsString(login)))                
+                  .andExpect(status().isOk());                
       service.deleteUser( (service.findByMail("test3@mail.com")).get()); 
     }   
 }
