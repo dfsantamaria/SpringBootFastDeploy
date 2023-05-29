@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/auth/api/access/login")
+@RequestMapping("/auth/api/access/login/")
 public class SignoutController implements LogoutHandler
 {        
      @GetMapping("signout")
