@@ -69,7 +69,7 @@ public class WebSecurityConfig
                         
         http.               
                 formLogin().                 
-                loginProcessingUrl("/public/api/access/login/signin").
+                //loginProcessingUrl("/public/api/access/login/signin").
                 successHandler(authenticationSuccessHandler()).
                 failureHandler(authenticationFailureHandler()).                 
                 permitAll(). 

@@ -15,11 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.json.JSONObject;
 
 
 @RestController
@@ -31,18 +31,21 @@ public class SigninController
     
      @Autowired
      PlatformStatusService platformService;
-     @PutMapping("signin")
+     @PostMapping("signin")
      public ResponseEntity<String> login(@RequestBody LoginDTO logindto)
      { 
+       JSONObject obj=new JSONObject();  
        try
        {
         authenticationManager
         .authenticate(new UsernamePasswordAuthenticationToken(logindto.getUsername(), logindto.getPassword()));
-       return new ResponseEntity<>("logged", HttpStatus.OK);
+        obj.put("status","success");
+        return new ResponseEntity<>(obj.toString(), HttpStatus.OK);
        }
        catch(AuthenticationException e)
        {
-         return new ResponseEntity<>("failed", HttpStatus.FORBIDDEN); 
+         obj.put("status","success");
+         return new ResponseEntity<>(obj.toString(), HttpStatus.FORBIDDEN); 
        }         
      }      
 }

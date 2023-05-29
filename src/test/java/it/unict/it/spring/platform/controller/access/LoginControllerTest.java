@@ -69,7 +69,7 @@ public class LoginControllerTest
   {
     LoginDTO dto=new LoginDTO(password, username);    
     
-    mvc.perform(MockMvcRequestBuilders.put(("/public/api/access/login/signin")).characterEncoding("utf-8") 
+    mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/login/signin")).characterEncoding("utf-8") 
                                                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(dto)))              
                                                 .andExpect(status().isOk());
     UserAccount account=userService.findByUsername(username).get();
@@ -88,7 +88,7 @@ public class LoginControllerTest
   public void cannotLog() throws Exception
   {
     LoginDTO dto=new LoginDTO("apassword", "ausername");  
-    mvc.perform(MockMvcRequestBuilders.put(("/public/api/access/login/signin")).characterEncoding("utf-8") 
+    mvc.perform(MockMvcRequestBuilders.post(("/public/api/access/login/signin")).characterEncoding("utf-8") 
                                                 .accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(dto)))              
                                                 .andExpect(status().isForbidden());
   }
