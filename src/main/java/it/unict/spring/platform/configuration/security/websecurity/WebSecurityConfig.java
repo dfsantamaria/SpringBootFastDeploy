@@ -86,10 +86,10 @@ public class WebSecurityConfig
                 
                 and()
                 .logout()
-                .logoutUrl("/auth/api/access/login/signout")                
+                //.logoutUrl("/auth/api/access/login/signout")                
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")                
-                .permitAll();       
+                .deleteCookies("JSESSIONID");             
+                       
         return http.build();     
     }
 

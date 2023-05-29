@@ -59,7 +59,7 @@ public class LoginControllerTest
     public void isLogoutForLoggedUser() throws Exception
     {
      mvc.perform(MockMvcRequestBuilders.get(("/auth/api/access/login/signout"))). 
-              andExpect(status().isNoContent());
+              andExpect(status().isOk());
     }
     
     
